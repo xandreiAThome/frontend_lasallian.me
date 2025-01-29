@@ -30,7 +30,7 @@ export default function VerifyCard() {
           className="text-white w-full rounded-3xl mt-4 bg-lasalle-green text-lg h-12"
           type="submit"
         >
-          Create Account
+          Login
         </Button>
       </div>
     </Form>

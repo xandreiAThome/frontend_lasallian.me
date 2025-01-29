@@ -1,12 +1,13 @@
 import { Input } from "~/components/ui/input";
-import { Form } from "react-router";
+import { Form, redirect, useNavigate } from "react-router";
 import { Button } from "~/components/ui/button";
 
 export default function CreateAccountCard() {
+  const navigate = useNavigate();
   return (
     <Form
       method="post"
-      className="bg-custom-postcard-white w-3/5 p-8 shadow-lg rounded-md"
+      className="bg-custom-postcard-white w-full md:w-3/5 p-8 shadow-lg rounded-md"
     >
       <div className="flex flex-col items-center">
         <Input
