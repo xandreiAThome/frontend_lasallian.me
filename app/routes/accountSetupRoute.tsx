@@ -101,7 +101,7 @@ export default function AccountSetup() {
             </div>
           </div>
 
-          <div className="flex flex-col px-6 pb-2">
+          <div className="flex flex-col px-12 pb-2">
             <p className="text-custom-text-black">
               About <span className="font-bold">YOU!</span> Ipakita mo kung sino
               ka.
@@ -118,7 +118,7 @@ export default function AccountSetup() {
             </div>
           </div>
 
-          <div className="flex gap-2 px-6 items-center">
+          <div className="flex gap-2 px-12 items-center">
             <Select>
               <SelectTrigger className="w-20">
                 <SelectValue placeholder="Select a fruit" />
@@ -141,7 +141,7 @@ export default function AccountSetup() {
             ></Input>
           </div>
 
-          <div className="p-6">
+          <div className="px-12 py-4">
             <p className="text-custom-text-black">
               <span className="font-bold">MORE</span>. Link other accounts to
               boost reach! (optional)
@@ -173,7 +173,7 @@ export default function AccountSetup() {
             </div>
           </div>
 
-          <div className="px-6 flex flex-col items-baseline gap-2">
+          <div className="px-12 flex flex-col items-baseline gap-2">
             <Button
               type="submit"
               className="bg-lasalle-green rounded-2xl text-base py-5 px-16"
