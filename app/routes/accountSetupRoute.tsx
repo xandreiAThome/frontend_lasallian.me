@@ -1,14 +1,15 @@
-import Logo from "~/components/ui/logo.svg";
 import {
-  Images,
   Ellipsis,
-  Ghost,
   Facebook,
+  Images,
   Instagram,
-  Linkedin,
+  Linkedin
 } from "lucide-react";
-import { Input } from "~/components/ui/input";
+import { Form } from "react-router";
 import { Button } from "~/components/ui/button";
+import { Checkbox } from "~/components/ui/checkbox";
+import { Input } from "~/components/ui/input";
+import Logo from "~/components/ui/logo.svg";
 import {
   Select,
   SelectContent,
@@ -18,8 +19,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "~/components/ui/select";
-import { Checkbox } from "~/components/ui/checkbox";
-import { Form } from "react-router";
 import type { Route } from "./+types/accountSetupRoute";
 
 export async function clientAction({ request }: Route.ClientActionArgs) {
@@ -32,8 +31,8 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
 
 export default function AccountSetup() {
   return (
-    <div className="flex h-full p-10 bg-custom-bg-white">
-      <div className="basis-96 flex flex-col items-baseline justify-between">
+    <div className="flex h-full bg-custom-bg-white">
+      <div className="basis-80 max-w-96 flex-col items-baseline justify-between hidden md:flex p-6">
         <img src={Logo} alt="logo" className="h-16" />
         <div>
           <h1 className="text-2xl text-lasalle-dark-green font-bold">
@@ -57,8 +56,9 @@ export default function AccountSetup() {
       <main className="flex-1 flex justify-center">
         <Form
           method="post"
-          className="basis-[600px] max-w-[740px] shrink-0 grow h-full bg-custom-postcard-white flex flex-col"
+          className="w-[640px] shrink-0 h-full bg-custom-postcard-white flex flex-col"
         >
+
           <div className="w-full h-48 bg-gray-300 flex items-center justify-center">
             <button className="flex gap-1">
               <Images className="text-lasalle-green" />
@@ -67,9 +67,11 @@ export default function AccountSetup() {
               </p>
             </button>
           </div>
+          <div className="pb-6">          
+            
 
           <div className="relative flex p-6">
-            <div className="w-40 h-40 rounded-full bg-gray-300 m-4 border-custom-bg-white border-4 absolute -top-20 flex justify-center items-center">
+            <div className="w-32 h-32 lg:w-36 lg:h-36 rounded-full bg-gray-300 m-4 border-custom-bg-white border-4 absolute left-0 -top-20 flex justify-center items-center">
               <button className="flex flex-col items-center">
                 <Images className="text-lasalle-green"></Images>
                 <p className="text-lasalle-green font-bold">+ Display Photo </p>
@@ -198,10 +200,12 @@ export default function AccountSetup() {
               </label>
             </div>
           </div>
+        </div>
+
         </Form>
       </main>
 
-      <div className="basis-96 flex justify-center flex-col">
+      <div className="basis-80 max-w-96 hidden lg:flex justify-center flex-col p-6">
         <h1 className="text-lasalle-dark-green font-bold text-2xl">
           your data is safe with us!
         </h1>
