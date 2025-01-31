@@ -14,7 +14,7 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
 
 export default function Login() {
   return (
-    <div className="h-full flex justify-center items-center bg-custom-bg-white md:flex-row flex-col">
+    <div className="h-full flex items-center bg-custom-bg-white md:flex-row flex-col">
       <div className="md:flex-1 flex flex-col items-center justify-center basis-96">
         <img src={Logo} alt="logo" />
       </div>
