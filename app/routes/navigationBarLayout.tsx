@@ -3,6 +3,7 @@ import Logo from "~/components/assets/logo.svg";
 import { Button } from "~/components/ui/button";
 import OrgSideBarCard from "./sidebarComponents/orgSideBarCard";
 import FollowingSideBar from "./sidebarComponents/followingSideBarCard";
+import CreatePostButton from "~/routes/sidebarComponents/CreatePostButton";
 
 export default function NavBar() {
   return (
@@ -102,18 +103,16 @@ export default function NavBar() {
                 Logout
               </NavLink>
             </li>{" "}
-            <Button className="bg-lasalle-green rounded-3xl text-lg h-12 px-12">
-              + Create
-            </Button>
+            <CreatePostButton />
           </ul>
         </div>
       </nav>
 
-      <main className="max-w-[484px] flex-grow">
+      <main className="max-w-[640px] flex-grow">
         <Outlet />
       </main>
 
-      <div className="basis-80 bg-custom-bg-white hidden md:flex md:flex-col py-8 gap-6 sticky top-0 self-start">
+      <div className="basis-96 bg-custom-bg-white hidden md:flex md:flex-col py-8 gap-6 sticky top-0 self-start">
         <OrgSideBarCard />
         <FollowingSideBar />
       </div>

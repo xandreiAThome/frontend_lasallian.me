@@ -1,18 +1,108 @@
-export default function PostCard() {
+import { Dot } from "lucide-react";
+import { Ellipsis } from "lucide-react";
+import { Heart, MessageSquareText, MessageSquareShare } from "lucide-react";
+
+interface postsData {
+  author: string;
+  username: string;
+  time: string;
+  views: string;
+  content: string;
+  reactions: number;
+  comments: number;
+  reposts: number;
+  img: string | null;
+  org: string;
+  position: string;
+}
+
+export default function PostCard({
+  author,
+  username,
+  time,
+  views,
+  content,
+  reactions,
+  comments,
+  reposts,
+  img,
+  org,
+  position,
+}: postsData) {
+  const formatter = Intl.NumberFormat("en", { notation: "compact" });
+
   return (
-    <div className="bg-custom-postcard-white flex items-center px-6 rounded-xl py-4 shadow-lg">
-      <img
-        src="https://www.shutterstock.com/image-vector/blank-avatar-photo-place-holder-600nw-1095249842.jpg"
-        alt="profile"
-        width="42"
-        height="42"
-        className="rounded-full mr-4"
-      />
-      <div className="flex p-2 bg-slate-100 rounded-3xl text-sm px-4 w-full text-gray-500">
-        <p>
-          How's <span className="bg-bold text-gray-600 font-bold"> YOUR </span>{" "}
-          day Lasallian Achiever?
-        </p>
+    <div className="bg-custom-postcard-white flex flex-col px-6 rounded-xl py-4 shadow-lg">
+      <div className="flex items-center">
+        <img
+          src="https://www.shutterstock.com/image-vector/blank-avatar-photo-place-holder-600nw-1095249842.jpg"
+          alt="profile"
+          width="36"
+          height="36"
+          className="rounded-full mr-4"
+        />
+        <div className="flex flex-col flex-grow">
+          <div className="flex items-center">
+            <p className="text-lg font-bold mr-2">{author}</p>{" "}
+            <p className="px-2 bg-[#220088] text-white text-xs font-semibold">
+              {org}
+            </p>
+            <p className="px-2 bg-[#313131] text-white text-xs font-semibold">
+              {position}
+            </p>
+            <button className="ml-auto text-gray-500">
+              <Ellipsis />
+            </button>
+          </div>
+          <div className="flex items-start">
+            <p className="text-gray-400 text-xs">{username}</p>
+
+            <div className="ml-auto flex items-center">
+              <p className="text-gray-400 text-xs">{time}</p>
+              <Dot className="text-gray-500" />
+              <p className="text-gray-400 text-xs">{views}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="flex text-base my-4 flex-col">
+        <p className="mb-2">{content}</p>
+        <div className="-mx-6">
+          {img && <img src={img} alt="image content" className=""></img>}
+        </div>
+      </div>
+      <hr className="-mx-6" />
+      <div className="flex items-center mt-4 justify-between">
+        <div className="flex items-center">
+          <button className="mr-2">
+            <Heart className="h-6" />
+          </button>
+          <p className="text-sm">
+            <span className="font-bold">{formatter.format(reactions)} </span>
+            reactions
+          </p>
+        </div>
+
+        <div className="flex items-center">
+          <button className="mr-2">
+            <MessageSquareText className="h-6" />
+          </button>
+          <p className="text-sm">
+            <span className="font-bold">{formatter.format(comments)} </span>
+            comments
+          </p>
+        </div>
+
+        <div className="flex items-center">
+          <button className="mr-2">
+            <MessageSquareShare className="h-6" />
+          </button>
+          <p className="text-sm">
+            <span className="font-bold">{formatter.format(comments)} </span>
+            reposts
+          </p>
+        </div>
       </div>
     </div>
   );

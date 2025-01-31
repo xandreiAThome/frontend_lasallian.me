@@ -16,7 +16,7 @@ export default function SuggestedFollowingCard({
         alt="logo"
         width="36"
         height="36"
-        className="mx-2 rounded-full"
+        className="mx-4 rounded-full"
       />
       <div className="mr-2">
         <div className="flex flex-col">
