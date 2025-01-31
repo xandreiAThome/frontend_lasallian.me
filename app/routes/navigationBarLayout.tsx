@@ -2,12 +2,13 @@ import { NavLink, Outlet, redirect } from "react-router";
 import Logo from "~/components/assets/logo.svg";
 import { Button } from "~/components/ui/button";
 import OrgSideBarCard from "./sidebarComponents/orgSideBarCard";
+import FollowingSideBar from "./sidebarComponents/followingSideBarCard";
 
 export default function NavBar() {
   return (
-    <div className="flex h-full bg-custom-bg-white justify-center gap-12">
-      <nav className="w-96hidden lg:block p-8">
-        <img src={Logo} alt="logo" className="h-16 ml-2" />
+    <div className="flex h-full bg-custom-bg-white justify-center lg:gap-12">
+      <nav className="basis-96 max-w-96 hidden lg:flex py-8 flex-col items-center">
+        <img src={Logo} alt="logo" className="h-12" />
         <div>
           <ul className="text-2xl flex flex-col items-start gap-4 font-medium mt-32">
             <li className="hover:bg-slate-200 hover:rounded-2xl">
@@ -98,12 +99,13 @@ export default function NavBar() {
         </div>
       </nav>
 
-      <main className="">
+      <main className="bg-lasalle-dark-green">
         <Outlet />
       </main>
 
-      <div className="w-96 bg-custom-bg-white hidden md:block p-8">
+      <div className="basis-96 bg-custom-bg-white hidden md:flex md:flex-col py-8 gap-6">
         <OrgSideBarCard />
+        <FollowingSideBar />
       </div>
     </div>
   );

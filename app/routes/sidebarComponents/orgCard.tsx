@@ -9,7 +9,7 @@ interface Props {
   subPosition: string;
   subPositionColor: string;
 }
-
+// TODO
 export default function OrgCard({
   img,
   orgName,
@@ -32,12 +32,14 @@ export default function OrgCard({
         <h1 className="text-xl font-bold">{orgName}</h1>
         <div className="flex ">
           <div
-            className={`bg-[${positionColor}] text-[${positionTextColor}] px-1 text-sm font-bold`}
+            style={{ color: positionTextColor, backgroundColor: positionColor }}
+            className="px-1 text-sm font-bold"
           >
             {position}
           </div>
           <div
-            className={`bg-gray-600 text-[${subPositionColor}] px-1 text-sm font-bold`}
+            style={{ color: subPositionColor }}
+            className="bg-gray-600 px-1 text-sm font-bold"
           >
             {subPosition}
           </div>
