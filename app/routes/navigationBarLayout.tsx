@@ -6,8 +6,8 @@ import FollowingSideBar from "./sidebarComponents/followingSideBarCard";
 
 export default function NavBar() {
   return (
-    <div className="flex h-full bg-custom-bg-white justify-center lg:gap-12 overflow-y-auto">
-      <nav className="basis-96 max-w-96 hidden lg:flex py-8 flex-col items-center sticky top-0">
+    <div className="flex h-full bg-custom-bg-white justify-evenly gap-2 overflow-y-auto">
+      <nav className="max-w-96 hidden lg:flex py-8 flex-col items-end sticky top-0">
         <img src={Logo} alt="logo" className="h-12" />
         <div>
           <ul className="text-2xl flex flex-col items-start gap-4 font-medium mt-32">
@@ -109,11 +109,11 @@ export default function NavBar() {
         </div>
       </nav>
 
-      <main className="max-w-[640px] flex-grow">
+      <main className="max-w-[484px] flex-grow">
         <Outlet />
       </main>
 
-      <div className="basis-96 bg-custom-bg-white hidden md:flex md:flex-col py-8 gap-6 sticky top-0 self-start">
+      <div className="basis-80 bg-custom-bg-white hidden md:flex md:flex-col py-8 gap-6 sticky top-0 self-start">
         <OrgSideBarCard />
         <FollowingSideBar />
       </div>

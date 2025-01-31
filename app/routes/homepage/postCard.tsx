@@ -8,7 +8,7 @@ export default function PostCard() {
         height="42"
         className="rounded-full mr-4"
       />
-      <div className="flex p-2 bg-slate-100 rounded-3xl text-base px-4 w-full text-gray-500">
+      <div className="flex p-2 bg-slate-100 rounded-3xl text-sm px-4 w-full text-gray-500">
         <p>
           How's <span className="bg-bold text-gray-600 font-bold"> YOUR </span>{" "}
           day Lasallian Achiever?

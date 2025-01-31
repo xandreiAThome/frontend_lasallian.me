@@ -29,7 +29,7 @@ export default function HomePage() {
           height="42"
           className="rounded-full mr-4"
         />
-        <button className="hover:bg-slate-100 flex p-2 bg-slate-200 rounded-3xl text-base px-4 w-full text-gray-500">
+        <button className="hover:bg-slate-100 flex p-2 bg-slate-200 rounded-3xl text-sm items-center px-4 w-full text-gray-500">
           <BookPlus className="mr-2" />
           <p>
             How's{" "}

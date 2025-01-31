@@ -29,17 +29,17 @@ export default function OrgCard({
         className="mr-6 rounded-full"
       />
       <div className="mr-2">
-        <h1 className="text-xl font-bold">{orgName}</h1>
+        <h1 className="text-base font-bold">{orgName}</h1>
         <div className="flex ">
           <div
             style={{ color: positionTextColor, backgroundColor: positionColor }}
-            className="px-1 text-sm font-bold"
+            className="px-1 text-xs font-bold"
           >
             {position}
           </div>
           <div
             style={{ color: subPositionColor }}
-            className="bg-gray-600 px-1 text-sm font-bold"
+            className="bg-gray-600 px-1 text-xs font-bold"
           >
             {subPosition}
           </div>

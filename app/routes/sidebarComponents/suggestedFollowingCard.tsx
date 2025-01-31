@@ -20,7 +20,7 @@ export default function SuggestedFollowingCard({
       />
       <div className="mr-2">
         <div className="flex flex-col">
-          <h1 className="text-lg font-bold">{name}</h1>
+          <h1 className="text-base font-bold">{name}</h1>
           <div className="text-sm text-gray-400">{userName}</div>
         </div>
       </div>
