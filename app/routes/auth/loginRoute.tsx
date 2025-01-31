@@ -2,7 +2,7 @@ import { Input } from "~/components/ui/input";
 import { Button } from "~/components/ui/button";
 import CreateAccountCard from "./createAccountCard";
 import VerifyCard from "./verifyCard";
-import Logo from "~/components/ui/logo.svg";
+import Logo from "~/components/assets/logo.svg";
 import type { Route } from "./+types/loginRoute";
 import { redirect } from "react-router";
 

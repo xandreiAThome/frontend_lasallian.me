@@ -1,7 +1,7 @@
-import type { Route } from "./+types/navigationBar";
 import { NavLink, Outlet, redirect } from "react-router";
-import Logo from "~/components/ui/logo.svg";
+import Logo from "~/components/assets/logo.svg";
 import { Button } from "~/components/ui/button";
+import OrgSideBarCard from "./sidebarComponents/orgSideBarCard";
 
 export default function NavBar() {
   return (
@@ -102,7 +102,9 @@ export default function NavBar() {
         <Outlet />
       </main>
 
-      <div className="w-96 bg-lasalle-dark-green hidden md:block"></div>
+      <div className="w-96 bg-custom-bg-white hidden md:block p-8">
+        <OrgSideBarCard />
+      </div>
     </div>
   );
 }

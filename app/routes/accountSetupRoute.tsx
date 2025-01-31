@@ -3,7 +3,7 @@ import { Form, redirect } from "react-router";
 import { Button } from "~/components/ui/button";
 import { Checkbox } from "~/components/ui/checkbox";
 import { Input } from "~/components/ui/input";
-import Logo from "~/components/ui/logo.svg";
+import Logo from "~/components/assets/logo.svg";
 import {
   Select,
   SelectContent,
