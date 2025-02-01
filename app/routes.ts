@@ -11,6 +11,6 @@ export default [
   route("setup", "routes/accountSetupRoute.tsx"),
 
   layout("routes/navigationBarLayout.tsx", [
-    route("homepage", "routes/homepage/feed.tsx"),
+    route("homepage", "routes/userpage/userProfilePage.tsx"),
   ]),
 ] satisfies RouteConfig;

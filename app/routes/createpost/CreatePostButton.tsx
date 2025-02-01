@@ -79,7 +79,7 @@ export default function CreatePostButton() {
     }
   );
 
-  const [position, setPosition] = useState("bottom");
+  const [position, setPosition] = useState("LSCS+VP");
 
   return (
     <Dialog>

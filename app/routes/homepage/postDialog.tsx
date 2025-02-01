@@ -19,6 +19,8 @@ import {
   Terminal,
 } from "lucide-react";
 import ReactTimeAgo from "react-time-ago";
+import { Input } from "~/components/ui/input";
+import CommentsCard from "./commentsCard";
 
 interface postsData {
   author: string;
@@ -48,6 +50,14 @@ export default function PostDialog({
   position,
 }: postsData) {
   const formatter = Intl.NumberFormat("en", { notation: "compact" });
+  const dummyComment = {
+    author: "zel",
+    time: new Date("2022-10-31T09:00:00.594Z"),
+    content: "congrats bro! #selfsupport",
+    reactions: 4300,
+    replies: 500,
+  };
+
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -60,7 +70,7 @@ export default function PostDialog({
       </DialogTrigger>
       <DialogContent className="sm:max-w-[640px] overflow-y-auto max-h-screen">
         <DialogHeader>
-          <div className="flex items-center mt-6">
+          <div className="flex items-center mt-4">
             <img
               src="https://www.shutterstock.com/image-vector/blank-avatar-photo-place-holder-600nw-1095249842.jpg"
               alt="profile"
@@ -102,35 +112,50 @@ export default function PostDialog({
           </div>
         </div>
         <hr className="-mx-6" />
-        <DialogFooter className="sm:justify-between">
-          <div className="flex items-center">
-            <button className="mr-2">
-              <Heart className="h-6" />
-            </button>
-            <p className="text-sm">
-              <span className="font-bold">{formatter.format(reactions)} </span>
-              reactions
-            </p>
+        <DialogFooter className="sm:justify-center sm:flex-col flex-col">
+          <div className="flex justify-between flex-1">
+            <div className="flex items-center">
+              <button className="mr-2">
+                <Heart className="h-6" />
+              </button>
+              <p className="text-sm">
+                <span className="font-bold">
+                  {formatter.format(reactions)}{" "}
+                </span>
+                reactions
+              </p>
+            </div>
+
+            <div className="flex items-center">
+              <button className="mr-2">
+                <MessageSquareText className="h-6" />
+              </button>
+              <p className="text-sm">
+                <span className="font-bold">{formatter.format(comments)} </span>
+                comments
+              </p>
+            </div>
+
+            <div className="flex items-center">
+              <button className="mr-2">
+                <MessageSquareShare className="h-6" />
+              </button>
+              <p className="text-sm">
+                <span className="font-bold">{formatter.format(comments)} </span>
+                reposts
+              </p>
+            </div>
           </div>
 
-          <div className="flex items-center">
-            <button className="mr-2">
-              <MessageSquareText className="h-6" />
-            </button>
-            <p className="text-sm">
-              <span className="font-bold">{formatter.format(comments)} </span>
-              comments
-            </p>
-          </div>
+          <Input
+            placeholder="What's YOUR thoughts on this post?"
+            className="text-base md:text-base bg-gray-200 px-8 py-4 mt-6 rounded-3xl !ml-0"
+          ></Input>
 
-          <div className="flex items-center">
-            <button className="mr-2">
-              <MessageSquareShare className="h-6" />
-            </button>
-            <p className="text-sm">
-              <span className="font-bold">{formatter.format(comments)} </span>
-              reposts
-            </p>
+          <div className="flex flex-col !ml-0">
+            <CommentsCard />
+            <CommentsCard />
+            <CommentsCard />
           </div>
         </DialogFooter>
       </DialogContent>
