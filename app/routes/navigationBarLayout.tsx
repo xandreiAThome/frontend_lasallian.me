@@ -3,7 +3,7 @@ import Logo from "~/components/assets/logo.svg";
 import { Button } from "~/components/ui/button";
 import OrgSideBarCard from "./sidebarComponents/orgSideBarCard";
 import FollowingSideBar from "./sidebarComponents/followingSideBarCard";
-import CreatePostButton from "~/routes/sidebarComponents/CreatePostButton";
+import CreateButton from "~/routes/createpost/CreateButton";
 
 export default function NavBar() {
   return (
@@ -17,7 +17,7 @@ export default function NavBar() {
                 className={({ isActive, isPending, isTransitioning }) =>
                   [
                     isActive ? "text-lasalle-green" : "",
-                    "hover:bg-slate-200 hover:rounded-2xl px-2 py-1",
+                    "hover:bg-slate-200 hover:rounded-2xl px-4 py-1 transition-all",
                   ].join(" ")
                 }
                 to="/homepage"
@@ -30,7 +30,7 @@ export default function NavBar() {
                 className={({ isActive, isPending, isTransitioning }) =>
                   [
                     isActive ? "text-lasalle-green" : "",
-                    "hover:bg-slate-200 hover:rounded-2xl px-2 py-1",
+                    "hover:bg-slate-200 hover:rounded-2xl px-4 py-1 transition-all",
                   ].join(" ")
                 }
                 to="/homepage"
@@ -43,7 +43,7 @@ export default function NavBar() {
                 className={({ isActive, isPending, isTransitioning }) =>
                   [
                     isActive ? "text-lasalle-green" : "",
-                    "hover:bg-slate-200 hover:rounded-2xl px-2 py-1",
+                    "hover:bg-slate-200 hover:rounded-2xl px-4 py-1 transition-all",
                   ].join(" ")
                 }
                 to="/homepage"
@@ -56,7 +56,7 @@ export default function NavBar() {
                 className={({ isActive, isPending, isTransitioning }) =>
                   [
                     isActive ? "text-lasalle-green" : "",
-                    "hover:bg-slate-200 hover:rounded-2xl px-2 py-1",
+                    "hover:bg-slate-200 hover:rounded-2xl px-4 py-1 transition-all",
                   ].join(" ")
                 }
                 to="/homepage"
@@ -69,7 +69,7 @@ export default function NavBar() {
                 className={({ isActive, isPending, isTransitioning }) =>
                   [
                     isActive ? "text-lasalle-green" : "",
-                    "hover:bg-slate-200 hover:rounded-2xl px-2 py-1",
+                    "hover:bg-slate-200 hover:rounded-2xl px-4 py-1 transition-all",
                   ].join(" ")
                 }
                 to="/homepage"
@@ -82,7 +82,7 @@ export default function NavBar() {
                 className={({ isActive, isPending, isTransitioning }) =>
                   [
                     isActive ? "text-lasalle-green" : "",
-                    "hover:bg-slate-200 hover:rounded-2xl px-2 py-1",
+                    "hover:bg-slate-200 hover:rounded-2xl px-4 py-1 transition-all",
                   ].join(" ")
                 }
                 to="/homepage"
@@ -95,7 +95,7 @@ export default function NavBar() {
                 className={({ isActive, isPending, isTransitioning }) =>
                   [
                     isActive ? "text-lasalle-green" : "",
-                    "hover:bg-slate-200 hover:rounded-2xl px-2 py-1",
+                    "hover:bg-slate-200 hover:rounded-2xl px-4 py-1 transition-all",
                   ].join(" ")
                 }
                 to="/homepage"
@@ -103,7 +103,7 @@ export default function NavBar() {
                 Logout
               </NavLink>
             </li>{" "}
-            <CreatePostButton />
+            <CreateButton />
           </ul>
         </div>
       </nav>
