@@ -8,7 +8,7 @@ import postData from "~/components/dummyData/postData";
 interface Data {
   author: string;
   username: string;
-  time: string;
+  time: Date;
   views: string;
   content: string;
   reactions: number;

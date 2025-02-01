@@ -21,10 +21,63 @@ import { Terminal, Images, CalendarDays, ChevronDown } from "lucide-react";
 import { useState } from "react";
 import postData from "~/components/dummyData/postData";
 
+interface positionsData {
+  org: string;
+  position: string;
+  orgColor: string;
+  positionColor: string;
+}
+
 export default function CreatePostButton() {
-  const positionsTEMP = {
-    pos: [],
-  };
+  // TEMP
+  const positionsTEMP = [
+    {
+      org: "LSCS",
+      position: "VP",
+      orgColor: "#220088",
+      positionColor: "#313131",
+    },
+    {
+      org: "LSCS",
+      position: "RND",
+      orgColor: "#220088",
+      positionColor: "#313131",
+    },
+    {
+      org: "TLS",
+      position: "WEB",
+      orgColor: "#007D3F",
+      positionColor: "#313131",
+    },
+    {
+      org: "GDSC",
+      position: "MKT",
+      orgColor: "#FFCD05",
+      positionColor: "#313131",
+    },
+  ];
+
+  // TEMP
+  const posDIVS = positionsTEMP.map(
+    ({ org, position, orgColor, positionColor }: positionsData) => {
+      return (
+        <DropdownMenuRadioItem value={`${org}+${position}`}>
+          <p
+            style={{ backgroundColor: orgColor }}
+            className=" text-white text-xs font-semibold px-2"
+          >
+            {org}
+          </p>
+          <p
+            style={{ backgroundColor: positionColor }}
+            className=" text-white text-xs font-semibold px-2"
+          >
+            {position}
+          </p>
+        </DropdownMenuRadioItem>
+      );
+    }
+  );
 
   const [position, setPosition] = useState("bottom");
 
@@ -89,15 +142,7 @@ export default function CreatePostButton() {
                       value={position}
                       onValueChange={setPosition}
                     >
-                      <DropdownMenuRadioItem value="top">
-                        Top
-                      </DropdownMenuRadioItem>
-                      <DropdownMenuRadioItem value="bottom">
-                        Bottom
-                      </DropdownMenuRadioItem>
-                      <DropdownMenuRadioItem value="right">
-                        Right
-                      </DropdownMenuRadioItem>
+                      {posDIVS}
                     </DropdownMenuRadioGroup>
                   </DropdownMenuContent>
                 </DropdownMenu>

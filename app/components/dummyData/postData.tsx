@@ -3,7 +3,7 @@ export default {
     {
       author: "zel",
       username: "@zelkimm23",
-      time: "5 minutes ago",
+      time: new Date("2022-10-31T09:00:00.594Z"),
       views: "1.3M views",
       content:
         "Why am i listening to this girl yap about med shit omg i dont understand a thing",
@@ -17,7 +17,7 @@ export default {
     {
       author: "zel",
       username: "@zelkimm23",
-      time: "5 minutes ago",
+      time: new Date("2025-02-01T13:00:00.594Z"),
       views: "1.3M views",
       content:
         "Thank you La Salle Computer Society for giving me the opportunity to host at Tech Talks 2024!",
@@ -31,7 +31,7 @@ export default {
     {
       author: "EJ",
       username: "@ejsadiarin",
-      time: "1 day ago",
+      time: new Date("2024-10-31T09:00:00.594Z"),
       views: "2M views",
       content:
         "I just started learning how to code, look at my very first program!",

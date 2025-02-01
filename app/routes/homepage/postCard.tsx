@@ -1,11 +1,15 @@
 import { Dot } from "lucide-react";
 import { Ellipsis } from "lucide-react";
 import { Heart, MessageSquareText, MessageSquareShare } from "lucide-react";
+import TimeAgo from "javascript-time-ago";
+import en from "javascript-time-ago/locale/en";
+import ReactTimeAgo from "react-time-ago";
+import PostDialog from "./postDialog";
 
 interface postsData {
   author: string;
   username: string;
-  time: string;
+  time: Date;
   views: string;
   content: string;
   reactions: number;
@@ -15,6 +19,8 @@ interface postsData {
   org: string;
   position: string;
 }
+
+TimeAgo.addDefaultLocale(en);
 
 export default function PostCard({
   author,
@@ -58,7 +64,9 @@ export default function PostCard({
             <p className="text-gray-400 text-xs">{username}</p>
 
             <div className="ml-auto flex items-center">
-              <p className="text-gray-400 text-xs">{time}</p>
+              <p className="text-gray-400 text-xs">
+                <ReactTimeAgo date={time} locale="en-SG" />
+              </p>
               <Dot className="text-gray-500" />
               <p className="text-gray-400 text-xs">{views}</p>
             </div>
@@ -66,13 +74,24 @@ export default function PostCard({
         </div>
       </div>
 
-      <div className="flex text-base my-4 flex-col">
-        <p className="mb-2">{content}</p>
-        <div className="-mx-6">
-          {img && <img src={img} alt="image content" className=""></img>}
-        </div>
-      </div>
+      {/** CONTENT */}
+      <PostDialog
+        key={username}
+        author={author}
+        username={username}
+        time={time}
+        views={views}
+        content={content}
+        reactions={reactions}
+        comments={comments}
+        reposts={reposts}
+        img={img}
+        org={org}
+        position={position}
+      />
+
       <hr className="-mx-6" />
+
       <div className="flex items-center mt-4 justify-between">
         <div className="flex items-center">
           <button className="mr-2">
