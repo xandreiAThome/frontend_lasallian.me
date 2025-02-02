@@ -4,6 +4,8 @@ import { Button } from "~/components/ui/button";
 import OrgSideBarCard from "./sidebarComponents/orgSideBarCard";
 import FollowingSideBar from "./sidebarComponents/followingSideBarCard";
 import CreateButton from "~/routes/createpost/CreateButton";
+import { Input } from "~/components/ui/input";
+import { Search } from "lucide-react";
 
 export default function NavBar() {
   return (
@@ -113,6 +115,13 @@ export default function NavBar() {
       </main>
 
       <div className="basis-96 bg-custom-bg-white hidden md:flex md:flex-col py-8 gap-6 sticky top-0 self-start">
+        <div className="flex relative">
+          <Input
+            className="bg-gray-100 pl-12 max-w-full rounded-3xl h-11"
+            placeholder="Search..."
+          ></Input>
+          <Search className="absolute top-0 bottom-0 m-auto left-4 text-gray-500" />
+        </div>
         <OrgSideBarCard />
         <FollowingSideBar />
         <p className="text-gray-400 text-center">
