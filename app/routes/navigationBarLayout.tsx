@@ -33,7 +33,7 @@ export default function NavBar() {
                     "hover:bg-slate-200 hover:rounded-2xl px-4 py-1 transition-all",
                   ].join(" ")
                 }
-                to="/homepage"
+                to="/userprofile"
               >
                 Profile
               </NavLink>
@@ -46,7 +46,7 @@ export default function NavBar() {
                     "hover:bg-slate-200 hover:rounded-2xl px-4 py-1 transition-all",
                   ].join(" ")
                 }
-                to="/homepage"
+                to="/todo"
               >
                 Notifications
               </NavLink>
@@ -59,7 +59,7 @@ export default function NavBar() {
                     "hover:bg-slate-200 hover:rounded-2xl px-4 py-1 transition-all",
                   ].join(" ")
                 }
-                to="/homepage"
+                to="/orgprofile"
               >
                 Organizations
               </NavLink>
@@ -72,7 +72,7 @@ export default function NavBar() {
                     "hover:bg-slate-200 hover:rounded-2xl px-4 py-1 transition-all",
                   ].join(" ")
                 }
-                to="/homepage"
+                to="/todo"
               >
                 Messages
               </NavLink>
@@ -85,7 +85,7 @@ export default function NavBar() {
                     "hover:bg-slate-200 hover:rounded-2xl px-4 py-1 transition-all",
                   ].join(" ")
                 }
-                to="/homepage"
+                to="/todo"
               >
                 Settings
               </NavLink>
@@ -98,7 +98,7 @@ export default function NavBar() {
                     "hover:bg-slate-200 hover:rounded-2xl px-4 py-1 transition-all",
                   ].join(" ")
                 }
-                to="/homepage"
+                to="/todo"
               >
                 Logout
               </NavLink>
@@ -108,13 +108,17 @@ export default function NavBar() {
         </div>
       </nav>
 
-      <main className="max-w-[640px] flex-grow">
+      <main className="max-w-[640px] flex-1">
         <Outlet />
       </main>
 
       <div className="basis-96 bg-custom-bg-white hidden md:flex md:flex-col py-8 gap-6 sticky top-0 self-start">
         <OrgSideBarCard />
         <FollowingSideBar />
+        <p className="text-gray-400 text-center">
+          lasallian.<span className="font-bold">me</span> • All Rights Reserved
+          2025{" "}
+        </p>
       </div>
     </div>
   );

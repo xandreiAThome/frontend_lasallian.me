@@ -5,10 +5,10 @@ import TimeAgo from "javascript-time-ago";
 import en from "javascript-time-ago/locale/en";
 import ReactTimeAgo from "react-time-ago";
 import PostDialog from "./postDialog";
+import OrgPostDialog from "./orgPostDialog";
 
 interface postsData {
   author: string;
-  username: string;
   time: Date;
   views: number;
   content: string;
@@ -22,9 +22,8 @@ interface postsData {
 
 TimeAgo.addDefaultLocale(en);
 
-export default function PostCard({
+export default function OrgPostCard({
   author,
-  username,
   time,
   views,
   content,
@@ -50,19 +49,19 @@ export default function PostCard({
         <div className="flex flex-col flex-grow">
           <div className="flex items-center">
             <p className="text-lg font-bold mr-2">{author}</p>{" "}
-            <p className="px-2 bg-[#220088] text-white text-xs font-semibold">
-              {org}
-            </p>
-            <p className="px-2 bg-[#313131] text-white text-xs font-semibold">
-              {position}
-            </p>
             <button className="ml-auto text-gray-500">
               <Ellipsis />
             </button>
           </div>
           <div className="flex items-start">
-            <p className="text-gray-400 text-xs">{username}</p>
-
+            <div className="flex">
+              <p className="px-2 bg-lasalle-green text-white text-xs font-semibold">
+                {org}
+              </p>
+              <p className="px-2 bg-[#313131] text-white text-xs font-semibold">
+                {position}
+              </p>
+            </div>
             <div className="ml-auto flex items-center">
               <p className="text-gray-400 text-xs">
                 <ReactTimeAgo date={time} locale="en-SG" />
@@ -77,10 +76,8 @@ export default function PostCard({
       </div>
 
       {/** CONTENT */}
-      <PostDialog
-        key={username}
+      <OrgPostDialog
         author={author}
-        username={username}
         time={time}
         views={views}
         content={content}

@@ -24,7 +24,6 @@ import CommentsCard from "./commentsCard";
 
 interface postsData {
   author: string;
-  username: string;
   time: Date;
   views: number;
   content: string;
@@ -36,9 +35,8 @@ interface postsData {
   position: string;
 }
 
-export default function PostDialog({
+export default function OrgPostDialog({
   author,
-  username,
   time,
   views,
   content,
@@ -70,7 +68,7 @@ export default function PostDialog({
       </DialogTrigger>
       <DialogContent className="sm:max-w-[640px] overflow-y-auto max-h-screen">
         <DialogHeader>
-          <div className="flex items-center mt-4">
+          <div className="flex items-center">
             <img
               src="https://www.shutterstock.com/image-vector/blank-avatar-photo-place-holder-600nw-1095249842.jpg"
               alt="profile"
@@ -81,19 +79,19 @@ export default function PostDialog({
             <div className="flex flex-col flex-grow">
               <div className="flex items-center">
                 <p className="text-lg font-bold mr-2">{author}</p>{" "}
-                <p className="px-2 bg-[#220088] text-white text-xs font-semibold">
-                  {org}
-                </p>
-                <p className="px-2 bg-[#313131] text-white text-xs font-semibold">
-                  {position}
-                </p>
                 <button className="ml-auto text-gray-500">
                   <Ellipsis />
                 </button>
               </div>
               <div className="flex items-start">
-                <p className="text-gray-400 text-xs">{username}</p>
-
+                <div className="flex">
+                  <p className="px-2 bg-lasalle-green text-white text-xs font-semibold">
+                    {org}
+                  </p>
+                  <p className="px-2 bg-[#313131] text-white text-xs font-semibold">
+                    {position}
+                  </p>
+                </div>
                 <div className="ml-auto flex items-center">
                   <p className="text-gray-400 text-xs">
                     <ReactTimeAgo date={time} locale="en-SG" />

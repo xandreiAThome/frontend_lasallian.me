@@ -4,12 +4,26 @@ import { BookPlus } from "lucide-react";
 import { Input } from "~/components/ui/input";
 import PostCard from "./postCard";
 import postData from "~/components/dummyData/postData";
+import OrgPostCard from "./orgPostCard";
 
 interface Data {
   author: string;
   username: string;
   time: Date;
-  views: string;
+  views: number;
+  content: string;
+  reactions: number;
+  comments: number;
+  reposts: number;
+  img: string | null;
+  org: string;
+  position: string;
+}
+
+interface orgPost {
+  author: string;
+  time: Date;
+  views: number;
   content: string;
   reactions: number;
   comments: number;
@@ -59,6 +73,36 @@ export default function HomePage() {
               key={username}
               author={author}
               username={username}
+              time={time}
+              views={views}
+              content={content}
+              reactions={reactions}
+              comments={comments}
+              reposts={reposts}
+              img={img}
+              org={org}
+              position={position}
+            />
+          );
+        }
+      )}
+
+      {postData.org.map(
+        ({
+          author,
+          time,
+          views,
+          content,
+          reactions,
+          comments,
+          reposts,
+          img,
+          org,
+          position,
+        }: orgPost) => {
+          return (
+            <OrgPostCard
+              author={author}
               time={time}
               views={views}
               content={content}

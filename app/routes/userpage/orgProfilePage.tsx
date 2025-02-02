@@ -5,10 +5,11 @@ import { Input } from "~/components/ui/input";
 import PostCard from "../homepage/postCard";
 import postData from "~/components/dummyData/postData";
 import UserBannerCard from "./userBannerCard";
+import OrgBannerCard from "./orgBannerCard";
+import OrgPostCard from "../homepage/orgPostCard";
 
-interface Data {
+interface postsData {
   author: string;
-  username: string;
   time: Date;
   views: number;
   content: string;
@@ -20,15 +21,14 @@ interface Data {
   position: string;
 }
 
-export default function UserProfilePage() {
+export default function OrgProfilePage() {
   return (
     <div className="basis-[640px] pt-6 flex flex-col gap-4">
-      <UserBannerCard />
+      <OrgBannerCard />
 
-      {postData.individual.map(
+      {postData.org.map(
         ({
           author,
-          username,
           time,
           views,
           content,
@@ -38,24 +38,21 @@ export default function UserProfilePage() {
           img,
           org,
           position,
-        }: Data) => {
-          if (author === "zel")
-            return (
-              <PostCard
-                key={username}
-                author={author}
-                username={username}
-                time={time}
-                views={views}
-                content={content}
-                reactions={reactions}
-                comments={comments}
-                reposts={reposts}
-                img={img}
-                org={org}
-                position={position}
-              />
-            );
+        }: postsData) => {
+          return (
+            <OrgPostCard
+              author={author}
+              time={time}
+              views={views}
+              content={content}
+              reactions={reactions}
+              comments={comments}
+              reposts={reposts}
+              img={img}
+              org={org}
+              position={position}
+            />
+          );
         }
       )}
     </div>

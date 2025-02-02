@@ -11,6 +11,9 @@ export default [
   route("setup", "routes/accountSetupRoute.tsx"),
 
   layout("routes/navigationBarLayout.tsx", [
-    route("homepage", "routes/userpage/userProfilePage.tsx"),
+    route("homepage", "routes/homepage/feed.tsx"),
+    route("userprofile", "routes/userpage/userProfilePage.tsx"),
+    route("todo", "routes/todo.tsx"),
+    route("orgprofile", "routes/userpage/orgProfilePage.tsx"),
   ]),
 ] satisfies RouteConfig;
