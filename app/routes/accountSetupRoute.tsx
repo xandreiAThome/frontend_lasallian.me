@@ -27,7 +27,7 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
 export default function AccountSetup() {
   return (
     <div className="flex h-full bg-custom-bg-white justify-around">
-      <div className="basis-80 max-w-96 flex-col items-baseline justify-between hidden md:flex p-6">
+      <div className="max-w-96 flex-col items-baseline justify-between hidden md:flex p-6">
         <img src={Logo} alt="logo" className="h-16" />
         <div>
           <h1 className="text-2xl text-lasalle-dark-green font-bold">
@@ -48,10 +48,10 @@ export default function AccountSetup() {
         </div>
       </div>
 
-      <main className="flex justify-center py-6">
+      <main className="basis-[640px] flex justify-center py-6">
         <Form
           method="post"
-          className="w-[640px] shrink-0 h-full bg-custom-postcard-white flex flex-col"
+          className="h-full w-full bg-custom-postcard-white flex flex-col"
         >
           <div className="w-full h-48 bg-gray-300 flex items-center justify-center">
             <button type="button" className="flex gap-1">
@@ -72,7 +72,7 @@ export default function AccountSetup() {
                 </button>
               </div>
 
-              <div className="ml-auto w-[28rem]">
+              <div className="pl-36 flex flex-col flex-1">
                 <div className="flex justify-between">
                   <p className="text-custom-text-black">
                     Basic Account Information
@@ -86,7 +86,7 @@ export default function AccountSetup() {
                   </button>
                 </div>
 
-                <div className="flex flex-col gap-2 w-96">
+                <div className="flex flex-col gap-2 flex-1 max-w-80">
                   <Input
                     placeholder="@username"
                     className="bg-slate-100"
@@ -102,7 +102,7 @@ export default function AccountSetup() {
                 About <span className="font-bold">YOU!</span> Ipakita mo kung
                 sino ka.
               </p>
-              <div className="w-96 flex gap-2 flex-col">
+              <div className="max-w-80 flex gap-2 flex-col">
                 <Input
                   className="bg-slate-100 "
                   placeholder="First Name *"
@@ -132,7 +132,7 @@ export default function AccountSetup() {
               </Select>
 
               <Input
-                className="w-96 bg-slate-100"
+                className="max-w-80 bg-slate-100"
                 placeholder="Degree Program"
               ></Input>
             </div>
@@ -145,7 +145,7 @@ export default function AccountSetup() {
               <div className="flex gap-2 flex-col">
                 <div className="flex relative">
                   <Input
-                    className="bg-slate-100 w-96 pl-9"
+                    className="bg-slate-100 max-w-80 pl-9"
                     placeholder="https://facebook.com/..."
                   ></Input>
                   <Facebook className="absolute top-0 bottom-0 m-auto left-1 text-gray-500" />
@@ -153,7 +153,7 @@ export default function AccountSetup() {
 
                 <div className="flex relative">
                   <Input
-                    className="bg-slate-100 w-96 pl-9"
+                    className="bg-slate-100 max-w-80 pl-9"
                     placeholder="@juandelacruz..."
                   ></Input>
                   <Instagram className="absolute top-0 bottom-0 m-auto left-1 text-gray-500" />
@@ -161,7 +161,7 @@ export default function AccountSetup() {
 
                 <div className="flex relative">
                   <Input
-                    className="bg-slate-100 w-96 pl-9"
+                    className="bg-slate-100 max-w-80 pl-9"
                     placeholder="https://linkedin.com/in/..."
                   ></Input>
                   <Linkedin className="absolute top-0 bottom-0 m-auto left-1 text-gray-500" />
@@ -201,7 +201,7 @@ export default function AccountSetup() {
         </Form>
       </main>
 
-      <div className="basis-80 max-w-96 hidden lg:flex justify-center flex-col p-6">
+      <div className="max-w-96 hidden lg:flex justify-center flex-col p-6">
         <h1 className="text-lasalle-dark-green font-bold text-2xl">
           your data is safe with us!
         </h1>
