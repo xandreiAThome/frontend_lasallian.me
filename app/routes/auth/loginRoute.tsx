@@ -5,7 +5,7 @@ import type { Route } from "./+types/loginRoute";
 
 export async function clientAction({ request }: Route.ClientActionArgs) {
   await console.log("go to setup");
-  return redirect("/setup");
+  return redirect("/homepage");
 }
 
 export default function LoginRoute() {
