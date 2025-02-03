@@ -148,7 +148,7 @@ export default function CreatePostButton() {
                 </DropdownMenu>
               </div>
               <p className="text-gray-400 text-xs">
-                {postData.individual[0].username}
+                {postData.individual[1].username}
               </p>
             </div>
           </div>{" "}
