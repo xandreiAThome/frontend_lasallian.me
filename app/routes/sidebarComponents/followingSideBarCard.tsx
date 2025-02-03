@@ -7,6 +7,7 @@ import SuggestedFollowingCard from "./suggestedFollowingCard";
 interface followingData {
   name: string;
   userName: string;
+  profile: string;
 }
 
 export default function FollowingSideBar() {
@@ -20,10 +21,15 @@ export default function FollowingSideBar() {
       </div>
       <hr />
       <div className="flex flex-col">
-        {suggestedFollower.map(({ name, userName }: followingData) => {
+        {suggestedFollower.map(({ name, userName, profile }: followingData) => {
           return (
             <>
-              <SuggestedFollowingCard name={name} userName={userName} />
+              <SuggestedFollowingCard
+                name={name}
+                userName={userName}
+                profile={profile}
+                key={userName}
+              />
               <hr />
             </>
           );

@@ -21,10 +21,12 @@ import {
 import ReactTimeAgo from "react-time-ago";
 import { Input } from "~/components/ui/input";
 import CommentsCard from "./commentsCard";
+import { useNavigate } from "react-router";
 
-interface postsData {
+interface postData {
   author: string;
   username: string;
+  profile: string;
   time: Date;
   views: number;
   content: string;
@@ -34,12 +36,28 @@ interface postsData {
   img: string | null;
   org: string;
   position: string;
+  commentsList: {
+    profile: { author: string; profile: string };
+    reactions: number;
+    comments: number;
+    time: Date;
+    content: string;
+  }[];
+}
+
+interface commentsData {
+  profile: { author: string; profile: string };
+  reactions: number;
+  comments: number;
+  time: Date;
+  content: string;
 }
 
 export default function PostDialog({
   author,
   username,
   time,
+  profile,
   views,
   content,
   reactions,
@@ -48,7 +66,8 @@ export default function PostDialog({
   img,
   org,
   position,
-}: postsData) {
+  commentsList,
+}: postData) {
   const formatter = Intl.NumberFormat("en", { notation: "compact" });
   const dummyComment = {
     author: "zel",
@@ -57,6 +76,7 @@ export default function PostDialog({
     reactions: 4300,
     replies: 500,
   };
+  const navigate = useNavigate();
 
   return (
     <Dialog>
@@ -71,16 +91,30 @@ export default function PostDialog({
       <DialogContent className="sm:max-w-[640px] overflow-y-auto max-h-screen">
         <DialogHeader>
           <div className="flex items-center mt-4">
-            <img
-              src="https://www.shutterstock.com/image-vector/blank-avatar-photo-place-holder-600nw-1095249842.jpg"
-              alt="profile"
-              width="36"
-              height="36"
-              className="rounded-full mr-4"
-            />
+            <button
+              onClick={() => {
+                navigate("/userprofile");
+              }}
+            >
+              <img
+                src={profile}
+                alt="profile"
+                width="36"
+                height="36"
+                className="rounded-full mr-4"
+              />
+            </button>
             <div className="flex flex-col flex-grow">
               <div className="flex items-center">
-                <p className="text-lg font-bold mr-2">{author}</p>{" "}
+                <Button
+                  onClick={() => {
+                    navigate("/userprofile");
+                  }}
+                  variant="link"
+                  className="text-lg text-black font-bold mr-2 p-0"
+                >
+                  {author}
+                </Button>{" "}
                 <p className="px-2 bg-[#220088] text-white text-xs font-semibold">
                   {org}
                 </p>
@@ -151,13 +185,30 @@ export default function PostDialog({
 
           <Input
             placeholder="What's YOUR thoughts on this post?"
-            className="text-base md:text-base bg-gray-200 px-8 py-4 mt-6 rounded-3xl !ml-0"
+            className="text-base md:text-base bg-gray-200 px-8 py-4 my-6 rounded-3xl !ml-0"
           ></Input>
 
           <div className="flex flex-col !ml-0">
-            <CommentsCard />
-            <CommentsCard />
-            <CommentsCard />
+            {commentsList &&
+              commentsList.map(
+                ({
+                  profile,
+                  comments,
+                  time,
+                  content,
+                  reactions,
+                }: commentsData) => {
+                  return (
+                    <CommentsCard
+                      profile={profile}
+                      comments={comments}
+                      time={time}
+                      content={content}
+                      reactions={reactions}
+                    />
+                  );
+                }
+              )}
           </div>
         </DialogFooter>
       </DialogContent>

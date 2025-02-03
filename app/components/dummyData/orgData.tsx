@@ -10,11 +10,11 @@ export default [
   },
   {
     img: "https://github.com/xandreiAThome/frontend_CCAPDEV/blob/main/app/components/assets/gdscLogo.png?raw=true",
-    orgName: "Google Developer Groups - On Campus",
+    orgName: "Google Developer Groups On Campus - DLSU",
     position: "CAO",
     positionColor: "#EFF378",
     positionTextColor: "#DAC800",
-    subPosition: "#ORG",
+    subPosition: "ORG",
     subPositionColor: "#FFFFFF",
   },
   {

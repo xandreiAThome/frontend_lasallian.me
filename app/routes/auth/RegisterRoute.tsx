@@ -1,8 +1,14 @@
 import { Input } from "~/components/ui/input";
 import { Form, redirect, useNavigate } from "react-router";
 import { Button } from "~/components/ui/button";
+import type { Route } from "./+types/RegisterRoute";
 
-export default function CreateAccountCard() {
+export async function clientAction({ request }: Route.ClientActionArgs) {
+  await console.log("go to setup");
+  return redirect("/verify");
+}
+
+export default function RegisterRoute() {
   const navigate = useNavigate();
   return (
     <Form
@@ -23,8 +29,12 @@ export default function CreateAccountCard() {
         <Button
           variant="link"
           className="m-4 font-semibold text-lasalle-green text-base"
+          type="button"
+          onClick={() => {
+            navigate("/");
+          }}
         >
-          Forgot Password?
+          Already have an account?
         </Button>
       </div>
       <hr className="-mx-8" />

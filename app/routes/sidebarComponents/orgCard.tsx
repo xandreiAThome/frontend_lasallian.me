@@ -1,4 +1,5 @@
 import { Ellipsis } from "lucide-react";
+import { useNavigate } from "react-router";
 
 interface Props {
   img: string;
@@ -19,17 +20,28 @@ export default function OrgCard({
   subPosition,
   subPositionColor,
 }: Props) {
+  const navigate = useNavigate();
   return (
     <div className="flex p-4 items-center">
       <img
         src={img}
         alt="logo"
-        width="50"
-        height="50"
-        className="mr-6 rounded-full"
+        sizes="50"
+        className="rounded-full hover:cursor-pointer mr-6"
+        onClick={() => {
+          navigate("orgprofile");
+        }}
       />
+
       <div className="mr-2">
-        <h1 className="text-lg font-bold">{orgName}</h1>
+        <button
+          onClick={() => {
+            navigate("orgprofile");
+          }}
+          className="text-lg font-bold text-justify"
+        >
+          {orgName}
+        </button>
         <div className="flex ">
           <div
             style={{ color: positionTextColor, backgroundColor: positionColor }}

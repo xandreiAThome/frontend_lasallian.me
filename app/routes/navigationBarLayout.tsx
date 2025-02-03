@@ -117,7 +117,7 @@ export default function NavBar() {
       <div className="basis-96 bg-custom-bg-white hidden md:flex md:flex-col py-8 gap-6 sticky top-0 self-start">
         <div className="flex relative">
           <Input
-            className="bg-gray-100 pl-12 max-w-full rounded-3xl h-11"
+            className="bg-custom-postcard-white pl-12 max-w-full rounded-3xl h-11"
             placeholder="Search..."
           ></Input>
           <Search className="absolute top-0 bottom-0 m-auto left-4 text-gray-500" />

@@ -5,10 +5,14 @@ import TimeAgo from "javascript-time-ago";
 import en from "javascript-time-ago/locale/en";
 import ReactTimeAgo from "react-time-ago";
 import PostDialog from "./postDialog";
+import CommentsDialog from "./commentsDialog";
+import { useNavigate } from "react-router";
+import { Button } from "~/components/ui/button";
 
-interface postsData {
+interface postData {
   author: string;
   username: string;
+  profile: string;
   time: Date;
   views: number;
   content: string;
@@ -18,6 +22,13 @@ interface postsData {
   img: string | null;
   org: string;
   position: string;
+  commentsList: {
+    profile: { author: string; profile: string };
+    reactions: number;
+    comments: number;
+    time: Date;
+    content: string;
+  }[];
 }
 
 TimeAgo.addDefaultLocale(en);
@@ -25,6 +36,7 @@ TimeAgo.addDefaultLocale(en);
 export default function PostCard({
   author,
   username,
+  profile,
   time,
   views,
   content,
@@ -34,22 +46,38 @@ export default function PostCard({
   img,
   org,
   position,
-}: postsData) {
+  commentsList,
+}: postData) {
   const formatter = Intl.NumberFormat("en", { notation: "compact" });
-
+  const navigate = useNavigate();
   return (
     <div className="bg-custom-postcard-white flex flex-col px-6 rounded-xl py-4 shadow-lg">
       <div className="flex items-center">
-        <img
-          src="https://www.shutterstock.com/image-vector/blank-avatar-photo-place-holder-600nw-1095249842.jpg"
-          alt="profile"
-          width="36"
-          height="36"
-          className="rounded-full mr-4"
-        />
+        <button
+          onClick={() => {
+            navigate("/userprofile");
+          }}
+        >
+          <img
+            src={profile}
+            alt="profile"
+            width="36"
+            height="36"
+            className="rounded-full mr-4"
+          />
+        </button>
+
         <div className="flex flex-col flex-grow">
           <div className="flex items-center">
-            <p className="text-lg font-bold mr-2">{author}</p>{" "}
+            <Button
+              onClick={() => {
+                navigate("/userprofile");
+              }}
+              variant="link"
+              className="text-lg text-black font-bold mr-2 p-0"
+            >
+              {author}
+            </Button>{" "}
             <p className="px-2 bg-[#220088] text-white text-xs font-semibold">
               {org}
             </p>
@@ -81,6 +109,7 @@ export default function PostCard({
         key={username}
         author={author}
         username={username}
+        profile={profile}
         time={time}
         views={views}
         content={content}
@@ -90,6 +119,7 @@ export default function PostCard({
         img={img}
         org={org}
         position={position}
+        commentsList={commentsList}
       />
 
       <hr className="-mx-6" />
@@ -105,15 +135,7 @@ export default function PostCard({
           </p>
         </div>
 
-        <div className="flex items-center">
-          <button className="mr-2">
-            <MessageSquareText className="h-6" />
-          </button>
-          <p className="text-sm">
-            <span className="font-bold">{formatter.format(comments)} </span>
-            comments
-          </p>
-        </div>
+        <CommentsDialog commentsList={commentsList} />
 
         <div className="flex items-center">
           <button className="mr-2">

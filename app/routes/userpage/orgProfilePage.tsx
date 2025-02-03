@@ -13,12 +13,20 @@ interface postsData {
   time: Date;
   views: number;
   content: string;
+  profile: string;
   reactions: number;
   comments: number;
   reposts: number;
   img: string | null;
   org: string;
   position: string;
+  commentsList: {
+    profile: { author: string; profile: string };
+    reactions: number;
+    comments: number;
+    time: Date;
+    content: string;
+  }[];
 }
 
 export default function OrgProfilePage() {
@@ -32,27 +40,32 @@ export default function OrgProfilePage() {
           time,
           views,
           content,
+          profile,
           reactions,
           comments,
           reposts,
           img,
           org,
           position,
+          commentsList,
         }: postsData) => {
-          return (
-            <OrgPostCard
-              author={author}
-              time={time}
-              views={views}
-              content={content}
-              reactions={reactions}
-              comments={comments}
-              reposts={reposts}
-              img={img}
-              org={org}
-              position={position}
-            />
-          );
+          if (author === "La Salle Computer Society")
+            return (
+              <OrgPostCard
+                author={author}
+                time={time}
+                views={views}
+                profile={profile}
+                content={content}
+                reactions={reactions}
+                comments={comments}
+                reposts={reposts}
+                img={img}
+                org={org}
+                position={position}
+                commentsList={commentsList}
+              />
+            );
         }
       )}
     </div>

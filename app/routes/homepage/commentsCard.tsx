@@ -1,15 +1,3 @@
-import { Button } from "~/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-  DialogClose,
-} from "~/components/ui/dialog";
-
 import {
   Dot,
   Ellipsis,
@@ -19,9 +7,25 @@ import {
   Terminal,
 } from "lucide-react";
 import ReactTimeAgo from "react-time-ago";
-import { Input } from "~/components/ui/input";
+import { useNavigate } from "react-router";
+import { Button } from "~/components/ui/button";
 
-export default function CommentsCard() {
+interface commentsData {
+  profile: { author: string; profile: string };
+  reactions: number;
+  comments: number;
+  time: Date;
+  content: string;
+}
+
+export default function CommentsCard({
+  profile,
+  reactions,
+  comments,
+  time,
+  content,
+}: commentsData) {
+  const navigate = useNavigate();
   const formatter = Intl.NumberFormat("en", { notation: "compact" });
   const dummyComment = {
     author: "zel",
@@ -32,19 +36,33 @@ export default function CommentsCard() {
   };
 
   return (
-    <div className="flex items-start mt-6 !ml-0">
-      <img
-        src="https://www.shutterstock.com/image-vector/blank-avatar-photo-place-holder-600nw-1095249842.jpg"
-        alt="profile"
-        width="36"
-        height="36"
-        className="rounded-full mr-4"
-      />
+    <div className="flex items-start mb-6 !ml-0">
+      <button
+        onClick={() => {
+          navigate("/userprofile");
+        }}
+      >
+        <img
+          src={profile.profile}
+          alt="profile"
+          width="36"
+          height="36"
+          className="rounded-full mr-4"
+        />
+      </button>
       <div className="flex flex-col flex-grow">
         <div className="flex items-center">
-          <p className="text-lg font-bold mr-2">{dummyComment.author}</p>{" "}
+          <Button
+            onClick={() => {
+              navigate("/userprofile");
+            }}
+            variant="link"
+            className="text-lg text-black font-bold mr-2 p-0"
+          >
+            {profile.author}
+          </Button>{" "}
           <p className="text-gray-400 text-xs">
-            <ReactTimeAgo date={dummyComment.time} locale="en-SG" />
+            <ReactTimeAgo date={time} locale="en-SG" />
           </p>
           <button className="ml-auto text-gray-500">
             <Ellipsis />
@@ -52,7 +70,7 @@ export default function CommentsCard() {
         </div>
 
         <div className="flex items-start">
-          <p>{dummyComment.content}</p>
+          <p>{content}</p>
         </div>
 
         <div className="flex gap-4 mt-2">
@@ -61,9 +79,7 @@ export default function CommentsCard() {
               <Heart className="h-4" />
             </button>
             <p className="text-sm">
-              <span className="font-bold">
-                {formatter.format(dummyComment.reactions)}{" "}
-              </span>
+              <span className="font-bold">{formatter.format(reactions)} </span>
             </p>
           </div>
 
@@ -72,9 +88,7 @@ export default function CommentsCard() {
               <MessageSquareText className="h-4" />
             </button>
             <p className="text-sm">
-              <span className="font-bold">
-                {formatter.format(dummyComment.replies)}{" "}
-              </span>
+              <span className="font-bold">{formatter.format(comments)} </span>
             </p>
           </div>
         </div>

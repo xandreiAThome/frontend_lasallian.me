@@ -1,8 +1,14 @@
 import { Input } from "~/components/ui/input";
 import { Button } from "~/components/ui/button";
-import { Form } from "react-router";
+import { Form, redirect } from "react-router";
+import type { Route } from "./+types/verifyRoute";
 
-export default function VerifyCard() {
+export async function clientAction({ request }: Route.ClientActionArgs) {
+  await console.log("go to setup");
+  return redirect("/setup");
+}
+
+export default function VerifyRoute() {
   return (
     <Form
       method="post"

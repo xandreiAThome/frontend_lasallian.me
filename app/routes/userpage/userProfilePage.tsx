@@ -5,10 +5,10 @@ import { Input } from "~/components/ui/input";
 import PostCard from "../homepage/postCard";
 import postData from "~/components/dummyData/postData";
 import UserBannerCard from "./userBannerCard";
-
-interface Data {
+interface postData {
   author: string;
   username: string;
+  profile: string;
   time: Date;
   views: number;
   content: string;
@@ -18,6 +18,13 @@ interface Data {
   img: string | null;
   org: string;
   position: string;
+  commentsList: {
+    profile: { author: string; profile: string };
+    reactions: number;
+    comments: number;
+    time: Date;
+    content: string;
+  }[];
 }
 
 export default function UserProfilePage() {
@@ -31,6 +38,7 @@ export default function UserProfilePage() {
           username,
           time,
           views,
+          profile,
           content,
           reactions,
           comments,
@@ -38,13 +46,15 @@ export default function UserProfilePage() {
           img,
           org,
           position,
-        }: Data) => {
+          commentsList,
+        }: postData) => {
           if (author === "zel")
             return (
               <PostCard
                 key={username}
                 author={author}
                 username={username}
+                profile={profile}
                 time={time}
                 views={views}
                 content={content}
@@ -54,6 +64,7 @@ export default function UserProfilePage() {
                 img={img}
                 org={org}
                 position={position}
+                commentsList={commentsList}
               />
             );
         }

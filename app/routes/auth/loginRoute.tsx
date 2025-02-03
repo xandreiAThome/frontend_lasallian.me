@@ -1,30 +1,59 @@
 import { Input } from "~/components/ui/input";
+import { Form, redirect, useNavigate } from "react-router";
 import { Button } from "~/components/ui/button";
-import CreateAccountCard from "./createAccountCard";
-import VerifyCard from "./verifyCard";
-import Logo from "~/components/assets/logo.svg";
 import type { Route } from "./+types/loginRoute";
-import { redirect } from "react-router";
 
-// TEMP
 export async function clientAction({ request }: Route.ClientActionArgs) {
   await console.log("go to setup");
   return redirect("/setup");
 }
 
-export default function Login() {
+export default function LoginRoute() {
+  const navigate = useNavigate();
   return (
-    <div className="h-full flex items-center bg-custom-bg-white md:flex-row flex-col">
-      <div className="md:flex-1 flex flex-col items-center justify-center basis-96">
-        <img src={Logo} alt="logo" />
+    <Form
+      method="post"
+      className="bg-custom-postcard-white w-full md:w-3/5 p-8 shadow-lg rounded-md"
+    >
+      <div className="flex flex-col items-center">
+        <Input
+          className="bg-slate-50 mb-6"
+          type="email"
+          placeholder="Email Address"
+        ></Input>
+        <Input
+          className="bg-slate-50"
+          type="password"
+          placeholder="Password"
+        ></Input>
+
+        <div className="mt-4">
+          <Button
+            variant="link"
+            className="font-semibold text-lasalle-green text-base"
+            type="button"
+          >
+            Forgot Password?
+          </Button>
+          <Button
+            variant="link"
+            className="font-semibold text-lasalle-green text-base"
+            type="button"
+            onClick={() => {
+              navigate("/register");
+            }}
+          >
+            Don't have an account?
+          </Button>
+        </div>
       </div>
-      <div className="md:flex-1 flex flex-col items-center basis-[40rem]">
-        <CreateAccountCard />
-        <p className="text-slate-400 mt-6">
-          lasallian<span className="font-bold">.me.</span> All Rights Reserved,
-          2025.
-        </p>
-      </div>
-    </div>
+      <hr className="-mx-8" />
+      <Button
+        className="text-white w-full rounded-3xl mt-6 bg-lasalle-green text-lg h-12"
+        type="submit"
+      >
+        Login
+      </Button>
+    </Form>
   );
 }

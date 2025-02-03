@@ -1,14 +1,12 @@
-import { NavLink, redirect } from "react-router";
-import Logo from "~/components/assets/logo.svg";
 import { BookPlus } from "lucide-react";
-import { Input } from "~/components/ui/input";
 import PostCard from "./postCard";
 import postData from "~/components/dummyData/postData";
 import OrgPostCard from "./orgPostCard";
 
-interface Data {
+interface postData {
   author: string;
   username: string;
+  profile: string;
   time: Date;
   views: number;
   content: string;
@@ -18,10 +16,18 @@ interface Data {
   img: string | null;
   org: string;
   position: string;
+  commentsList: {
+    profile: { author: string; profile: string };
+    reactions: number;
+    comments: number;
+    time: Date;
+    content: string;
+  }[];
 }
 
 interface orgPost {
   author: string;
+  profile: string;
   time: Date;
   views: number;
   content: string;
@@ -31,6 +37,13 @@ interface orgPost {
   img: string | null;
   org: string;
   position: string;
+  commentsList: {
+    profile: { author: string; profile: string };
+    reactions: number;
+    comments: number;
+    time: Date;
+    content: string;
+  }[];
 }
 
 export default function HomePage() {
@@ -58,6 +71,7 @@ export default function HomePage() {
         ({
           author,
           username,
+          profile,
           time,
           views,
           content,
@@ -67,12 +81,14 @@ export default function HomePage() {
           img,
           org,
           position,
-        }: Data) => {
+          commentsList,
+        }: postData) => {
           return (
             <PostCard
               key={username}
               author={author}
               username={username}
+              profile={profile}
               time={time}
               views={views}
               content={content}
@@ -82,6 +98,7 @@ export default function HomePage() {
               img={img}
               org={org}
               position={position}
+              commentsList={commentsList}
             />
           );
         }
@@ -93,18 +110,21 @@ export default function HomePage() {
           time,
           views,
           content,
+          profile,
           reactions,
           comments,
           reposts,
           img,
           org,
           position,
+          commentsList,
         }: orgPost) => {
           return (
             <OrgPostCard
               author={author}
               time={time}
               views={views}
+              profile={profile}
               content={content}
               reactions={reactions}
               comments={comments}
@@ -112,6 +132,7 @@ export default function HomePage() {
               img={img}
               org={org}
               position={position}
+              commentsList={commentsList}
             />
           );
         }

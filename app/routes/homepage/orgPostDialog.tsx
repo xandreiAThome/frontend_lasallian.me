@@ -16,7 +16,6 @@ import {
   Heart,
   MessageSquareShare,
   MessageSquareText,
-  Terminal,
 } from "lucide-react";
 import ReactTimeAgo from "react-time-ago";
 import { Input } from "~/components/ui/input";
@@ -27,12 +26,28 @@ interface postsData {
   time: Date;
   views: number;
   content: string;
+  profile: string;
   reactions: number;
   comments: number;
   reposts: number;
   img: string | null;
   org: string;
   position: string;
+  commentsList: {
+    profile: { author: string; profile: string };
+    reactions: number;
+    comments: number;
+    time: Date;
+    content: string;
+  }[];
+}
+
+interface commentsData {
+  profile: { author: string; profile: string };
+  reactions: number;
+  comments: number;
+  time: Date;
+  content: string;
 }
 
 export default function OrgPostDialog({
@@ -40,12 +55,14 @@ export default function OrgPostDialog({
   time,
   views,
   content,
+  profile,
   reactions,
   comments,
   reposts,
   img,
   org,
   position,
+  commentsList,
 }: postsData) {
   const formatter = Intl.NumberFormat("en", { notation: "compact" });
   const dummyComment = {
@@ -70,7 +87,7 @@ export default function OrgPostDialog({
         <DialogHeader>
           <div className="flex items-center">
             <img
-              src="https://www.shutterstock.com/image-vector/blank-avatar-photo-place-holder-600nw-1095249842.jpg"
+              src={profile}
               alt="profile"
               width="36"
               height="36"
@@ -149,13 +166,30 @@ export default function OrgPostDialog({
 
           <Input
             placeholder="What's YOUR thoughts on this post?"
-            className="text-base md:text-base bg-gray-200 px-8 py-4 mt-6 rounded-3xl !ml-0"
+            className="text-base md:text-base bg-gray-200 px-8 py-4 my-6 rounded-3xl !ml-0"
           ></Input>
 
           <div className="flex flex-col !ml-0">
-            <CommentsCard />
-            <CommentsCard />
-            <CommentsCard />
+            {commentsList &&
+              commentsList.map(
+                ({
+                  profile,
+                  comments,
+                  time,
+                  content,
+                  reactions,
+                }: commentsData) => {
+                  return (
+                    <CommentsCard
+                      profile={profile}
+                      comments={comments}
+                      time={time}
+                      content={content}
+                      reactions={reactions}
+                    />
+                  );
+                }
+              )}
           </div>
         </DialogFooter>
       </DialogContent>
