@@ -13,12 +13,10 @@ import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 
 export default function OrgBannerCard() {
-  const lol =
-    "https://scontent.fmnl37-1.fna.fbcdn.net/v/t39.30808-6/462689548_937370231755893_3437674587473298092_n.png?stp=dst-png_s960x960&_nc_cat=109&ccb=1-7&_nc_sid=cc71e4&_nc_eui2=AeFLL2prEC1nJZXDstDXEOn8jpvq_CYPt2uOm-r8Jg-3a5HUT2lqMMpaSbhsqA6Af9Dz4BMfU7ofnXW0i2wOO_i8&_nc_ohc=OrznZH9cwhUQ7kNvgE1aN0L&_nc_zt=23&_nc_ht=scontent.fmnl37-1.fna&_nc_gid=ADJcTr_86BOn_ihmfN5OS7L&oh=00_AYBgmK7SJxj-gEyC920-Ifl5xzZOujgdS1fjGI7X1sW4eA&oe=67A49DF8";
   return (
     <div className="bg-custom-postcard-white rounded-b-xl flex flex-col">
       <div
-        className={`w-full h-56 bg-gray-300 flex items-center justify-center bg-center bg-cover bg-[url(${lol})]`}
+        className={`w-full h-56 bg-gray-300 flex items-center justify-center bg-center bg-cover bg-[url("https://scontent.fmnl37-1.fna.fbcdn.net/v/t39.30808-6/462689548_937370231755893_3437674587473298092_n.png?stp=dst-png_s960x960&_nc_cat=109&ccb=1-7&_nc_sid=cc71e4&_nc_eui2=AeFLL2prEC1nJZXDstDXEOn8jpvq_CYPt2uOm-r8Jg-3a5HUT2lqMMpaSbhsqA6Af9Dz4BMfU7ofnXW0i2wOO_i8&_nc_ohc=OrznZH9cwhUQ7kNvgE1aN0L&_nc_zt=23&_nc_ht=scontent.fmnl37-1.fna&_nc_gid=ADJcTr_86BOn_ihmfN5OS7L&oh=00_AYBgmK7SJxj-gEyC920-Ifl5xzZOujgdS1fjGI7X1sW4eA&oe=67A49DF8")]`}
       ></div>
 
       <div className="">
