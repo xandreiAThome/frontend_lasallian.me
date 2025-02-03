@@ -111,7 +111,7 @@ export default function CreatePostButton() {
         <div className="flex gap-4 py-4 flex-col">
           <div className="flex items-center">
             <img
-              src="https://www.shutterstock.com/image-vector/blank-avatar-photo-place-holder-600nw-1095249842.jpg"
+              src={postData.individual[1].profile}
               alt="profile"
               width="36"
               height="36"
@@ -121,13 +121,13 @@ export default function CreatePostButton() {
               <div className="flex items-center">
                 {" "}
                 <p className="text-lg font-bold mr-12">
-                  {postData.individual[0].author}
+                  {postData.individual[1].author}
                 </p>{" "}
                 <p className="px-2 bg-[#220088] text-white text-xs font-semibold">
-                  {postData.individual[0].org}
+                  {postData.individual[1].org}
                 </p>
                 <p className="px-2 bg-[#313131] text-white text-xs font-semibold mr-2">
-                  {postData.individual[0].position}
+                  {postData.individual[1].position}
                 </p>
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>

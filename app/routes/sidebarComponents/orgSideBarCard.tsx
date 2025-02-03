@@ -47,6 +47,7 @@ export default function OrgSideBarCard() {
                   positionTextColor={positionTextColor}
                   subPosition={subPosition}
                   subPositionColor={subPositionColor}
+                  key={orgName}
                 />
                 <hr />
               </>
