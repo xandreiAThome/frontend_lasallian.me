@@ -9,6 +9,15 @@ import {
 import ReactTimeAgo from "react-time-ago";
 import { useNavigate } from "react-router";
 import { Button } from "~/components/ui/button";
+import { useState } from "react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "~/components/ui/dropdown-menu";
 
 interface commentsData {
   profile: { author: string; profile: string };
@@ -34,6 +43,37 @@ export default function CommentsCard({
     reactions: 4300,
     replies: 500,
   };
+  const [isEdit, setIsEdit] = useState(false);
+
+  const EditComment = (
+    <div>
+      <textarea
+        className="bg-gray-100 rounded-2xl p-4 border-gray-200 border focus:outline-lasalle-green outline-none w-full"
+        name="edit"
+        id="edit"
+        rows={1}
+      >
+        {content}
+      </textarea>
+      <div>
+        <p className="text-sm">
+          {" "}
+          Press{" "}
+          <Button variant="link" onClick={() => setIsEdit(false)}>
+            edit
+          </Button>{" "}
+          to save or Esc to
+          <Button
+            variant="link"
+            onClick={() => setIsEdit(false)}
+            className="text-red-500"
+          >
+            cancel
+          </Button>
+        </p>
+      </div>
+    </div>
+  );
 
   return (
     <div className="flex items-start mb-6 !ml-0">
@@ -64,14 +104,31 @@ export default function CommentsCard({
           <p className="text-gray-400 text-xs">
             <ReactTimeAgo date={time} locale="en-SG" />
           </p>
-          <button className="ml-auto text-gray-500">
-            <Ellipsis />
-          </button>
+          <DropdownMenu>
+            <DropdownMenuTrigger className="ml-auto text-gray-500">
+              <button>
+                <Ellipsis />
+              </button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem onClick={() => setIsEdit(true)}>
+                Edit
+              </DropdownMenuItem>
+              <DropdownMenuItem className="text-red-500">
+                Delete
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
 
-        <div className="flex items-start">
-          <p>{content}</p>
-        </div>
+        {isEdit ? (
+          EditComment
+        ) : (
+          <div className="flex items-start">
+            <p>{content}</p>
+          </div>
+        )}
 
         <div className="flex gap-4 mt-2">
           <div className="flex items-center">
