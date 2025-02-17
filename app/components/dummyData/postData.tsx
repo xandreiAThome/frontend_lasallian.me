@@ -139,7 +139,7 @@ export default {
       author: "La Salle Computer Society",
       time: new Date("2024-11-31T09:00:00.594Z"),
       profile:
-        "https://scontent.fmnl3-1.fna.fbcdn.net/v/t39.30808-6/462565143_937343991758517_3934195989556103177_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=6ee11a&_nc_eui2=AeGGbE7Od2YXhbz9jf3eIuqarIUjDCvDYLmshSMMK8Nguc3iKvUacKK6cpIGTPMga9YV-e6q8B5gSJX6wv4WJQIj&_nc_ohc=OjgONZiRuRYQ7kNvgGgZDct&_nc_zt=23&_nc_ht=scontent.fmnl3-1.fna&_nc_gid=A2cv8zhImmDfn3rpo5xa-oA&oh=00_AYCUAK0P2aHKGID5eWeiIXF3vxrYf-dYJiTQdZ8eNh1-HQ&oe=67A4A2A4",
+        "https://github.com/xandreiAThome/frontend_CCAPDEV/blob/main/app/components/assets/lscsLogo.png?raw=true",
       views: 10000000,
       content:
         "Master the Essentials of Web Development with LSCS! Are you ready to elevate your skills and gain the confidence to tackle web development like a pro?  Join the Web... See More",
