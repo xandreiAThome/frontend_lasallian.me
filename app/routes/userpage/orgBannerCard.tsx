@@ -52,7 +52,7 @@ export default function OrgBannerCard() {
               </p>
             </div>
 
-            <div className="flex gap-4">
+            <div className="flex gap-4 flex-wrap">
               <p className="text-sm">
                 <span className="font-bold">204</span> Officers
               </p>
@@ -73,7 +73,7 @@ export default function OrgBannerCard() {
           Tomorrow's Leaders.
         </p>
 
-        <div className="text-sm flex gap-2">
+        <div className="text-sm flex gap-2 flex-wrap">
           <span className="flex items-center gap-1">
             <BadgeInfo size="16" />
             1985
