@@ -110,7 +110,7 @@ export default function NavBar() {
         </div>
       </nav>
 
-      <main className="max-w-[640px] flex-1">
+      <main className="max-w-[640px] w-full">
         <Outlet />
       </main>
 

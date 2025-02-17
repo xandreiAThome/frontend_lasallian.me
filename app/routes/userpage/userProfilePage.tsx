@@ -29,7 +29,7 @@ interface postData {
 
 export default function UserProfilePage() {
   return (
-    <div className="basis-[640px] pt-6 flex flex-col gap-4">
+    <div className="basis-[640px] flex flex-col gap-4">
       <UserBannerCard />
 
       {postData.individual.map(
