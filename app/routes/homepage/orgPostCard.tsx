@@ -68,15 +68,14 @@ export default function OrgPostCard({
         </button>
         <div className="flex flex-col flex-grow">
           <div className="flex items-center">
-            <Button
+            <button
               onClick={() => {
                 navigate("/orgprofile");
               }}
-              variant="link"
-              className="text-lg text-black font-bold mr-2 p-0"
+              className="text-lg text-black font-bold mr-2 p-0 hover:underline"
             >
               {author}
-            </Button>{" "}
+            </button>{" "}
             <button className="ml-auto text-gray-500">
               <Ellipsis />
             </button>
@@ -121,7 +120,7 @@ export default function OrgPostCard({
 
       <hr className="-mx-6" />
 
-      <div className="flex items-center mt-4 justify-between">
+      <div className="flex items-center mt-4 justify-between gap-4">
         <div className="flex items-center">
           <button className="mr-2">
             <Heart className="h-6" />

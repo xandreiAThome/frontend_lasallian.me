@@ -304,7 +304,7 @@ export default function PostDialog({
         </div>
         <hr className="-mx-6" />
         <DialogFooter className="sm:justify-center sm:flex-col flex-col">
-          <div className="flex justify-between flex-1">
+          <div className="flex justify-between flex-1 gap-4">
             <div className="flex items-center">
               <button className="mr-2">
                 <Heart className="h-6" />

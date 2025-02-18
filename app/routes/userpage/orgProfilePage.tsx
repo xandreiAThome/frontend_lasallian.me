@@ -31,7 +31,7 @@ interface postsData {
 
 export default function OrgProfilePage() {
   return (
-    <div className="basis-[640px] pt-6 flex flex-col gap-4">
+    <div className="basis-[640px] flex flex-col gap-4">
       <OrgBannerCard />
 
       {postData.org.map(

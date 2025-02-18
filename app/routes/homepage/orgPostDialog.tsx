@@ -20,6 +20,7 @@ import {
 import ReactTimeAgo from "react-time-ago";
 import { Input } from "~/components/ui/input";
 import CommentsCard from "./commentsCard";
+import { useNavigate } from "react-router";
 
 interface postsData {
   author: string;
@@ -73,6 +74,7 @@ export default function OrgPostDialog({
     replies: 500,
   };
 
+  const navigate = useNavigate();
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -95,7 +97,14 @@ export default function OrgPostDialog({
             />
             <div className="flex flex-col flex-grow">
               <div className="flex items-center">
-                <p className="text-lg font-bold mr-2">{author}</p>{" "}
+                <button
+                  onClick={() => {
+                    navigate("/orgprofile");
+                  }}
+                  className="text-lg text-black font-bold mr-2 p-0 hover:underline"
+                >
+                  {author}
+                </button>{" "}
                 <button className="ml-auto text-gray-500">
                   <Ellipsis />
                 </button>
@@ -130,7 +139,7 @@ export default function OrgPostDialog({
         </div>
         <hr className="-mx-6" />
         <DialogFooter className="sm:justify-center sm:flex-col flex-col">
-          <div className="flex justify-between flex-1">
+          <div className="flex justify-between flex-1 gap-4">
             <div className="flex items-center">
               <button className="mr-2">
                 <Heart className="h-6" />

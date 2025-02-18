@@ -286,7 +286,7 @@ export default function PostCard({
 
       <hr className="-mx-6" />
 
-      <div className="flex items-center mt-4 justify-between">
+      <div className="flex items-center mt-4 justify-between gap-4">
         <div className="flex items-center">
           <button className="mr-2">
             <Heart className="h-6" />
