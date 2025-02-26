@@ -1,17 +1,41 @@
 import { Input } from "~/components/ui/input";
-import { Form, redirect, useNavigate } from "react-router";
+import { data, Form, redirect, useNavigate } from "react-router";
 import { Button } from "~/components/ui/button";
+import { useFetcher } from "react-router";
 import type { Route } from "./+types/RegisterRoute";
 
-export async function clientAction({ request }: Route.ClientActionArgs) {
-  await console.log("go to setup");
+export async function action({ request }: Route.ActionArgs) {
+  const formData = await request.formData();
+  const email = formData.get("email");
+  const pass = formData.get("password");
+  const confirmPass = formData.get("confirm");
+
+  const errors: { email?: string; password?: string } = {};
+
+  const re = /@dlsu\.edu\.ph$/;
+  const valid = typeof email === "string" ? email.match(re) : null;
+  console.log(valid);
+  if (!valid) {
+    errors.email = "Invalid email address. Not a DLSU email";
+  }
+
+  if (pass !== confirmPass) {
+    errors.password = "Password do not match";
+  }
+
+  if (Object.keys(errors).length > 0) {
+    return data({ errors }, { status: 400 });
+  }
+
   return redirect("/verify");
 }
 
 export default function RegisterRoute() {
+  const fetcher = useFetcher();
   const navigate = useNavigate();
+  let errors = fetcher.data?.errors;
   return (
-    <Form
+    <fetcher.Form
       method="post"
       className="bg-custom-postcard-white w-full md:w-3/5 p-8 shadow-lg rounded-md"
     >
@@ -19,13 +43,30 @@ export default function RegisterRoute() {
         <Input
           className="bg-slate-50 mb-6"
           type="email"
+          name="email"
           placeholder="Email Address"
+          required
+        ></Input>
+        {errors?.email ? (
+          <em className="text-red-500 -mt-4">{errors.email}</em>
+        ) : null}
+        <Input
+          className="bg-slate-50 mb-4"
+          type="password"
+          name="password"
+          placeholder="Password"
+          required
         ></Input>
         <Input
           className="bg-slate-50"
           type="password"
-          placeholder="Password"
+          name="confirm-password"
+          placeholder="Confirm Password"
+          required
         ></Input>
+        {errors?.password ? (
+          <em className="text-red-500">{errors.password}</em>
+        ) : null}
         <Button
           variant="link"
           className="m-4 font-semibold text-lasalle-green text-base"
@@ -44,6 +85,6 @@ export default function RegisterRoute() {
       >
         Create Account
       </Button>
-    </Form>
+    </fetcher.Form>
   );
 }
