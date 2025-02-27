@@ -3,6 +3,8 @@ import { data, Form, redirect, useNavigate } from "react-router";
 import { Button } from "~/components/ui/button";
 import { useFetcher } from "react-router";
 import type { Route } from "./+types/RegisterRoute";
+import api from "~/lib/api";
+import axios from "axios";
 
 export async function action({ request }: Route.ActionArgs) {
   const formData = await request.formData();
@@ -16,6 +18,7 @@ export async function action({ request }: Route.ActionArgs) {
     emailRed?: string;
     passRed?: string;
     confirmRed?: string;
+    emailUsed?: string;
   } = {};
 
   const valid =
@@ -49,30 +52,33 @@ export async function action({ request }: Route.ActionArgs) {
     return data({ errors }, { status: 400 });
   }
 
+  if (Object.keys(errors).length > 0) {
+    return data({ errors }, { status: 400 });
+  }
+
   try {
-    const response = await fetch(`${process.env.API_KEY}/user/register`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
+    const response = await api.post(`${process.env.API_KEY}/user/register`, {
+      credentials: {
+        email: email,
+        password: pass,
       },
-      body: JSON.stringify({
-        credentials: {
-          email: email,
-          password: pass,
-        },
-      }),
     });
 
-    if (!response.ok) {
-      throw new Error("Registration failed");
-    }
-
-    const data = await response.json();
-    console.log("Registration successful:", data);
-
+    console.log("Registration successful:", response.data);
     return redirect("/verify");
   } catch (error) {
-    console.error("Registration error:", error);
+    if (axios.isAxiosError(error)) {
+      console.error(
+        "Registration error:",
+        error.response?.data || error.message
+      );
+      if (error.response?.data.error === "Email already registered") {
+        errors.emailUsed = "Email already used, try another email";
+        return data({ errors }, { status: 400 });
+      }
+    } else {
+      console.error("Unexpected error:", error);
+    }
     // Handle error appropriately
     return { error: "Registration failed. Please try again." };
   }
@@ -99,6 +105,9 @@ export default function RegisterRoute() {
         ></Input>
         {errors?.email ? (
           <em className="text-red-500 -mt-6">{errors.email}</em>
+        ) : null}
+        {errors?.emailUsed ? (
+          <em className="text-red-500 -mt-6">{errors.emailUsed}</em>
         ) : null}
         <Input
           className={`bg-slate-50 mb-4 ${

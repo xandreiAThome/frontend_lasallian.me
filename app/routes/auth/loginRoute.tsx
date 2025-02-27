@@ -1,17 +1,48 @@
 import { Input } from "~/components/ui/input";
-import { Form, redirect, useNavigate } from "react-router";
+import { data, Form, redirect, useFetcher, useNavigate } from "react-router";
 import { Button } from "~/components/ui/button";
 import type { Route } from "./+types/loginRoute";
+import axios from "axios";
+import api from "~/lib/api";
+import { setAuth } from "~/lib/localStorage";
 
-export async function clientAction({ request }: Route.ClientActionArgs) {
-  await console.log("go to setup");
-  return redirect("/homepage");
+export async function action({ request }: Route.ActionArgs) {
+  const formData = await request.formData();
+  const email = formData.get("email");
+  const pass = formData.get("password");
+  const confirmPass = formData.get("confirm-password");
+
+  try {
+    const response = await api.post(`${process.env.API_KEY}/user/login`, {
+      credentials: {
+        email: email,
+        password: pass,
+      },
+    });
+
+    console.log("Login successful:", response.data);
+    const { token, userId } = response.data.session_token;
+    if (typeof window !== "undefined") {
+      setAuth(token, userId);
+    }
+    return redirect("/");
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.error("Login error:", error.response?.data || error.message);
+    } else {
+      console.error("Unexpected error:", error);
+    }
+    // Handle error appropriately
+    return { error: "Login failed. Please try again." };
+  }
 }
 
 export default function LoginRoute() {
+  const fetcher = useFetcher();
   const navigate = useNavigate();
+  let errors = fetcher.data?.errors;
   return (
-    <Form
+    <fetcher.Form
       method="post"
       className="bg-custom-postcard-white w-full md:w-3/5 p-8 shadow-lg rounded-md"
     >
@@ -19,11 +50,13 @@ export default function LoginRoute() {
         <Input
           className="bg-slate-50 mb-6"
           type="email"
+          name="email"
           placeholder="Email Address"
         ></Input>
         <Input
           className="bg-slate-50"
           type="password"
+          name="password"
           placeholder="Password"
         ></Input>
 
@@ -54,6 +87,6 @@ export default function LoginRoute() {
       >
         Login
       </Button>
-    </Form>
+    </fetcher.Form>
   );
 }

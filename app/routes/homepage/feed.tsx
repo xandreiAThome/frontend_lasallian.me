@@ -2,6 +2,10 @@ import { BookPlus } from "lucide-react";
 import PostCard from "./postCard";
 import postData from "~/components/dummyData/postData";
 import OrgPostCard from "./orgPostCard";
+import axios from "axios";
+import api from "~/lib/api";
+import { useEffect } from "react";
+import type { Route } from "./+types/feed";
 
 interface postData {
   author: string;
@@ -44,6 +48,25 @@ interface orgPost {
     time: Date;
     content: string;
   }[];
+}
+export async function loader({ params }: Route.LoaderArgs) {
+  const fetchPostData = async () => {
+    try {
+      const response = await api.get(
+        `${process.env.API_KEY}/post/normal/679bacd27077c487c7addee1`
+      );
+
+      // console.log(response.data);
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.error(" error:", error.response?.data || error.message);
+      } else {
+        console.error("Unexpected error:", error);
+      }
+    }
+  };
+
+  fetchPostData();
 }
 
 export default function HomePage() {
