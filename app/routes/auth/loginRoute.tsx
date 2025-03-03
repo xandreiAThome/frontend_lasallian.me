@@ -4,13 +4,22 @@ import { Button } from "~/components/ui/button";
 import type { Route } from "./+types/loginRoute";
 import axios from "axios";
 import api from "~/lib/api";
-import { setAuth } from "~/lib/localStorage";
+import { createUserSession, getUserId } from "app/sessions.server";
+
+export async function loader({ request }: Route.LoaderArgs) {
+  // Check if the user is already logged in
+  const sessionToken = await getUserId(request);
+  if (sessionToken) {
+    return redirect("/homepage");
+  }
+}
 
 export async function action({ request }: Route.ActionArgs) {
   const formData = await request.formData();
   const email = formData.get("email");
   const pass = formData.get("password");
   const confirmPass = formData.get("confirm-password");
+  let sessionResponse: Response;
 
   try {
     const response = await api.post(`${process.env.API_KEY}/user/login`, {
@@ -21,11 +30,30 @@ export async function action({ request }: Route.ActionArgs) {
     });
 
     console.log("Login successful:", response.data);
-    const { token, userId } = response.data.session_token;
-    if (typeof window !== "undefined") {
-      setAuth(token, userId);
+    const token = response.data.session_token;
+    console.log("token", token);
+
+    // create session
+    try {
+      sessionResponse = await createUserSession({
+        request,
+        userId: token,
+        remember: true,
+        redirectUrl: "/homepage",
+      });
+
+      if (!sessionResponse) {
+        throw new Error("An error occurred while creating the session");
+      }
+    } catch (error) {
+      if (error instanceof Error) {
+        return { error: error.message };
+      }
+
+      return { error: "An unknown error occurred" };
     }
-    return redirect("/");
+
+    return sessionResponse;
   } catch (error) {
     if (axios.isAxiosError(error)) {
       console.error("Login error:", error.response?.data || error.message);

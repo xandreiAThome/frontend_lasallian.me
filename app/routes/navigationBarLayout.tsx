@@ -3,11 +3,18 @@ import Logo from "~/components/assets/logo.svg";
 import { Button } from "~/components/ui/button";
 import OrgSideBarCard from "./sidebarComponents/orgSideBarCard";
 import FollowingSideBar from "./sidebarComponents/followingSideBarCard";
-import CreateButton from "~/routes/createpost/CreateButton";
+import CreateButton from "~/routes/createPostComponents/CreateButton";
 import { Input } from "~/components/ui/input";
 import { Search } from "lucide-react";
+import type { Route } from "./+types/navigationBarLayout";
+import { getUserId } from "~/sessions.server";
 
-export default function NavBar() {
+export async function loader({ request }: Route.LoaderArgs) {
+  // Check if the user is already logged in
+}
+
+export default function NavBar({ loaderData }: Route.ComponentProps) {
+  console.log("loaderData: ", loaderData);
   return (
     <div className="flex h-full bg-custom-bg-white justify-evenly gap-2 overflow-y-auto">
       <nav className="max-w-96 hidden lg:flex py-8 flex-col items-end sticky top-0">

@@ -16,9 +16,9 @@ export default [
   ]),
 
   layout("routes/navigationBarLayout.tsx", [
-    route("homepage", "routes/homepage/feed.tsx"),
-    route("userprofile", "routes/userpage/userProfilePage.tsx"),
+    route("homepage", "routes/homepage/homePageRoute.tsx"),
+    route("userprofile", "routes/userpage/userProfileRoute.tsx"),
     route("todo", "routes/todo.tsx"),
-    route("orgprofile", "routes/userpage/orgProfilePage.tsx"),
+    route("orgprofile", "routes/userpage/orgProfileRoute.tsx"),
   ]),
 ] satisfies RouteConfig;

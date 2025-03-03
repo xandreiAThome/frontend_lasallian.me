@@ -65,7 +65,7 @@ export async function action({ request }: Route.ActionArgs) {
     });
 
     console.log("Registration successful:", response.data);
-    return redirect("/verify");
+    return redirect("/login");
   } catch (error) {
     if (axios.isAxiosError(error)) {
       console.error(

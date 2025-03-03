@@ -4,8 +4,9 @@ import postData from "~/components/dummyData/postData";
 import OrgPostCard from "./orgPostCard";
 import axios from "axios";
 import api from "~/lib/api";
-import { useEffect } from "react";
-import type { Route } from "./+types/feed";
+import type { Route } from "./+types/homePageRoute";
+import { getUserId } from "~/sessions.server";
+import { redirect } from "react-router";
 
 interface postData {
   author: string;
@@ -49,14 +50,25 @@ interface orgPost {
     content: string;
   }[];
 }
-export async function loader({ params }: Route.LoaderArgs) {
+export async function loader({ request }: Route.LoaderArgs) {
+  // Check if the user is already logged in
+  const userId = await getUserId(request);
+  if (!userId) {
+    throw redirect("/login");
+  }
+
   const fetchPostData = async () => {
     try {
       const response = await api.get(
-        `${process.env.API_KEY}/post/normal/679bacd27077c487c7addee1`
+        `${process.env.API_KEY}/post/normal/679bacd27077c487c7addee1`,
+        {
+          headers: {
+            Authorization: `Bearer ${userId}`,
+          },
+        }
       );
 
-      // console.log(response.data);
+      console.log(response.data);
     } catch (error) {
       if (axios.isAxiosError(error)) {
         console.error(" error:", error.response?.data || error.message);
