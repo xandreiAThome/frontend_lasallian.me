@@ -1,4 +1,4 @@
-import { NavLink, Outlet, redirect } from "react-router";
+import { Form, NavLink, Outlet, redirect } from "react-router";
 import Logo from "~/components/assets/logo.svg";
 import { Button } from "~/components/ui/button";
 import OrgSideBarCard from "./sidebarComponents/orgSideBarCard";
@@ -7,14 +7,8 @@ import CreateButton from "~/routes/createPostComponents/CreateButton";
 import { Input } from "~/components/ui/input";
 import { Search } from "lucide-react";
 import type { Route } from "./+types/navigationBarLayout";
-import { getUserId } from "~/sessions.server";
 
-export async function loader({ request }: Route.LoaderArgs) {
-  // Check if the user is already logged in
-}
-
-export default function NavBar({ loaderData }: Route.ComponentProps) {
-  console.log("loaderData: ", loaderData);
+export default function NavBar() {
   return (
     <div className="flex h-full bg-custom-bg-white justify-evenly gap-2 overflow-y-auto">
       <nav className="max-w-96 hidden lg:flex py-8 flex-col items-end sticky top-0">
@@ -100,17 +94,13 @@ export default function NavBar({ loaderData }: Route.ComponentProps) {
               </NavLink>
             </li>
             <li>
-              <NavLink
-                className={({ isActive, isPending, isTransitioning }) =>
-                  [
-                    isActive ? "text-lasalle-green" : "",
-                    "hover:bg-slate-200 hover:rounded-2xl px-4 py-1 transition-all",
-                  ].join(" ")
-                }
-                to="/todo"
+              <Form
+                action="/logout"
+                method="post"
+                className="flex px-4 hover:bg-slate-200 hover:rounded-2xl"
               >
-                Logout
-              </NavLink>
+                <button type="submit">Logout</button>
+              </Form>
             </li>{" "}
             <CreateButton />
           </ul>

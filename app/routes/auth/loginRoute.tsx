@@ -4,13 +4,13 @@ import { Button } from "~/components/ui/button";
 import type { Route } from "./+types/loginRoute";
 import axios from "axios";
 import api from "~/lib/api";
-import { createUserSession, getUserId } from "app/sessions.server";
+import { createUserSession, getUserId } from "~/.server/sessions";
 
 export async function loader({ request }: Route.LoaderArgs) {
   // Check if the user is already logged in
   const sessionToken = await getUserId(request);
   if (sessionToken) {
-    return redirect("/homepage");
+    // return redirect("/homepage");
   }
 }
 

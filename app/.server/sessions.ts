@@ -93,7 +93,7 @@ export async function createUserSession({
         secure: process.env.NODE_ENV === "production",
         sameSite: "lax",
         maxAge: remember
-          ? 60 * 60 * 24 * 7 // 7 days
+          ? 60 * 60 // 1 hour
           : undefined,
       }),
     },
