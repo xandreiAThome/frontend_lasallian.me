@@ -1,17 +1,76 @@
 import { Input } from "~/components/ui/input";
-import { Form, redirect, useNavigate } from "react-router";
+import { data, Form, redirect, useFetcher, useNavigate } from "react-router";
 import { Button } from "~/components/ui/button";
 import type { Route } from "./+types/loginRoute";
+import axios from "axios";
+import api from "~/lib/api";
+import { createUserSession, getUserId } from "~/.server/sessions";
 
-export async function clientAction({ request }: Route.ClientActionArgs) {
-  await console.log("go to setup");
-  return redirect("/homepage");
+export async function loader({ request }: Route.LoaderArgs) {
+  // Check if the user is already logged in
+  const sessionToken = await getUserId(request);
+  if (sessionToken) {
+    // return redirect("/homepage");
+  }
+}
+
+export async function action({ request }: Route.ActionArgs) {
+  const formData = await request.formData();
+  const email = formData.get("email");
+  const pass = formData.get("password");
+  const confirmPass = formData.get("confirm-password");
+  let sessionResponse: Response;
+
+  try {
+    const response = await api.post(`${process.env.API_KEY}/user/login`, {
+      credentials: {
+        email: email,
+        password: pass,
+      },
+    });
+
+    console.log("Login successful:", response.data);
+    const token = response.data.session_token;
+    console.log("token", token);
+
+    // create session
+    try {
+      sessionResponse = await createUserSession({
+        request,
+        userId: token,
+        remember: true,
+        redirectUrl: "/homepage",
+      });
+
+      if (!sessionResponse) {
+        throw new Error("An error occurred while creating the session");
+      }
+    } catch (error) {
+      if (error instanceof Error) {
+        return { error: error.message };
+      }
+
+      return { error: "An unknown error occurred" };
+    }
+
+    return sessionResponse;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.error("Login error:", error.response?.data || error.message);
+    } else {
+      console.error("Unexpected error:", error);
+    }
+    // Handle error appropriately
+    return { error: "Login failed. Please try again." };
+  }
 }
 
 export default function LoginRoute() {
+  const fetcher = useFetcher();
   const navigate = useNavigate();
+  let errors = fetcher.data?.errors;
   return (
-    <Form
+    <fetcher.Form
       method="post"
       className="bg-custom-postcard-white w-full md:w-3/5 p-8 shadow-lg rounded-md"
     >
@@ -19,11 +78,13 @@ export default function LoginRoute() {
         <Input
           className="bg-slate-50 mb-6"
           type="email"
+          name="email"
           placeholder="Email Address"
         ></Input>
         <Input
           className="bg-slate-50"
           type="password"
+          name="password"
           placeholder="Password"
         ></Input>
 
@@ -54,6 +115,6 @@ export default function LoginRoute() {
       >
         Login
       </Button>
-    </Form>
+    </fetcher.Form>
   );
 }

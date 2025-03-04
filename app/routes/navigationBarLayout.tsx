@@ -1,11 +1,12 @@
-import { NavLink, Outlet, redirect } from "react-router";
+import { Form, NavLink, Outlet, redirect } from "react-router";
 import Logo from "~/components/assets/logo.svg";
 import { Button } from "~/components/ui/button";
-import OrgSideBarCard from "./sidebarComponents/orgSideBarCard";
-import FollowingSideBar from "./sidebarComponents/followingSideBarCard";
-import CreateButton from "~/routes/createpost/CreateButton";
+import OrgSideBarCard from "~/components/sidebarComponents/orgSideBarCard";
+import FollowingSideBar from "~/components/sidebarComponents/followingSideBarCard";
+import CreateButton from "~/components/createPostComponents/CreateButton";
 import { Input } from "~/components/ui/input";
 import { Search } from "lucide-react";
+import type { Route } from "./+types/navigationBarLayout";
 
 export default function NavBar() {
   return (
@@ -93,17 +94,13 @@ export default function NavBar() {
               </NavLink>
             </li>
             <li>
-              <NavLink
-                className={({ isActive, isPending, isTransitioning }) =>
-                  [
-                    isActive ? "text-lasalle-green" : "",
-                    "hover:bg-slate-200 hover:rounded-2xl px-4 py-1 transition-all",
-                  ].join(" ")
-                }
-                to="/todo"
+              <Form
+                action="/logout"
+                method="post"
+                className="flex px-4 hover:bg-slate-200 hover:rounded-2xl"
               >
-                Logout
-              </NavLink>
+                <button type="submit">Logout</button>
+              </Form>
             </li>{" "}
             <CreateButton />
           </ul>

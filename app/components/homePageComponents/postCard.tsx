@@ -28,6 +28,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "~/components/ui/dialog";
+import ReactionsCard from "./reactionsCard";
 
 interface positionsData {
   org: string;
@@ -286,22 +287,16 @@ export default function PostCard({
 
       <hr className="-mx-6" />
 
-      <div className="flex items-center mt-4 justify-between">
+      <div className="flex items-center mt-4 justify-between gap-4">
         <div className="flex items-center">
-          <button className="mr-2">
-            <Heart className="h-6" />
-          </button>
-          <p className="text-sm">
-            <span className="font-bold">{formatter.format(reactions)} </span>
-            reactions
-          </p>
+          <ReactionsCard reactions={reactions} />
         </div>
 
         <CommentsDialog commentsList={commentsList} />
 
-        <div className="flex items-center">
+        <div className="flex items-center hover:cursor-pointer hover:bg-slate-200 hover:rounded-md px-2">
           <button className="mr-2">
-            <MessageSquareShare className="h-6" />
+            <MessageSquareShare className="h-[28px] w-[27.45px]" />
           </button>
           <p className="text-sm">
             <span className="font-bold">{formatter.format(comments)} </span>

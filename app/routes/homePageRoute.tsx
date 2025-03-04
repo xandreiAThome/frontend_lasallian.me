@@ -1,7 +1,13 @@
 import { BookPlus } from "lucide-react";
-import PostCard from "./postCard";
+import PostCard from "~/components/homePageComponents/postCard";
 import postData from "~/components/dummyData/postData";
-import OrgPostCard from "./orgPostCard";
+import OrgPostCard from "~/components/homePageComponents/orgPostCard";
+import axios from "axios";
+import api from "~/lib/api";
+import { getUserId } from "~/.server/sessions";
+import { redirect } from "react-router";
+import type { ComponentProps } from "react";
+import type { Route } from "./+types/homePageRoute";
 
 interface postData {
   author: string;
@@ -46,7 +52,34 @@ interface orgPost {
   }[];
 }
 
-export default function HomePage() {
+export async function loader({ request }: Route.LoaderArgs) {
+  // Check if the user is already logged in
+  const userId = await getUserId(request);
+  if (!userId) {
+    throw redirect("/");
+  }
+
+  try {
+    const response = await api.get(
+      `${process.env.API_KEY}/post/normal/679bacd27077c487c7addee1`,
+      {
+        headers: {
+          Authorization: `Bearer ${userId}`,
+        },
+      }
+    );
+
+    console.log(response.data);
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.error(" error:", error.response?.data || error.message);
+    } else {
+      console.error("Unexpected error:", error);
+    }
+  }
+}
+
+export default function HomePage({ loaderData }: Route.ComponentProps) {
   return (
     <div className="basis-[640px] pt-6 flex flex-col gap-4">
       <div className="bg-custom-postcard-white flex items-center px-6 rounded-xl py-4 shadow-lg w-full">

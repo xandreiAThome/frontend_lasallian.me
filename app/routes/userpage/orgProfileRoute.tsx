@@ -2,11 +2,11 @@ import { NavLink, redirect } from "react-router";
 import Logo from "~/components/assets/logo.svg";
 import { BookPlus } from "lucide-react";
 import { Input } from "~/components/ui/input";
-import PostCard from "../homepage/postCard";
+import PostCard from "~/components/homePageComponents/postCard";
 import postData from "~/components/dummyData/postData";
-import UserBannerCard from "./userBannerCard";
-import OrgBannerCard from "./orgBannerCard";
-import OrgPostCard from "../homepage/orgPostCard";
+import UserBannerCard from "~/components/userPageComponents/userBannerCard";
+import OrgBannerCard from "~/components/userPageComponents/orgBannerCard";
+import OrgPostCard from "~/components/homePageComponents/orgPostCard";
 
 interface postsData {
   author: string;
@@ -31,7 +31,7 @@ interface postsData {
 
 export default function OrgProfilePage() {
   return (
-    <div className="basis-[640px] pt-6 flex flex-col gap-4">
+    <div className="basis-[640px] flex flex-col gap-4">
       <OrgBannerCard />
 
       {postData.org.map(

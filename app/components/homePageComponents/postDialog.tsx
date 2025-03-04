@@ -33,6 +33,7 @@ import { Input } from "~/components/ui/input";
 import CommentsCard from "./commentsCard";
 import { useNavigate } from "react-router";
 import { useState } from "react";
+import ReactionsCard from "./reactionsCard";
 
 interface postData {
   author: string;
@@ -304,22 +305,14 @@ export default function PostDialog({
         </div>
         <hr className="-mx-6" />
         <DialogFooter className="sm:justify-center sm:flex-col flex-col">
-          <div className="flex justify-between flex-1">
+          <div className="flex justify-between flex-1 gap-4">
             <div className="flex items-center">
-              <button className="mr-2">
-                <Heart className="h-6" />
-              </button>
-              <p className="text-sm">
-                <span className="font-bold">
-                  {formatter.format(reactions)}{" "}
-                </span>
-                reactions
-              </p>
+              <ReactionsCard reactions={reactions}></ReactionsCard>
             </div>
 
             <div className="flex items-center">
               <button className="mr-2">
-                <MessageSquareText className="h-6" />
+                <MessageSquareText className="h-[28px] w-[27.45px]" />
               </button>
               <p className="text-sm">
                 <span className="font-bold">{formatter.format(comments)} </span>
@@ -327,9 +320,9 @@ export default function PostDialog({
               </p>
             </div>
 
-            <div className="flex items-center">
+            <div className="flex items-center hover:bg-slate-200 hover:rounded-md px-2 cursor-pointer">
               <button className="mr-2">
-                <MessageSquareShare className="h-6" />
+                <MessageSquareShare className="h-[28px] w-[27.45px]" />
               </button>
               <p className="text-sm">
                 <span className="font-bold">{formatter.format(comments)} </span>
