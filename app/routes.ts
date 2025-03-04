@@ -18,7 +18,7 @@ export default [
   ]),
 
   layout("routes/navigationBarLayout.tsx", [
-    route("homepage", "routes/homepage/homePageRoute.tsx"),
+    route("homepage", "routes/homePageRoute.tsx"),
     route("userprofile", "routes/userpage/userProfileRoute.tsx"),
     route("todo", "routes/todo.tsx"),
     route("orgprofile", "routes/userpage/orgProfileRoute.tsx"),

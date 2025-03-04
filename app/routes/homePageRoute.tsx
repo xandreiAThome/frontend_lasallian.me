@@ -1,7 +1,7 @@
 import { BookPlus } from "lucide-react";
-import PostCard from "./postCard";
+import PostCard from "~/components/homePageComponents/postCard";
 import postData from "~/components/dummyData/postData";
-import OrgPostCard from "./orgPostCard";
+import OrgPostCard from "~/components/homePageComponents/orgPostCard";
 import axios from "axios";
 import api from "~/lib/api";
 import { getUserId } from "~/.server/sessions";

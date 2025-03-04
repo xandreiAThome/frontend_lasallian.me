@@ -2,18 +2,16 @@ import { NavLink, redirect } from "react-router";
 import Logo from "~/components/assets/logo.svg";
 import { BookPlus } from "lucide-react";
 import { Input } from "~/components/ui/input";
-import PostCard from "~/components/homePageComponents/postCard";
+import PostCard from "../homepage/postCard";
 import postData from "~/components/dummyData/postData";
-import UserBannerCard from "~/components/userPageComponents/userBannerCard";
-import OrgBannerCard from "~/components/userPageComponents/orgBannerCard";
-import OrgPostCard from "~/components/homePageComponents/orgPostCard";
-
-interface postsData {
+import UserBannerCard from "./userBannerCard";
+interface postData {
   author: string;
+  username: string;
+  profile: string;
   time: Date;
   views: number;
   content: string;
-  profile: string;
   reactions: number;
   comments: number;
   reposts: number;
@@ -29,18 +27,19 @@ interface postsData {
   }[];
 }
 
-export default function OrgProfilePage() {
+export default function UserProfilePage() {
   return (
     <div className="basis-[640px] flex flex-col gap-4">
-      <OrgBannerCard />
+      <UserBannerCard />
 
-      {postData.org.map(
+      {postData.individual.map(
         ({
           author,
+          username,
           time,
           views,
-          content,
           profile,
+          content,
           reactions,
           comments,
           reposts,
@@ -48,14 +47,16 @@ export default function OrgProfilePage() {
           org,
           position,
           commentsList,
-        }: postsData) => {
-          if (author === "La Salle Computer Society")
+        }: postData) => {
+          if (author === "zel")
             return (
-              <OrgPostCard
+              <PostCard
+                key={username}
                 author={author}
+                username={username}
+                profile={profile}
                 time={time}
                 views={views}
-                profile={profile}
                 content={content}
                 reactions={reactions}
                 comments={comments}

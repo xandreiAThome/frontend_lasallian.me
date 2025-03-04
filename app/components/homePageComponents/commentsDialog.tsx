@@ -46,11 +46,11 @@ export default function CommentsDialog({ commentsList }: inputData) {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <div className="flex items-center">
+        <div className="flex items-center hover:bg-slate-200 hover:rounded-md px-2 hover:cursor-pointer">
           <button className="mr-2">
-            <MessageSquareText className="h-6" />
+            <MessageSquareText className="h-[28px] w-[27.45px]" />
           </button>
-          <p className="text-sm hover:cursor-pointer">
+          <p className="text-sm">
             <span className="font-bold">{12} </span>
             comments
           </p>

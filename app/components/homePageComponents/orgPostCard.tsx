@@ -9,6 +9,7 @@ import { useNavigate } from "react-router";
 import { use } from "react";
 import { Button } from "~/components/ui/button";
 import CommentsDialog from "./commentsDialog";
+import ReactionsCard from "./reactionsCard";
 
 interface postsData {
   author: string;
@@ -122,20 +123,14 @@ export default function OrgPostCard({
 
       <div className="flex items-center mt-4 justify-between gap-4">
         <div className="flex items-center">
-          <button className="mr-2">
-            <Heart className="h-6" />
-          </button>
-          <p className="text-sm">
-            <span className="font-bold">{formatter.format(reactions)} </span>
-            reactions
-          </p>
+          <ReactionsCard reactions={reactions}></ReactionsCard>
         </div>
 
         <CommentsDialog commentsList={commentsList} />
 
-        <div className="flex items-center">
+        <div className="flex items-center hover:bg-slate-200 hover:rounded-md px-2 cursor-pointer">
           <button className="mr-2">
-            <MessageSquareShare className="h-6" />
+            <MessageSquareShare className="h-[28px] w-[27.45px]" />
           </button>
           <p className="text-sm">
             <span className="font-bold">{formatter.format(comments)} </span>

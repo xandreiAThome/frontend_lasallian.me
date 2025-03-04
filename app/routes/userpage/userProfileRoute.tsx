@@ -2,9 +2,9 @@ import { NavLink, redirect } from "react-router";
 import Logo from "~/components/assets/logo.svg";
 import { BookPlus } from "lucide-react";
 import { Input } from "~/components/ui/input";
-import PostCard from "../homepage/postCard";
+import PostCard from "~/components/homePageComponents/postCard";
 import postData from "~/components/dummyData/postData";
-import UserBannerCard from "./userBannerCard";
+import UserBannerCard from "~/components/userPageComponents/userBannerCard";
 interface postData {
   author: string;
   username: string;

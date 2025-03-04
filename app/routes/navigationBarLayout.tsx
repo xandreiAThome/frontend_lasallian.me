@@ -1,9 +1,9 @@
 import { Form, NavLink, Outlet, redirect } from "react-router";
 import Logo from "~/components/assets/logo.svg";
 import { Button } from "~/components/ui/button";
-import OrgSideBarCard from "./sidebarComponents/orgSideBarCard";
-import FollowingSideBar from "./sidebarComponents/followingSideBarCard";
-import CreateButton from "~/routes/createPostComponents/CreateButton";
+import OrgSideBarCard from "~/components/sidebarComponents/orgSideBarCard";
+import FollowingSideBar from "~/components/sidebarComponents/followingSideBarCard";
+import CreateButton from "~/components/createPostComponents/CreateButton";
 import { Input } from "~/components/ui/input";
 import { Search } from "lucide-react";
 import type { Route } from "./+types/navigationBarLayout";
