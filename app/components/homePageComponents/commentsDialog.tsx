@@ -76,6 +76,7 @@ export default function CommentsDialog({ commentsList }: inputData) {
                       time={time}
                       content={content}
                       reactions={reactions}
+                      key={content}
                     />
                   );
                 }

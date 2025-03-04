@@ -17,9 +17,16 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
-import { Terminal, Images, CalendarDays, ChevronDown } from "lucide-react";
-import { useState } from "react";
+import {
+  Terminal,
+  Images,
+  CalendarDays,
+  ChevronDown,
+  Upload,
+} from "lucide-react";
+import { use, useState } from "react";
 import postData from "~/components/dummyData/postData";
+import { UploadImage } from "./uploadImage";
 
 interface positionsData {
   org: string;
@@ -81,6 +88,8 @@ export default function CreatePostButton() {
 
   const [position, setPosition] = useState("LSCS+VP");
 
+  const [showImageUpload, setShowImageUpload] = useState(false);
+
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -96,7 +105,7 @@ export default function CreatePostButton() {
           </div>
         </button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[640px]">
+      <DialogContent className="sm:max-w-[640px] overflow-y-auto max-h-screen">
         <DialogHeader>
           <DialogTitle>
             <h1 className="text-2xl">Create Post</h1>
@@ -156,16 +165,24 @@ export default function CreatePostButton() {
             name="content"
             id="content"
             placeholder="Use “/” to add components"
-            rows={10}
+            rows={4}
             className="bg-gray-100 rounded-2xl p-4 border-gray-200 border focus:outline-lasalle-green outline-none"
           ></textarea>
+          {showImageUpload && <UploadImage />}
         </div>
         <DialogFooter className="sm:justify-between items-center">
-          <div className="flex gap-6">
-            <button className="text-lasalle-green flex gap-2 hover:text-green-600 transition-all">
+          <div className="flex gap-4">
+            {/* <UploadImage /> */}
+            <button
+              className="text-lasalle-green flex gap-2 hover:text-green-600 transition-all"
+              onClick={() => {
+                setShowImageUpload(!showImageUpload);
+              }}
+            >
               <Images />
-              Add Media
+              <p>Add Media</p>
             </button>
+
             <button className="text-lasalle-green flex gap-2 hover:text-green-600 transition-all">
               <CalendarDays />
               Tag Event

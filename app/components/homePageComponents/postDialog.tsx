@@ -353,6 +353,7 @@ export default function PostDialog({
                       time={time}
                       content={content}
                       reactions={reactions}
+                      key={content}
                     />
                   );
                 }

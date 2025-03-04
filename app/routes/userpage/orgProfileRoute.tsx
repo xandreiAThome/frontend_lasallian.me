@@ -64,6 +64,7 @@ export default function OrgProfilePage() {
                 org={org}
                 position={position}
                 commentsList={commentsList}
+                key={content}
               />
             );
         }

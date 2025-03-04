@@ -188,6 +188,7 @@ export default function OrgPostDialog({
                       time={time}
                       content={content}
                       reactions={reactions}
+                      key={content}
                     />
                   );
                 }

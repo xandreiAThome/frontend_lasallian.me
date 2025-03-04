@@ -51,7 +51,7 @@ export default function UserProfilePage() {
           if (author === "zel")
             return (
               <PostCard
-                key={username}
+                key={content}
                 author={author}
                 username={username}
                 profile={profile}

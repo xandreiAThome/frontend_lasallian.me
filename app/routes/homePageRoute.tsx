@@ -60,14 +60,11 @@ export async function loader({ request }: Route.LoaderArgs) {
   }
 
   try {
-    const response = await api.get(
-      `${process.env.API_KEY}/post/normal/679bacd27077c487c7addee1`,
-      {
-        headers: {
-          Authorization: `Bearer ${userId}`,
-        },
-      }
-    );
+    const response = await api.get(`${process.env.API_KEY}/post/normal`, {
+      headers: {
+        Authorization: `Bearer ${userId}`,
+      },
+    });
 
     console.log(response.data);
   } catch (error) {
@@ -118,7 +115,7 @@ export default function HomePage({ loaderData }: Route.ComponentProps) {
         }: postData) => {
           return (
             <PostCard
-              key={username}
+              key={content}
               author={author}
               username={username}
               profile={profile}
@@ -166,6 +163,7 @@ export default function HomePage({ loaderData }: Route.ComponentProps) {
               org={org}
               position={position}
               commentsList={commentsList}
+              key={content}
             />
           );
         }
