@@ -1,4 +1,4 @@
-import { Dot } from "lucide-react";
+import { Dot, Send } from "lucide-react";
 import { Ellipsis } from "lucide-react";
 import { Heart, MessageSquareText, MessageSquareShare } from "lucide-react";
 import TimeAgo from "javascript-time-ago";
@@ -6,10 +6,10 @@ import en from "javascript-time-ago/locale/en";
 import ReactTimeAgo from "react-time-ago";
 import OrgPostDialog from "./orgPostDialog";
 import { useNavigate } from "react-router";
-import { use } from "react";
+import { use, useState } from "react";
 import { Button } from "~/components/ui/button";
-import CommentsDialog from "./commentsDialog";
 import ReactionsCard from "./reactionsCard";
+import { Input } from "../ui/input";
 
 interface postsData {
   author: string;
@@ -50,6 +50,7 @@ export default function OrgPostCard({
 }: postsData) {
   const formatter = Intl.NumberFormat("en", { notation: "compact" });
   const navigate = useNavigate();
+  const [typeComment, setTypeComment] = useState(false);
 
   return (
     <div className="bg-custom-postcard-white flex flex-col px-6 rounded-xl py-4 shadow-lg">
@@ -126,7 +127,17 @@ export default function OrgPostCard({
           <ReactionsCard reactions={reactions}></ReactionsCard>
         </div>
 
-        <CommentsDialog commentsList={commentsList} />
+        <button
+          className="flex items-center hover:bg-slate-200 hover:rounded-md px-2 hover:cursor-pointer gap-2"
+          onClick={() => setTypeComment(!typeComment)}
+        >
+          <MessageSquareText className="h-[28px] w-[27.45px]" />
+
+          <p className="text-sm">
+            <span className="font-bold">{12} </span>
+            comments
+          </p>
+        </button>
 
         <div className="flex items-center hover:bg-slate-200 hover:rounded-md px-2 cursor-pointer">
           <button className="mr-2">
@@ -138,6 +149,17 @@ export default function OrgPostCard({
           </p>
         </div>
       </div>
+      {typeComment && (
+        <div className="flex relative">
+          <Input
+            placeholder="What's YOUR thoughts on this post?"
+            className="text-base md:text-base bg-gray-200 px-8 py-4 mt-4 rounded-3xl !ml-0"
+          ></Input>
+          <button>
+            <Send className="absolute bottom-2 m-auto right-4 text-gray-500 h-5"></Send>
+          </button>
+        </div>
+      )}
     </div>
   );
 }

@@ -1,11 +1,17 @@
-import { CalendarDays, ChevronDown, Dot, Images, Terminal } from "lucide-react";
+import {
+  CalendarDays,
+  ChevronDown,
+  Dot,
+  Images,
+  Send,
+  Terminal,
+} from "lucide-react";
 import { Ellipsis } from "lucide-react";
 import { Heart, MessageSquareText, MessageSquareShare } from "lucide-react";
 import TimeAgo from "javascript-time-ago";
 import en from "javascript-time-ago/locale/en";
 import ReactTimeAgo from "react-time-ago";
 import PostDialog from "./postDialog";
-import CommentsDialog from "./commentsDialog";
 import { useNavigate } from "react-router";
 import { Button } from "~/components/ui/button";
 import {
@@ -29,6 +35,7 @@ import {
   DialogTrigger,
 } from "~/components/ui/dialog";
 import ReactionsCard from "./reactionsCard";
+import { Input } from "../ui/input";
 
 interface positionsData {
   org: string;
@@ -79,6 +86,7 @@ export default function PostCard({
   const formatter = Intl.NumberFormat("en", { notation: "compact" });
   const navigate = useNavigate();
   const [currPos, setCurrPos] = useState("LSCS+VP");
+  const [typeComment, setTypeComment] = useState(false);
   // TEMP
   const positionsTEMP = [
     {
@@ -292,7 +300,17 @@ export default function PostCard({
           <ReactionsCard reactions={reactions} />
         </div>
 
-        <CommentsDialog commentsList={commentsList} />
+        <button
+          className="flex items-center hover:bg-slate-200 hover:rounded-md px-2 hover:cursor-pointer gap-2"
+          onClick={() => setTypeComment(!typeComment)}
+        >
+          <MessageSquareText className="h-[28px] w-[27.45px]" />
+
+          <p className="text-sm">
+            <span className="font-bold">{12} </span>
+            comments
+          </p>
+        </button>
 
         <div className="flex items-center hover:cursor-pointer hover:bg-slate-200 hover:rounded-md px-2">
           <button className="mr-2">
@@ -304,6 +322,17 @@ export default function PostCard({
           </p>
         </div>
       </div>
+      {typeComment && (
+        <div className="flex relative">
+          <Input
+            placeholder="What's YOUR thoughts on this post?"
+            className="text-base md:text-base bg-gray-200 px-8 py-4 mt-4 rounded-3xl !ml-0"
+          ></Input>
+          <button>
+            <Send className="absolute bottom-2 m-auto right-4 text-gray-500 h-5"></Send>
+          </button>
+        </div>
+      )}
     </div>
   );
 }

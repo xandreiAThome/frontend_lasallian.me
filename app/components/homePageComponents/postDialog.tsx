@@ -26,6 +26,7 @@ import {
   Heart,
   MessageSquareShare,
   MessageSquareText,
+  Send,
   Terminal,
 } from "lucide-react";
 import ReactTimeAgo from "react-time-ago";
@@ -298,7 +299,7 @@ export default function PostDialog({
           </div>
         </DialogHeader>
         <div className="flex text-base text-justify flex-col">
-          <p className="mb-2">{content}</p>
+          <p className="mb-2 whitespace-pre-wrap">{content}</p>
           <div className="-mx-6">
             {img && <img src={img} alt="image content" className=""></img>}
           </div>
@@ -331,10 +332,15 @@ export default function PostDialog({
             </div>
           </div>
 
-          <Input
-            placeholder="What's YOUR thoughts on this post?"
-            className="text-base md:text-base bg-gray-200 px-8 py-4 my-6 rounded-3xl !ml-0"
-          ></Input>
+          <div className="flex relative">
+            <Input
+              placeholder="What's YOUR thoughts on this post?"
+              className="text-base md:text-base bg-gray-200 px-8 py-4 my-6 rounded-3xl !ml-0"
+            ></Input>
+            <button>
+              <Send className="absolute top-0 bottom-0 m-auto right-4 text-gray-500 h-5"></Send>
+            </button>
+          </div>
 
           <div className="flex flex-col !ml-0">
             {commentsList &&

@@ -1,4 +1,4 @@
-import { Form, NavLink, Outlet, redirect } from "react-router";
+import { Form, NavLink, Outlet, redirect, useNavigation } from "react-router";
 import Logo from "~/components/assets/logo.svg";
 import { Button } from "~/components/ui/button";
 import OrgSideBarCard from "~/components/sidebarComponents/orgSideBarCard";
@@ -9,6 +9,8 @@ import { Search } from "lucide-react";
 import type { Route } from "./+types/navigationBarLayout";
 
 export default function NavBar() {
+  const navigation = useNavigation();
+
   return (
     <div className="flex h-full bg-custom-bg-white justify-evenly gap-2 overflow-y-auto">
       <nav className="max-w-96 hidden lg:flex py-8 flex-col items-end sticky top-0">
@@ -107,9 +109,15 @@ export default function NavBar() {
         </div>
       </nav>
 
-      <main className="max-w-[640px] w-full">
-        <Outlet />
-      </main>
+      {navigation.state === "loading" ? (
+        <div className="max-w-[640px]  w-full flex items-center justify-center text-3xl">
+          Loading
+        </div>
+      ) : (
+        <main className="max-w-[640px] w-full">
+          <Outlet />
+        </main>
+      )}
 
       <div className="basis-96 bg-custom-bg-white hidden md:flex md:flex-col py-8 gap-6 sticky top-0 self-start">
         <div className="flex relative">
