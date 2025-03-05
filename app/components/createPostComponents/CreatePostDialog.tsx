@@ -28,6 +28,8 @@ import { use, useState } from "react";
 import postData from "~/components/dummyData/postData";
 import { UploadImage } from "./uploadImage";
 import { Textarea } from "../ui/textarea";
+import { Form, useFetcher } from "react-router";
+import { DialogClose } from "@radix-ui/react-dialog";
 
 interface positionsData {
   org: string;
@@ -36,7 +38,11 @@ interface positionsData {
   positionColor: string;
 }
 
-export default function CreatePostButton() {
+interface CreatePostButtonProps {
+  setOpen: (open: boolean) => void;
+}
+
+export default function CreatePostButton({ setOpen }: CreatePostButtonProps) {
   // TEMP
   const positionsTEMP = [
     {
@@ -90,35 +96,57 @@ export default function CreatePostButton() {
   const [position, setPosition] = useState("LSCS+VP");
   const [textContent, setTextContent] = useState("hi");
   const [showImageUpload, setShowImageUpload] = useState(false);
+  const fetcher = useFetcher();
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget as HTMLFormElement);
+
+    // Format data as required by API
+    const postData = {
+      title: formData.get("title") || "test title",
+      content: { text: formData.get("content") },
+    };
+
+    // Submit the formatted data
+    fetcher.submit(
+      { json: JSON.stringify(postData) },
+      { method: "post", action: "/createPost" }
+    );
+
+    // Close the dialog
+    setOpen(false);
+  };
 
   return (
-    <form action="">
-      <Dialog>
-        <DialogTrigger asChild>
-          <button className="flex gap-4 p-6 border-2 rounded-2xl hover:bg-slate-100 hover:rounded-2xl transition-all">
-            <Terminal className="mr-2" size="36" />
-            <div>
-              <p className="text-justify text-xl font-bold">Post</p>
-              <p className="text-justify">
-                Share something publicly to{" "}
-                <span className="font-bold">your</span> feed; doesn't need to be
-                professional. This will not be shown to job recruiters.
-              </p>
-            </div>
-          </button>
-        </DialogTrigger>
-        <DialogContent className="sm:max-w-[640px] overflow-y-auto max-h-screen">
-          <DialogHeader>
-            <DialogTitle>
-              <h1 className="text-2xl">Create Post</h1>
-              <h4 className="text-base font-normal">
-                Posting with{" "}
-                <span className="font-bold">
-                  La Salle Computer Society - Vice President
-                </span>
-              </h4>
-            </DialogTitle>
-          </DialogHeader>
+    <Dialog>
+      {" "}
+      <DialogTrigger asChild>
+        <button className="flex gap-4 p-6 border-2 rounded-2xl hover:bg-slate-100 hover:rounded-2xl transition-all">
+          <Terminal className="mr-2" size="36" />
+          <div>
+            <p className="text-justify text-xl font-bold">Post</p>
+            <p className="text-justify">
+              Share something publicly to{" "}
+              <span className="font-bold">your</span> feed; doesn't need to be
+              professional. This will not be shown to job recruiters.
+            </p>
+          </div>
+        </button>
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-[640px] overflow-y-auto max-h-screen">
+        <DialogHeader>
+          <DialogTitle>
+            <h1 className="text-2xl">Create Post</h1>
+            <h4 className="text-base font-normal">
+              Posting with{" "}
+              <span className="font-bold">
+                La Salle Computer Society - Vice President
+              </span>
+            </h4>
+          </DialogTitle>
+        </DialogHeader>{" "}
+        <form onSubmit={handleSubmit}>
           <div className="flex gap-4 py-4 flex-col">
             <div className="flex items-center">
               <img
@@ -142,7 +170,7 @@ export default function CreatePostButton() {
                   </p>
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                      <button>
+                      <button type="button">
                         <ChevronDown className="font-extrabold" />
                       </button>
                     </DropdownMenuTrigger>
@@ -182,25 +210,31 @@ export default function CreatePostButton() {
                 onClick={() => {
                   setShowImageUpload(!showImageUpload);
                 }}
+                type="button"
               >
                 <Images />
                 <p>Add Media</p>
               </button>
 
-              <button className="text-lasalle-green flex gap-2 hover:text-green-600 transition-all">
+              <button
+                type="button"
+                className="text-lasalle-green flex gap-2 hover:text-green-600 transition-all"
+              >
                 <CalendarDays />
                 Tag Event
               </button>
             </div>
-            <Button
-              className="bg-lasalle-green rounded-3xl text-lg px-6"
-              type="submit"
-            >
-              Post
-            </Button>
+            <DialogClose asChild>
+              <Button
+                className="bg-lasalle-green rounded-3xl text-lg px-6"
+                type="submit"
+              >
+                Post
+              </Button>
+            </DialogClose>
           </DialogFooter>
-        </DialogContent>
-      </Dialog>
-    </form>
+        </form>
+      </DialogContent>
+    </Dialog>
   );
 }

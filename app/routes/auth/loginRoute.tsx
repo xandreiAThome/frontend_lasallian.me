@@ -30,7 +30,6 @@ export async function action({ request }: Route.ActionArgs) {
 
     console.log("Login successful:", response.data);
     const token = response.data.session_token;
-    console.log("token", token);
 
     // create session
     try {

@@ -11,6 +11,8 @@ export default [
 
   route("logout", "routes/auth/logoutRoute.tsx"),
 
+  route("createPost", "routes/api/createPostRoute.tsx"),
+
   layout("routes/auth/authLayout.tsx", [
     index("routes/auth/loginRoute.tsx"),
     route("register", "routes/auth/RegisterRoute.tsx"),
@@ -22,5 +24,6 @@ export default [
     route("userprofile", "routes/userpage/userProfileRoute.tsx"),
     route("todo", "routes/todo.tsx"),
     route("orgprofile", "routes/userpage/orgProfileRoute.tsx"),
+    route("search", "routes/api/searchRoute.tsx"),
   ]),
 ] satisfies RouteConfig;

@@ -1,4 +1,4 @@
-import { Form, NavLink, Outlet, redirect, useNavigation } from "react-router";
+import { Form, NavLink, Outlet, useNavigation } from "react-router";
 import Logo from "~/components/assets/logo.svg";
 import { Button } from "~/components/ui/button";
 import OrgSideBarCard from "~/components/sidebarComponents/orgSideBarCard";
@@ -6,7 +6,6 @@ import FollowingSideBar from "~/components/sidebarComponents/followingSideBarCar
 import CreateButton from "~/components/createPostComponents/CreateButton";
 import { Input } from "~/components/ui/input";
 import { Search } from "lucide-react";
-import type { Route } from "./+types/navigationBarLayout";
 
 export default function NavBar() {
   const navigation = useNavigation();
@@ -103,7 +102,7 @@ export default function NavBar() {
               >
                 <button type="submit">Logout</button>
               </Form>
-            </li>{" "}
+            </li>
             <CreateButton />
           </ul>
         </div>
@@ -120,13 +119,26 @@ export default function NavBar() {
       )}
 
       <div className="basis-96 bg-custom-bg-white hidden md:flex md:flex-col py-8 gap-6 sticky top-0 self-start">
-        <div className="flex relative">
-          <Input
-            className="bg-custom-postcard-white pl-12 max-w-full rounded-3xl h-11"
-            placeholder="Search..."
-          ></Input>
-          <Search className="absolute top-0 bottom-0 m-auto left-4 text-gray-500" />
-        </div>
+        <Form method="get" action="/search">
+          <div className="flex relative">
+            <Input
+              type="text"
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                  e.currentTarget.form?.requestSubmit();
+                }
+              }}
+              className="bg-custom-postcard-white pl-12 max-w-full rounded-3xl h-11"
+              placeholder="Search..."
+              name="q"
+            ></Input>
+            <button type="submit">
+              <Search className="absolute top-0 bottom-0 m-auto left-4 text-gray-500" />
+            </button>
+          </div>
+        </Form>
+
         <OrgSideBarCard />
         <FollowingSideBar />
         <p className="text-gray-400 text-center">

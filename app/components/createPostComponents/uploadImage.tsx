@@ -36,6 +36,7 @@ export function UploadImage() {
           <div className="text-lasalle-green flex gap-2">
             <div className="w-full">
               <button
+                type="button"
                 style={isDragging ? { color: "red" } : undefined}
                 onClick={onImageUpload}
                 {...dragProps}
@@ -54,6 +55,7 @@ export function UploadImage() {
                   <img src={image.dataURL} alt="" width="200" />
                   <div className="flex gap-2">
                     <button
+                      type="button"
                       className="hover:text-green-600 transition-all"
                       onClick={() => {
                         onImageUpdate(index);
@@ -62,6 +64,7 @@ export function UploadImage() {
                       Update
                     </button>
                     <button
+                      type="button"
                       className="hover:text-green-600 transition-all"
                       onClick={() => onImageRemove(index)}
                     >
@@ -73,6 +76,7 @@ export function UploadImage() {
 
               {images.length > 0 && (
                 <button
+                  type="button"
                   className="hover:text-green-600 transition-all"
                   onClick={onImageRemoveAll}
                 >

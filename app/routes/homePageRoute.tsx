@@ -4,10 +4,9 @@ import postData from "~/components/dummyData/postData";
 import OrgPostCard from "~/components/homePageComponents/orgPostCard";
 import axios from "axios";
 import api from "~/lib/api";
-import { getUserId } from "~/.server/sessions";
 import { redirect } from "react-router";
-import type { ComponentProps } from "react";
 import type { Route } from "./+types/homePageRoute";
+import { getUserId } from "~/.server/sessions";
 
 interface postData {
   author: string;
@@ -60,13 +59,14 @@ export async function loader({ request }: Route.LoaderArgs) {
   }
 
   try {
-    const response = await api.get(`${process.env.API_KEY}/post/normal`, {
+    const response = await api.get(`${process.env.API_KEY}/post/ad`, {
       headers: {
         Authorization: `Bearer ${userId}`,
       },
     });
 
     console.log(response.data);
+    console.log(response.data[2].author);
   } catch (error) {
     if (axios.isAxiosError(error)) {
       console.error(" error:", error.response?.data || error.message);
