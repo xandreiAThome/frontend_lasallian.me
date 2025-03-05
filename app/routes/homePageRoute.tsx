@@ -59,14 +59,14 @@ export async function loader({ request }: Route.LoaderArgs) {
   }
 
   try {
-    const response = await api.get(`${process.env.API_KEY}/post/ad`, {
+    const response = await api.get(`${process.env.API_KEY}/post/all`, {
       headers: {
         Authorization: `Bearer ${userId}`,
       },
     });
 
     console.log(response.data);
-    console.log(response.data[2].author);
+    console.log(response.data[10].author);
   } catch (error) {
     if (axios.isAxiosError(error)) {
       console.error(" error:", error.response?.data || error.message);

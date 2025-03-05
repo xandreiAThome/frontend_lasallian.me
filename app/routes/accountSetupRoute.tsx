@@ -14,11 +14,54 @@ import {
   SelectValue,
 } from "~/components/ui/select";
 import type { Route } from "./+types/accountSetupRoute";
+import api from "~/lib/api";
+import axios from "axios";
 
-export async function clientAction({ request }: Route.ClientActionArgs) {
-  let formData = await request.formData();
-  console.log(formData);
-  return redirect("/homepage");
+export async function action({ request }: Route.ActionArgs) {
+  const url = new URL(request.url);
+  const token = url.searchParams.get("token");
+
+  console.log("Token from URL:", token);
+
+  const formData = await request.formData();
+
+  const reqBody = {
+    info: {
+      name: {
+        first: formData.get("first"),
+        last: formData.get("last"),
+      },
+      username: formData.get("username"),
+      batchid: formData.get("batchId"),
+      program: formData.get("program"),
+    },
+  };
+
+  console.log(reqBody);
+
+  try {
+    // Send to your API endpoint
+    const response = await api.post(
+      `${process.env.API_KEY}/user/setup`,
+      reqBody,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    console.log("API response:", response.data);
+
+    return redirect("/");
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.log(" error:", error);
+    } else {
+      console.log("Unexpected error:", error);
+    }
+  }
 }
 
 // TODO: setup the input names and values
@@ -91,8 +134,13 @@ export default function AccountSetup() {
                     placeholder="@username"
                     className="bg-slate-100"
                     name="username"
+                    required
                   />
-                  <Input placeholder="Bio" className="bg-slate-100" />
+                  <Input
+                    name="bio"
+                    placeholder="Bio"
+                    className="bg-slate-100"
+                  />
                 </div>
               </div>
             </div>
@@ -106,27 +154,31 @@ export default function AccountSetup() {
                 <Input
                   className="bg-slate-100 "
                   placeholder="First Name *"
+                  name="first"
+                  required
                 ></Input>
                 <Input
                   className="bg-slate-100 "
                   placeholder="Last Name *"
+                  name="last"
+                  required
                 ></Input>
               </div>
             </div>
 
             <div className="flex gap-2 px-12 items-center">
-              <Select>
+              <Select name="batchId" required>
                 <SelectTrigger className="w-20">
                   <SelectValue placeholder="Select a fruit" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>
                     <SelectLabel>Id Number</SelectLabel>
-                    <SelectItem value="apple">120</SelectItem>
-                    <SelectItem value="banana">121</SelectItem>
-                    <SelectItem value="blueberry">122</SelectItem>
-                    <SelectItem value="grapes">123</SelectItem>
-                    <SelectItem value="pineapple">124</SelectItem>
+                    <SelectItem value="120">120</SelectItem>
+                    <SelectItem value="121">121</SelectItem>
+                    <SelectItem value="122">122</SelectItem>
+                    <SelectItem value="123">123</SelectItem>
+                    <SelectItem value="124">124</SelectItem>
                   </SelectGroup>
                 </SelectContent>
               </Select>
@@ -134,6 +186,8 @@ export default function AccountSetup() {
               <Input
                 className="max-w-80 bg-slate-100"
                 placeholder="Degree Program"
+                name="program"
+                required
               ></Input>
             </div>
 
@@ -147,6 +201,7 @@ export default function AccountSetup() {
                   <Input
                     className="bg-slate-100 max-w-80 pl-9"
                     placeholder="https://facebook.com/..."
+                    name="facebook"
                   ></Input>
                   <Facebook className="absolute top-0 bottom-0 m-auto left-1 text-gray-500" />
                 </div>
@@ -155,6 +210,7 @@ export default function AccountSetup() {
                   <Input
                     className="bg-slate-100 max-w-80 pl-9"
                     placeholder="@juandelacruz..."
+                    name="instagram"
                   ></Input>
                   <Instagram className="absolute top-0 bottom-0 m-auto left-1 text-gray-500" />
                 </div>
@@ -163,6 +219,7 @@ export default function AccountSetup() {
                   <Input
                     className="bg-slate-100 max-w-80 pl-9"
                     placeholder="https://linkedin.com/in/..."
+                    name="linkedln"
                   ></Input>
                   <Linkedin className="absolute top-0 bottom-0 m-auto left-1 text-gray-500" />
                 </div>
@@ -178,6 +235,8 @@ export default function AccountSetup() {
               </Button>
               <div className="flex items-center gap-2">
                 <Checkbox
+                  required
+                  name="policy"
                   id="terms"
                   className="outline-lasalle-green"
                 ></Checkbox>
@@ -190,6 +249,7 @@ export default function AccountSetup() {
                   id="terms"
                   name="terms"
                   value="true"
+                  required
                   className="outline-lasalle-green"
                 ></Checkbox>
                 <label htmlFor="terms">
