@@ -17,9 +17,9 @@ export async function loader({ request }: Route.LoaderArgs) {
   const user = await getUserObject(request);
 
   try {
-    const response = await api.get(`${process.env.API_KEY}/post/all`, {
+    const response = await api.get(`${process.env.API_KEY}/post/normal`, {
       headers: {
-        Authorization: `Bearer ${user?._id}`,
+        Authorization: `Bearer ${userToken}`,
       },
     });
 
@@ -36,10 +36,6 @@ export async function loader({ request }: Route.LoaderArgs) {
   }
 }
 export default function UserProfilePage({ loaderData }: Route.ComponentProps) {
-  if (!loaderData) {
-    return <div>Loading...</div>; // Show a loading state if data is undefined
-  }
-
   return (
     <div className="basis-[640px] flex flex-col gap-4">
       {loaderData.user && <UserBannerCard {...loaderData.user} />}

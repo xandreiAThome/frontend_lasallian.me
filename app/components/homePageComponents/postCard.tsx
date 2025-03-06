@@ -41,6 +41,7 @@ import type {
   authorInterface,
   commentInterface,
 } from "~/lib/interfaces";
+import profileImg from "~/components/assets/profile.jpg";
 
 interface positionsData {
   org: string;
@@ -131,7 +132,11 @@ export default function PostCard(props: postDataInterface) {
           }}
         >
           <img
-            src={author.vanity && author.vanity.display_photo}
+            src={
+              author.vanity.display_photo
+                ? author.vanity.display_photo
+                : profileImg
+            }
             alt="profile"
             width="36"
             height="36"
@@ -293,8 +298,7 @@ export default function PostCard(props: postDataInterface) {
           <MessageSquareText className="h-[28px] w-[27.45px]" />
 
           <p className="text-sm">
-            <span className="font-bold">{12} </span>
-            {commentsNum}
+            <span className="font-bold">{commentsNum}</span> comments
           </p>
         </button>
 

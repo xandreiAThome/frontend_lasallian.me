@@ -36,7 +36,7 @@ import { useNavigate } from "react-router";
 import { useState } from "react";
 import ReactionsCard from "./reactionsCard";
 import type { commentInterface, postDataInterface } from "~/lib/interfaces";
-import autoprefixer from "autoprefixer";
+import profileImg from "~/components/assets/profile.jpg";
 
 interface positionsData {
   org: string;
@@ -120,7 +120,6 @@ export default function PostDialog({
   );
 
   // Compatibility variables for existing code
-  const img = media?.[0];
   const views = 0; // Default value as it's not in the new interface
   const reactions = 0; // Default value as it's not in the new interface
   const commentsNum = comments && Array.isArray(comments) ? comments.length : 0; // Default value as it's not in the new interface
@@ -130,6 +129,7 @@ export default function PostDialog({
   const navigate = useNavigate();
   const [currPos, setCurrPos] = useState("LSCS+VP");
   const [typeComment, setTypeComment] = useState(false);
+  console.log("media", media);
 
   return (
     <Dialog>
@@ -152,7 +152,11 @@ export default function PostDialog({
               }}
             >
               <img
-                src={author.vanity.display_photo}
+                src={
+                  author.vanity.display_photo
+                    ? author.vanity.display_photo
+                    : profileImg
+                }
                 alt="profile"
                 width="36"
                 height="36"
@@ -290,7 +294,9 @@ export default function PostDialog({
         <div className="flex text-base text-justify flex-col">
           <p className="mb-2 whitespace-pre-wrap">{content.text}</p>
           <div className="-mx-6">
-            {img && <img src={img} alt="image content" className=""></img>}
+            {media.length > 0 && (
+              <img src={media[0]} alt="image content" className=""></img>
+            )}
           </div>
         </div>
         <hr className="-mx-6" />

@@ -19,6 +19,7 @@ import {
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
 import type { commentInterface } from "~/lib/interfaces";
+import profileImg from "~/components/assets/profile.jpg";
 
 export default function CommentsCard({
   author,
@@ -77,7 +78,11 @@ export default function CommentsCard({
         }}
       >
         <img
-          src={author.vanity.display_photo}
+          src={
+            author.vanity.display_photo
+              ? author.vanity.display_photo
+              : profileImg
+          }
           alt="profile"
           width="36"
           height="36"

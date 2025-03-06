@@ -41,6 +41,7 @@ import { Input } from "~/components/ui/input";
 import { Button } from "~/components/ui/button";
 import type { authorInterface } from "~/lib/interfaces";
 import EditUserInfoDialog from "./editUserInfoDialog";
+import profileImg from "~/components/assets/profile.jpg";
 
 export default function UserBannerCard({
   vanity,
@@ -56,7 +57,7 @@ export default function UserBannerCard({
         <div className="relative flex px-6 py-4">
           <div className="w-32 h-32 lg:w-36 lg:h-36 rounded-full bg-gray-300 m-4 border-custom-bg-white border-4 absolute left-0 -top-20 flex justify-center items-center">
             <img
-              src="https://media.licdn.com/dms/image/v2/D5603AQGX6mTlbYpJ1Q/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1724656907874?e=1744243200&v=beta&t=pSFTZRJhVVUqZ1RMqZyaieh6TzH0qAE49KIUIa4xoLE"
+              src={vanity.display_photo ? vanity.display_photo : profileImg}
               alt=""
               className="rounded-full"
             />
