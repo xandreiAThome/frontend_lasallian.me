@@ -7,43 +7,45 @@ import postData from "~/components/dummyData/postData";
 import UserBannerCard from "~/components/userPageComponents/userBannerCard";
 import type { postDataInterface } from "~/lib/interfaces";
 import type { Route } from "./+types/userProfileRoute";
-import { getUserId } from "~/.server/sessions";
+import { getUserObject, getUserToken } from "~/.server/sessions";
 import api from "~/lib/api";
 import axios from "axios";
 
 export async function loader({ request }: Route.LoaderArgs) {
   // Check if the user is already logged in
-  const userId = await getUserId(request);
-  if (!userId) {
-    throw redirect("/");
-  }
+  const userToken = await getUserToken(request);
+  const user = await getUserObject(request);
 
   try {
     const response = await api.get(`${process.env.API_KEY}/post/all`, {
       headers: {
-        Authorization: `Bearer ${userId}`,
+        Authorization: `Bearer ${user?._id}`,
       },
     });
 
-    console.log(response.data);
-    console.log(response.data[10].author);
-    return response.data;
+    // console.log(response.data);
+    // console.log(response.data[10].author);
+    return { data: response.data, user: user };
   } catch (error) {
     if (axios.isAxiosError(error)) {
       console.error(" error:", error.response?.data || error.message);
     } else {
       console.error("Unexpected error:", error);
     }
+    return { data: [], user: user }; // Return a default value in case of error
   }
 }
-
 export default function UserProfilePage({ loaderData }: Route.ComponentProps) {
+  if (!loaderData) {
+    return <div>Loading...</div>; // Show a loading state if data is undefined
+  }
+
   return (
     <div className="basis-[640px] flex flex-col gap-4">
-      <UserBannerCard />
+      {loaderData.user && <UserBannerCard {...loaderData.user} />}
 
       {loaderData &&
-        loaderData.map(
+        loaderData.data.map(
           (
             {
               title,
@@ -54,6 +56,7 @@ export default function UserProfilePage({ loaderData }: Route.ComponentProps) {
               meta,
               author,
               comments,
+              _id,
             }: postDataInterface,
             index: number
           ) => {
@@ -68,6 +71,7 @@ export default function UserProfilePage({ loaderData }: Route.ComponentProps) {
                 meta={meta}
                 author={author}
                 comments={comments}
+                _id={_id}
               />
             );
           }

@@ -7,6 +7,7 @@ interface postDataInterface {
   meta: { created_at: Date; updated_at: Date };
   author: authorInterface;
   comments: commentInterface[];
+  _id: string;
   // organization todo
 }
 
@@ -15,6 +16,7 @@ interface commentInterface {
   content: string;
   post: postDataInterface;
   meta: { created_at: Date; updated_at: Date };
+  _id: string;
 }
 
 interface authorInterface {
@@ -41,6 +43,7 @@ interface authorInterface {
     created_at: Date;
     updated_at: Date;
   };
+  _id: string;
 }
 
 export type { authorInterface, postDataInterface, commentInterface };

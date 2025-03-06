@@ -342,6 +342,7 @@ export default function PostDialog({
                   content={comment.content}
                   post={comment.post}
                   meta={comment.meta}
+                  _id={comment._id}
                 />
               ))}
           </div>

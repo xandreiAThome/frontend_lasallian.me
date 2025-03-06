@@ -1,4 +1,11 @@
-import { Form, NavLink, Outlet, useNavigation } from "react-router";
+import {
+  Form,
+  NavLink,
+  Outlet,
+  redirect,
+  useNavigation,
+  type LoaderFunctionArgs,
+} from "react-router";
 import Logo from "~/components/assets/logo.svg";
 import { Button } from "~/components/ui/button";
 import OrgSideBarCard from "~/components/sidebarComponents/orgSideBarCard";
@@ -6,8 +13,21 @@ import FollowingSideBar from "~/components/sidebarComponents/followingSideBarCar
 import CreateButton from "~/components/createPostComponents/CreateButton";
 import { Input } from "~/components/ui/input";
 import { Search } from "lucide-react";
+import type { Route } from "./+types/navigationBarLayout";
+import { getUserId, getUserToken } from "~/.server/sessions";
 
-export default function NavBar() {
+export async function loader({ request }: Route.LoaderArgs) {
+  // Check if the user is already logged in
+  const userToken = await getUserToken(request);
+  if (!userToken) {
+    throw redirect("/");
+  }
+  const userId = await getUserId(request);
+  console.log("ahuwegba", userId);
+  return { userId };
+}
+
+export default function NavBar({ loaderData }: Route.ComponentProps) {
   const navigation = useNavigation();
 
   return (
@@ -37,7 +57,7 @@ export default function NavBar() {
                     "hover:bg-slate-200 hover:rounded-2xl px-4 py-1 transition-all",
                   ].join(" ")
                 }
-                to="/userprofile"
+                to={`/userprofile/${loaderData.userId}`}
               >
                 Profile
               </NavLink>

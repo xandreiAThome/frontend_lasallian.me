@@ -4,11 +4,11 @@ import { Button } from "~/components/ui/button";
 import type { Route } from "./+types/loginRoute";
 import axios from "axios";
 import api from "~/lib/api";
-import { createUserSession, getUserId } from "~/.server/sessions";
+import { createUserSession, getUserToken } from "~/.server/sessions";
 
 export async function loader({ request }: Route.LoaderArgs) {
   // Check if the user is already logged in
-  const sessionToken = await getUserId(request);
+  const sessionToken = await getUserToken(request);
   if (sessionToken) {
     return redirect("/homepage");
   }
@@ -28,14 +28,15 @@ export async function action({ request }: Route.ActionArgs) {
       },
     });
 
-    console.log("Login successful:", response.data);
-    const token = response.data.session_token;
+    // console.log("Login successful:", response.data);
 
     // create session
     try {
       sessionResponse = await createUserSession({
         request,
-        userId: token,
+        userId: response.data.user._id,
+        userToken: response.data.session_token,
+        user: response.data.user,
         remember: true,
         redirectUrl: "/homepage",
       });

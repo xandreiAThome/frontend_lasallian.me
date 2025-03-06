@@ -2,11 +2,11 @@ import { redirect } from "react-router";
 import type { Route } from "./+types/createPostRoute";
 import api from "~/lib/api";
 import axios from "axios";
-import { getUserId } from "~/.server/sessions";
+import { getUserId, getUserToken } from "~/.server/sessions";
 
 export async function action({ request }: Route.ActionArgs) {
-  const userId = await getUserId(request);
-  if (!userId) {
+  const userToken = await getUserToken(request);
+  if (!userToken) {
     throw redirect("/");
   }
 
@@ -26,7 +26,7 @@ export async function action({ request }: Route.ActionArgs) {
     // Send to your API endpoint
     const response = await api.post(`${process.env.API_KEY}/post`, postData, {
       headers: {
-        Authorization: `Bearer ${userId}`,
+        Authorization: `Bearer ${userToken}`,
         "Content-Type": "application/json",
       },
     });

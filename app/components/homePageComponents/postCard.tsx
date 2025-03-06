@@ -52,8 +52,17 @@ interface positionsData {
 TimeAgo.addDefaultLocale(en);
 
 export default function PostCard(props: postDataInterface) {
-  const { title, content, media, type, visibility, meta, author, comments } =
-    props;
+  const {
+    title,
+    content,
+    media,
+    type,
+    visibility,
+    meta,
+    author,
+    comments,
+    _id,
+  } = props;
 
   // Compatibility variables for existing code
   const img = media?.[0];
@@ -267,6 +276,7 @@ export default function PostCard(props: postDataInterface) {
         meta={meta}
         author={author}
         comments={comments}
+        _id={_id}
       />
 
       <hr className="-mx-6" />

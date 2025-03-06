@@ -5,25 +5,27 @@ import axios from "axios";
 import api from "~/lib/api";
 import { redirect } from "react-router";
 import type { Route } from "./+types/homePageRoute";
-import { getUserId } from "~/.server/sessions";
+import { getUserObject, getUserToken } from "~/.server/sessions";
 import type { postDataInterface } from "~/lib/interfaces";
 
 export async function loader({ request }: Route.LoaderArgs) {
   // Check if the user is already logged in
-  const userId = await getUserId(request);
-  if (!userId) {
-    throw redirect("/");
-  }
+  const userToken = await getUserToken(request);
+  const userObj = await getUserObject(request);
+  console.log("jaengibg", userObj);
+  // if (!userToken) {
+  //   throw redirect("/");
+  // }
 
   try {
     const response = await api.get(`${process.env.API_KEY}/post/all`, {
       headers: {
-        Authorization: `Bearer ${userId}`,
+        Authorization: `Bearer ${userToken}`,
       },
     });
 
-    console.log(response.data);
-    console.log(response.data[10].author);
+    // console.log(response.data);
+    // console.log("????", response.data[10].author);
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
@@ -66,6 +68,7 @@ export default function HomePage({ loaderData }: Route.ComponentProps) {
               meta,
               author,
               comments,
+              _id,
             }: postDataInterface,
             index: number
           ) => {
@@ -80,6 +83,7 @@ export default function HomePage({ loaderData }: Route.ComponentProps) {
                 meta={meta}
                 author={author}
                 comments={comments}
+                _id={_id}
               />
             );
           }
