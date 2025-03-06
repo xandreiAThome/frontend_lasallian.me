@@ -36,6 +36,11 @@ import {
 } from "~/components/ui/dialog";
 import ReactionsCard from "./reactionsCard";
 import { Input } from "../ui/input";
+import type {
+  postDataInterface,
+  authorInterface,
+  commentInterface,
+} from "~/lib/interfaces";
 
 interface positionsData {
   org: string;
@@ -44,45 +49,19 @@ interface positionsData {
   positionColor: string;
 }
 
-interface postData {
-  author: string;
-  username: string;
-  profile: string;
-  time: Date;
-  views: number;
-  content: string;
-  reactions: number;
-  comments: number;
-  reposts: number;
-  img: string | null;
-  org: string;
-  position: string;
-  commentsList: {
-    profile: { author: string; profile: string };
-    reactions: number;
-    comments: number;
-    time: Date;
-    content: string;
-  }[];
-}
-
 TimeAgo.addDefaultLocale(en);
 
-export default function PostCard({
-  author,
-  username,
-  profile,
-  time,
-  views,
-  content,
-  reactions,
-  comments,
-  reposts,
-  img,
-  org,
-  position,
-  commentsList,
-}: postData) {
+export default function PostCard(props: postDataInterface) {
+  const { title, content, media, type, visibility, meta, author, comments } =
+    props;
+
+  // Compatibility variables for existing code
+  const img = media?.[0];
+  const views = 0; // Default value as it's not in the new interface
+  const reactions = 0; // Default value as it's not in the new interface
+  const commentsNum = comments && Array.isArray(comments) ? comments.length : 0; // Default value as it's not in the new interface
+  const reposts = 0; // Default value as it's not in the new interface
+  const commentsList: commentInterface[] = []; // Default value as it's not in the new interface
   const formatter = Intl.NumberFormat("en", { notation: "compact" });
   const navigate = useNavigate();
   const [currPos, setCurrPos] = useState("LSCS+VP");
@@ -143,7 +122,7 @@ export default function PostCard({
           }}
         >
           <img
-            src={profile}
+            src={author.vanity && author.vanity.display_photo}
             alt="profile"
             width="36"
             height="36"
@@ -160,13 +139,13 @@ export default function PostCard({
               variant="link"
               className="text-lg text-black font-bold mr-2 p-0"
             >
-              {author}
+              {author.info.name.first} {author.info.name.last}
             </Button>{" "}
             <p className="px-2 bg-[#220088] text-white text-xs font-semibold">
-              {org}
+              LSCS {/** TEMPORARY */}
             </p>
             <p className="px-2 bg-[#313131] text-white text-xs font-semibold">
-              {position}
+              VP {/** TEMPORARY */}
             </p>
             <Dialog>
               <DropdownMenu>
@@ -202,7 +181,7 @@ export default function PostCard({
                 <div className="flex gap-4 py-4 flex-col">
                   <div className="flex items-center">
                     <img
-                      src={profile}
+                      src={author.vanity.display_photo}
                       alt="profile"
                       width="36"
                       height="36"
@@ -210,13 +189,14 @@ export default function PostCard({
                     />
                     <div className="flex flex-col items-start">
                       <div className="flex items-center">
-                        {" "}
-                        <p className="text-lg font-bold mr-12">{author}</p>{" "}
+                        <p className="text-lg font-bold mr-12">
+                          {author.info.name.first} {author.info.name.last}
+                        </p>
                         <p className="px-2 bg-[#220088] text-white text-xs font-semibold">
-                          {org}
+                          LSCS {/** TEMPORARY */}
                         </p>
                         <p className="px-2 bg-[#313131] text-white text-xs font-semibold mr-2">
-                          {position}
+                          VP {/** TEMPORARY */}
                         </p>
                         <DropdownMenu>
                           <DropdownMenuTrigger asChild>
@@ -238,7 +218,9 @@ export default function PostCard({
                           </DropdownMenuContent>
                         </DropdownMenu>
                       </div>
-                      <p className="text-gray-400 text-xs">{username}</p>
+                      <p className="text-gray-400 text-xs">
+                        {author.info.username}
+                      </p>
                     </div>
                   </div>{" "}
                   <textarea
@@ -248,7 +230,7 @@ export default function PostCard({
                     rows={5}
                     className="bg-gray-100 rounded-2xl p-4 border-gray-200 border focus:outline-lasalle-green outline-none"
                   >
-                    {content}
+                    {content.text}
                   </textarea>
                 </div>
                 <DialogFooter className="sm:justify-between items-center">
@@ -260,11 +242,11 @@ export default function PostCard({
             </Dialog>
           </div>
           <div className="flex items-start">
-            <p className="text-gray-400 text-xs">{username}</p>
+            <p className="text-gray-400 text-xs">{author.info.username}</p>
 
             <div className="ml-auto flex items-center">
               <p className="text-gray-400 text-xs">
-                <ReactTimeAgo date={time} locale="en-SG" />
+                <ReactTimeAgo date={meta.created_at} locale="en-SG" />
               </p>
               <Dot className="text-gray-500" />
               <p className="text-gray-400 text-xs">
@@ -277,20 +259,14 @@ export default function PostCard({
 
       {/** CONTENT */}
       <PostDialog
-        key={username}
-        author={author}
-        username={username}
-        profile={profile}
-        time={time}
-        views={views}
+        title={title}
         content={content}
-        reactions={reactions}
+        media={media}
+        type={type}
+        visibility={visibility}
+        meta={meta}
+        author={author}
         comments={comments}
-        reposts={reposts}
-        img={img}
-        org={org}
-        position={position}
-        commentsList={commentsList}
       />
 
       <hr className="-mx-6" />
@@ -308,7 +284,7 @@ export default function PostCard({
 
           <p className="text-sm">
             <span className="font-bold">{12} </span>
-            comments
+            {commentsNum}
           </p>
         </button>
 
@@ -317,7 +293,7 @@ export default function PostCard({
             <MessageSquareShare className="h-[28px] w-[27.45px]" />
           </button>
           <p className="text-sm">
-            <span className="font-bold">{formatter.format(comments)} </span>
+            <span className="font-bold">{formatter.format(commentsNum)} </span>
             reposts
           </p>
         </div>

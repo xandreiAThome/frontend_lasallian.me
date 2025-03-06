@@ -1,55 +1,12 @@
 import { BookPlus } from "lucide-react";
 import PostCard from "~/components/homePageComponents/postCard";
-import postData from "~/components/dummyData/postData";
 import OrgPostCard from "~/components/homePageComponents/orgPostCard";
 import axios from "axios";
 import api from "~/lib/api";
 import { redirect } from "react-router";
 import type { Route } from "./+types/homePageRoute";
 import { getUserId } from "~/.server/sessions";
-
-interface postData {
-  author: string;
-  username: string;
-  profile: string;
-  time: Date;
-  views: number;
-  content: string;
-  reactions: number;
-  comments: number;
-  reposts: number;
-  img: string | null;
-  org: string;
-  position: string;
-  commentsList: {
-    profile: { author: string; profile: string };
-    reactions: number;
-    comments: number;
-    time: Date;
-    content: string;
-  }[];
-}
-
-interface orgPost {
-  author: string;
-  profile: string;
-  time: Date;
-  views: number;
-  content: string;
-  reactions: number;
-  comments: number;
-  reposts: number;
-  img: string | null;
-  org: string;
-  position: string;
-  commentsList: {
-    profile: { author: string; profile: string };
-    reactions: number;
-    comments: number;
-    time: Date;
-    content: string;
-  }[];
-}
+import type { postDataInterface } from "~/lib/interfaces";
 
 export async function loader({ request }: Route.LoaderArgs) {
   // Check if the user is already logged in
@@ -67,6 +24,7 @@ export async function loader({ request }: Route.LoaderArgs) {
 
     console.log(response.data);
     console.log(response.data[10].author);
+    return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
       console.error(" error:", error.response?.data || error.message);
@@ -96,78 +54,36 @@ export default function HomePage({ loaderData }: Route.ComponentProps) {
           </p>
         </button>
       </div>
-
-      {postData.individual.map(
-        ({
-          author,
-          username,
-          profile,
-          time,
-          views,
-          content,
-          reactions,
-          comments,
-          reposts,
-          img,
-          org,
-          position,
-          commentsList,
-        }: postData) => {
-          return (
-            <PostCard
-              key={content}
-              author={author}
-              username={username}
-              profile={profile}
-              time={time}
-              views={views}
-              content={content}
-              reactions={reactions}
-              comments={comments}
-              reposts={reposts}
-              img={img}
-              org={org}
-              position={position}
-              commentsList={commentsList}
-            />
-          );
-        }
-      )}
-
-      {postData.org.map(
-        ({
-          author,
-          time,
-          views,
-          content,
-          profile,
-          reactions,
-          comments,
-          reposts,
-          img,
-          org,
-          position,
-          commentsList,
-        }: orgPost) => {
-          return (
-            <OrgPostCard
-              author={author}
-              time={time}
-              views={views}
-              profile={profile}
-              content={content}
-              reactions={reactions}
-              comments={comments}
-              reposts={reposts}
-              img={img}
-              org={org}
-              position={position}
-              commentsList={commentsList}
-              key={content}
-            />
-          );
-        }
-      )}
+      {loaderData &&
+        loaderData.map(
+          (
+            {
+              title,
+              content,
+              media,
+              type,
+              visibility,
+              meta,
+              author,
+              comments,
+            }: postDataInterface,
+            index: number
+          ) => {
+            return (
+              <PostCard
+                key={index}
+                title={title}
+                content={content}
+                media={media}
+                type={type}
+                visibility={visibility}
+                meta={meta}
+                author={author}
+                comments={comments}
+              />
+            );
+          }
+        )}
     </div>
   );
 }
