@@ -38,7 +38,7 @@ export async function loader({ request }: Route.LoaderArgs) {
 
 export default function HomePage({ loaderData }: Route.ComponentProps) {
   return (
-    <div className="basis-[640px] pt-6 flex flex-col gap-4">
+    <div className="basis-[640px] pt-6 flex flex-col gap-4 animate-fade-in">
       <div className="bg-custom-postcard-white flex items-center px-6 rounded-xl py-4 shadow-lg w-full">
         <img
           src="https://www.shutterstock.com/image-vector/blank-avatar-photo-place-holder-600nw-1095249842.jpg"

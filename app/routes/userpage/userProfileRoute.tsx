@@ -37,7 +37,7 @@ export async function loader({ request }: Route.LoaderArgs) {
 }
 export default function UserProfilePage({ loaderData }: Route.ComponentProps) {
   return (
-    <div className="basis-[640px] flex flex-col gap-4">
+    <div className="basis-[640px] flex flex-col gap-4 animate-fade-in">
       {loaderData.user && <UserBannerCard {...loaderData.user} />}
 
       {loaderData &&

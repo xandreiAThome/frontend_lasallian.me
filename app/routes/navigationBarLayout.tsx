@@ -128,15 +128,13 @@ export default function NavBar({ loaderData }: Route.ComponentProps) {
         </div>
       </nav>
 
-      {navigation.state === "loading" ? (
-        <div className="max-w-[640px]  w-full flex items-center justify-center text-3xl">
-          Loading
-        </div>
-      ) : (
-        <main className="max-w-[640px] w-full">
-          <Outlet />
-        </main>
-      )}
+      <main
+        className={`max-w-[640px] w-full ${
+          navigation.state === "loading" ? "animate-fade-out" : ""
+        }`}
+      >
+        <Outlet />
+      </main>
 
       <div className="basis-96 bg-custom-bg-white hidden md:flex md:flex-col py-8 gap-6 sticky top-0 self-start">
         <Form method="get" action="/search">
