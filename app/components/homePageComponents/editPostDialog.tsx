@@ -152,7 +152,7 @@ export default function EditPostDialog(props: editPostDialogInterface) {
   };
   return (
     <>
-      <DropdownMenu modal={false}>
+      <DropdownMenu modal={props.isModal}>
         <DropdownMenuTrigger className="ml-auto text-gray-500" asChild>
           <button>
             <Ellipsis />
