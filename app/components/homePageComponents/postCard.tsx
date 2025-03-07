@@ -14,33 +14,10 @@ import ReactTimeAgo from "react-time-ago";
 import PostDialog from "./postDialog";
 import { useNavigate } from "react-router";
 import { Button } from "~/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuRadioGroup,
-  DropdownMenuRadioItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "~/components/ui/dropdown-menu";
 import { useState, type JSX } from "react";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "~/components/ui/dialog";
 import ReactionsCard from "./reactionsCard";
 import { Input } from "../ui/input";
-import type {
-  postDataInterface,
-  authorInterface,
-  commentInterface,
-} from "~/lib/interfaces";
+import type { postDataInterface, commentInterface } from "~/lib/interfaces";
 import profileImg from "~/components/assets/profile.jpg";
 import EditPostDialog from "./editPostDialog";
 
@@ -84,7 +61,7 @@ export default function PostCard(props: postDataInterface) {
       <div className="flex items-center">
         <button
           onClick={() => {
-            navigate(`/userprofile/${_id}`);
+            navigate(`/userprofile/${author._id}`);
           }}
         >
           <img
@@ -104,7 +81,7 @@ export default function PostCard(props: postDataInterface) {
           <div className="flex items-center">
             <Button
               onClick={() => {
-                navigate(`/userprofile/${_id}`);
+                navigate(`/userprofile/${author._id}`);
               }}
               variant="link"
               className="text-lg text-black font-bold mr-2 p-0"

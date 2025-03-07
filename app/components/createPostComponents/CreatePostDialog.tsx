@@ -28,9 +28,16 @@ import { use, useState } from "react";
 import postData from "~/components/dummyData/postData";
 import { UploadImage } from "./uploadImage";
 import { Textarea } from "../ui/textarea";
-import { Form, useFetcher, useLoaderData, useRevalidator } from "react-router";
+import {
+  Form,
+  useFetcher,
+  useLoaderData,
+  useLocation,
+  useRevalidator,
+} from "react-router";
 import { DialogClose } from "@radix-ui/react-dialog";
 import type { authorInterface } from "~/lib/interfaces";
+import profileImg from "~/components/assets/profile.jpg";
 
 interface positionsData {
   org: string;
@@ -50,6 +57,7 @@ interface loaderDataInterface {
 
 export default function CreatePostButton({ setOpen }: CreatePostButtonProps) {
   const loaderData: loaderDataInterface = useLoaderData();
+  const location = useLocation();
 
   // TEMP
   const positionsTEMP = [
@@ -102,28 +110,26 @@ export default function CreatePostButton({ setOpen }: CreatePostButtonProps) {
   );
 
   const [position, setPosition] = useState("LSCS+VP");
-  const [textContent, setTextContent] = useState("hi");
+  const [textContent, setTextContent] = useState("");
   const [showImageUpload, setShowImageUpload] = useState(false);
   const fetcher = useFetcher();
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget as HTMLFormElement);
-    console.log("kkk", loaderData);
 
     // Format data as required by API
     const postData = {
       content: { text: formData.get("content") },
+      location: location,
     };
+    setOpen(false);
 
     // Submit the formatted data
     fetcher.submit(
       { json: JSON.stringify(postData) },
       { method: "post", action: "/createPost" }
     );
-    setOpen(false);
-    const revalidator = useRevalidator();
-    revalidator.revalidate();
   };
 
   return (
@@ -154,11 +160,11 @@ export default function CreatePostButton({ setOpen }: CreatePostButtonProps) {
             </h4>
           </DialogTitle>
         </DialogHeader>{" "}
-        <form onSubmit={handleSubmit}>
+        <Form onSubmit={handleSubmit}>
           <div className="flex gap-4 py-4 flex-col">
             <div className="flex items-center">
               <img
-                src={postData.individual[1].profile}
+                src={loaderData.user.vanity.display_photo || profileImg}
                 alt="profile"
                 width="36"
                 height="36"
@@ -241,7 +247,7 @@ export default function CreatePostButton({ setOpen }: CreatePostButtonProps) {
               </Button>
             </DialogClose>
           </DialogFooter>
-        </form>
+        </Form>
       </DialogContent>
     </Dialog>
   );

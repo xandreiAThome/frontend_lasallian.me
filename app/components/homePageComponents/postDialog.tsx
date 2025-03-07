@@ -150,7 +150,7 @@ export default function PostDialog(props: postDataInterface) {
           <div className="flex items-center mt-4">
             <button
               onClick={() => {
-                navigate(`/userprofile/${_id}`);
+                navigate(`/userprofile/${author._id}`);
               }}
             >
               <img
@@ -169,7 +169,7 @@ export default function PostDialog(props: postDataInterface) {
               <div className="flex items-center">
                 <Button
                   onClick={() => {
-                    navigate(`/userprofile/${_id}`);
+                    navigate(`/userprofile/${author._id}`);
                   }}
                   variant="link"
                   className="text-lg text-black font-bold mr-2 p-0"

@@ -1,6 +1,6 @@
 import PostCard from "~/components/homePageComponents/postCard";
 import UserBannerCard from "~/components/userPageComponents/userBannerCard";
-import type { postDataInterface } from "~/lib/interfaces";
+import type { authorInterface, postDataInterface } from "~/lib/interfaces";
 import type { Route } from "./+types/userProfileRoute";
 import { getUserObject, getUserToken } from "~/.server/sessions";
 import api from "~/lib/api";
@@ -10,12 +10,13 @@ export async function loader({ request, params }: Route.LoaderArgs) {
   // Check if the user is already logged in
   const userToken = await getUserToken(request);
   const user = await getUserObject(request);
+  console.log(params);
 
   // console.log("data: ", query);
   //TODO
   // console.log("us", params.userId);
 
-  let userProfile = null;
+  let userProfile: authorInterface | undefined;
   if (user?._id === params.userId) {
     userProfile = user;
   } else {
@@ -30,6 +31,7 @@ export async function loader({ request, params }: Route.LoaderArgs) {
       );
 
       console.log("lol", response.data);
+      userProfile = response.data;
     } catch (error) {
       if (axios.isAxiosError(error)) {
         console.error(" error:", error.response?.data || error.message);
@@ -45,17 +47,18 @@ export async function loader({ request, params }: Route.LoaderArgs) {
         Authorization: `Bearer ${userToken}`,
       },
     });
-
-    // console.log(response.data);
-    // console.log(response.data[10].author);
-    return { postData: response.data, loggedInUserId: user?._id, user: user };
+    return {
+      postData: response.data,
+      loggedInUserId: user?._id,
+      user: userProfile,
+    };
   } catch (error) {
     if (axios.isAxiosError(error)) {
       console.error(" error:", error.response?.data || error.message);
     } else {
       console.error("Unexpected error:", error);
     }
-    return { data: [], user: user }; // Return a default value in case of error
+    return { data: [], user: userProfile }; // Return a default value in case of error
   }
 }
 export default function UserProfilePage({ loaderData }: Route.ComponentProps) {

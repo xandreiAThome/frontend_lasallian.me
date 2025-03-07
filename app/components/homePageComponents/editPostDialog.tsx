@@ -34,6 +34,7 @@ import { useState } from "react";
 import { Button } from "../ui/button";
 import { useFetcher, useLoaderData } from "react-router";
 import { DialogClose } from "@radix-ui/react-dialog";
+import profileImg from "~/components/assets/profile.jpg";
 
 interface positionsData {
   org: string;
@@ -120,6 +121,7 @@ export default function EditPostDialog(props: editPostDialogInterface) {
     // Format data as required by API
     const postData = {
       id: _id,
+      location: location,
     };
 
     // Submit the formatted data
@@ -137,7 +139,10 @@ export default function EditPostDialog(props: editPostDialogInterface) {
     const postData = {
       content: { text: formData.get("content") },
       id: _id,
+      location: location,
     };
+
+    console.log("NUWIAFHAHAHAHA");
 
     // Submit the formatted data
     fetcher.submit(
@@ -154,23 +159,21 @@ export default function EditPostDialog(props: editPostDialogInterface) {
           </button>
         </DropdownMenuTrigger>
         <DropdownMenuContent>
-          {loaderData.loggedInUserId === author._id && (
-            <DropdownMenuItem
-              className="w-full"
-              onClick={() => setOpenDialog("edit")}
-            >
-              Edit
-            </DropdownMenuItem>
-          )}
+          <DropdownMenuItem
+            disabled={loaderData.loggedInUserId !== author._id}
+            className="w-full"
+            onClick={() => setOpenDialog("edit")}
+          >
+            Edit
+          </DropdownMenuItem>
 
-          {loaderData.loggedInUserId === author._id && (
-            <DropdownMenuItem
-              className="w-full text-red-500"
-              onClick={() => setOpenDialog("delete")}
-            >
-              Delete
-            </DropdownMenuItem>
-          )}
+          <DropdownMenuItem
+            disabled={loaderData.loggedInUserId !== author._id}
+            className="w-full text-red-500"
+            onClick={() => setOpenDialog("delete")}
+          >
+            Delete
+          </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
 
@@ -196,7 +199,7 @@ export default function EditPostDialog(props: editPostDialogInterface) {
             <div className="flex gap-4 py-4 flex-col">
               <div className="flex items-center">
                 <img
-                  src={author.vanity.display_photo}
+                  src={author.vanity.display_photo || profileImg}
                   alt="profile"
                   width="36"
                   height="36"

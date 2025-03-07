@@ -11,32 +11,32 @@ export async function action({ request }: Route.ActionArgs) {
   }
 
   const formData = await request.formData();
-  const data = formData.get("json");
+  const JSONdata = formData.get("json");
 
-  if (!data || typeof data !== "string") {
+  if (!JSONdata || typeof JSONdata !== "string") {
     throw new Error("Data is not jsonstring ");
   }
 
   try {
     // Parse the JSON string into an object
-    const postData = JSON.parse(data);
+    const data = JSON.parse(JSONdata);
+    const id = data.id;
+    const location = data.location;
+    console.log("Form data:", id);
 
-    console.log("Form data:", postData);
+    console.log("Form data:", id);
 
     // Send to your API endpoint
-    const response = await api.delete(
-      `${process.env.API_KEY}/post/${postData.id}`,
-      {
-        headers: {
-          Authorization: `Bearer ${userToken}`,
-          "Content-Type": "application/json",
-        },
-      }
-    );
+    const response = await api.delete(`${process.env.API_KEY}/post/${id}`, {
+      headers: {
+        Authorization: `Bearer ${userToken}`,
+        "Content-Type": "application/json",
+      },
+    });
 
     console.log("API response:", response.data);
 
-    return redirect("/homepage");
+    return redirect(location.pathname);
   } catch (error) {
     if (axios.isAxiosError(error)) {
       console.log(" error:", error.response?.data || error.message);
