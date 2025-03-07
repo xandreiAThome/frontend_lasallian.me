@@ -65,7 +65,9 @@ export async function action({ request }: Route.ActionArgs) {
     });
 
     console.log("Registration successful:", response.data);
-    return redirect("/login");
+    return redirect(
+      `/setup?token=${encodeURIComponent(response.data.session_token)}`
+    );
   } catch (error) {
     if (axios.isAxiosError(error)) {
       console.error(

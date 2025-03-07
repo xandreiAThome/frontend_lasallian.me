@@ -1,4 +1,11 @@
-import { Form, NavLink, Outlet, redirect } from "react-router";
+import {
+  Form,
+  NavLink,
+  Outlet,
+  redirect,
+  useNavigation,
+  type LoaderFunctionArgs,
+} from "react-router";
 import Logo from "~/components/assets/logo.svg";
 import { Button } from "~/components/ui/button";
 import OrgSideBarCard from "~/components/sidebarComponents/orgSideBarCard";
@@ -7,8 +14,23 @@ import CreateButton from "~/components/createPostComponents/CreateButton";
 import { Input } from "~/components/ui/input";
 import { Search } from "lucide-react";
 import type { Route } from "./+types/navigationBarLayout";
+import { getUserId, getUserObject, getUserToken } from "~/.server/sessions";
 
-export default function NavBar() {
+export async function loader({ request }: Route.LoaderArgs) {
+  // Check if the user is already logged in
+  const userToken = await getUserToken(request);
+  const user = await getUserObject(request);
+  if (!userToken) {
+    throw redirect("/");
+  }
+  const userId = await getUserId(request);
+  // console.log("ahuwegba", userId);
+  return { loggedInUserId: userId, user: user };
+}
+
+export default function NavBar({ loaderData }: Route.ComponentProps) {
+  const navigation = useNavigation();
+
   return (
     <div className="flex h-full bg-custom-bg-white justify-evenly gap-2 overflow-y-auto">
       <nav className="max-w-96 hidden lg:flex py-8 flex-col items-end sticky top-0">
@@ -36,7 +58,7 @@ export default function NavBar() {
                     "hover:bg-slate-200 hover:rounded-2xl px-4 py-1 transition-all",
                   ].join(" ")
                 }
-                to="/userprofile"
+                to={`/userprofile/${loaderData.loggedInUserId}`}
               >
                 Profile
               </NavLink>
@@ -101,24 +123,41 @@ export default function NavBar() {
               >
                 <button type="submit">Logout</button>
               </Form>
-            </li>{" "}
+            </li>
             <CreateButton />
           </ul>
         </div>
       </nav>
 
-      <main className="max-w-[640px] w-full">
+      <main
+        className={`max-w-[640px] w-full ${
+          navigation.state === "loading" ? "animate-fade-out" : ""
+        }`}
+      >
         <Outlet />
       </main>
 
       <div className="basis-96 bg-custom-bg-white hidden md:flex md:flex-col py-8 gap-6 sticky top-0 self-start">
-        <div className="flex relative">
-          <Input
-            className="bg-custom-postcard-white pl-12 max-w-full rounded-3xl h-11"
-            placeholder="Search..."
-          ></Input>
-          <Search className="absolute top-0 bottom-0 m-auto left-4 text-gray-500" />
-        </div>
+        <Form method="get" action="/search">
+          <div className="flex relative">
+            <Input
+              type="text"
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                  e.currentTarget.form?.requestSubmit();
+                }
+              }}
+              className="bg-custom-postcard-white pl-12 max-w-full rounded-3xl h-11"
+              placeholder="Search..."
+              name="q"
+            ></Input>
+            <button type="submit">
+              <Search className="absolute top-0 bottom-0 m-auto left-4 text-gray-500" />
+            </button>
+          </div>
+        </Form>
+
         <OrgSideBarCard />
         <FollowingSideBar />
         <p className="text-gray-400 text-center">

@@ -31,7 +31,7 @@ interface postsData {
 
 export default function OrgProfilePage() {
   return (
-    <div className="basis-[640px] flex flex-col gap-4">
+    <div className="basis-[640px] flex flex-col gap-4 animate-fade-in">
       <OrgBannerCard />
 
       {postData.org.map(
@@ -64,6 +64,7 @@ export default function OrgProfilePage() {
                 org={org}
                 position={position}
                 commentsList={commentsList}
+                key={content}
               />
             );
         }

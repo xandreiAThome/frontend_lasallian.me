@@ -3,11 +3,15 @@ import {
   redirect,
   type Session,
 } from "react-router";
+import type { authorInterface } from "~/lib/interfaces";
 
 /** Represents a user in the system */
-type User = { userId: string; username: string; password: string };
+type User = {
+  user: authorInterface;
+  userToken: string;
+};
 
-const USER_SESSION_KEY = "userId";
+const USER_SESSION_KEY = "userToken";
 
 /**
  * Creates a cookie-based session storage.
@@ -56,11 +60,27 @@ export async function logout(request: Request): Promise<Response> {
  * @param {Request} request - The incoming request.
  * @returns {Promise<string | undefined>} The user ID if found, undefined otherwise.
  */
+export async function getUserToken(
+  request: Request
+): Promise<User["userToken"] | undefined> {
+  const session = await getUserSession(request);
+  const userToken = session.get(USER_SESSION_KEY);
+  return userToken;
+}
+
 export async function getUserId(
   request: Request
-): Promise<User["userId"] | undefined> {
+): Promise<User["user"]["_id"] | undefined> {
   const session = await getUserSession(request);
-  const userId = session.get(USER_SESSION_KEY);
+  const userId = session.get("userId");
+  return userId;
+}
+
+export async function getUserObject(
+  request: Request
+): Promise<User["user"] | undefined> {
+  const session = await getUserSession(request);
+  const userId = session.get("user");
   return userId;
 }
 
@@ -76,16 +96,22 @@ export async function getUserId(
 export async function createUserSession({
   request,
   userId,
+  userToken,
+  user,
   remember = true,
   redirectUrl,
 }: {
   request: Request;
   userId: string;
+  userToken: string;
+  user: authorInterface;
   remember: boolean;
   redirectUrl?: string;
 }): Promise<Response> {
   const session = await getUserSession(request);
-  session.set(USER_SESSION_KEY, userId);
+  session.set(USER_SESSION_KEY, userToken);
+  session.set("userId", userId);
+  session.set("user", user);
   return redirect(redirectUrl || "/homepage", {
     headers: {
       "Set-Cookie": await sessionStorage.commitSession(session, {

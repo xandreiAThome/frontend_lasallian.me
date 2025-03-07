@@ -26,6 +26,7 @@ import {
   Heart,
   MessageSquareShare,
   MessageSquareText,
+  Send,
   Terminal,
 } from "lucide-react";
 import ReactTimeAgo from "react-time-ago";
@@ -34,28 +35,9 @@ import CommentsCard from "./commentsCard";
 import { useNavigate } from "react-router";
 import { useState } from "react";
 import ReactionsCard from "./reactionsCard";
-
-interface postData {
-  author: string;
-  username: string;
-  profile: string;
-  time: Date;
-  views: number;
-  content: string;
-  reactions: number;
-  comments: number;
-  reposts: number;
-  img: string | null;
-  org: string;
-  position: string;
-  commentsList: {
-    profile: { author: string; profile: string };
-    reactions: number;
-    comments: number;
-    time: Date;
-    content: string;
-  }[];
-}
+import type { commentInterface, postDataInterface } from "~/lib/interfaces";
+import profileImg from "~/components/assets/profile.jpg";
+import EditPostDialog from "./editPostDialog";
 
 interface positionsData {
   org: string;
@@ -72,22 +54,18 @@ interface commentsData {
   content: string;
 }
 
-export default function PostDialog({
-  author,
-  username,
-  time,
-  profile,
-  views,
-  content,
-  reactions,
-  comments,
-  reposts,
-  img,
-  org,
-  position,
-  commentsList,
-}: postData) {
-  const formatter = Intl.NumberFormat("en", { notation: "compact" });
+export default function PostDialog(props: postDataInterface) {
+  const {
+    title,
+    content,
+    media,
+    type,
+    visibility,
+    meta,
+    author,
+    comments,
+    _id,
+  } = props;
   const dummyComment = {
     author: "zel",
     time: new Date("2022-10-31T09:00:00.594Z"),
@@ -95,8 +73,7 @@ export default function PostDialog({
     reactions: 4300,
     replies: 500,
   };
-  const navigate = useNavigate();
-  const [currPos, setCurrPos] = useState("LSCS+VP");
+
   // TEMP
   const positionsTEMP = [
     {
@@ -145,13 +122,26 @@ export default function PostDialog({
     }
   );
 
+  // Compatibility variables for existing code
+  const views = 0; // Default value as it's not in the new interface
+  const reactions = 0; // Default value as it's not in the new interface
+  const commentsNum = comments && Array.isArray(comments) ? comments.length : 0; // Default value as it's not in the new interface
+  const reposts = 0; // Default value as it's not in the new interface
+  const commentsList: commentInterface[] = []; // Default value as it's not in the new interface
+  const formatter = Intl.NumberFormat("en", { notation: "compact" });
+  const navigate = useNavigate();
+  const [currPos, setCurrPos] = useState("LSCS+VP");
+  const [typeComment, setTypeComment] = useState(false);
+
   return (
     <Dialog>
       <DialogTrigger asChild>
         <button className="flex text-base text-justify my-4 flex-col">
-          <p className="mb-2">{content}</p>
+          <p className="mb-2">{content.text}</p>
           <div className="-mx-6">
-            {img && <img src={img} alt="image content" className=""></img>}
+            {media.length > 0 && (
+              <img src={media[0]} alt="image content" className=""></img>
+            )}
           </div>
         </button>
       </DialogTrigger>
@@ -160,11 +150,15 @@ export default function PostDialog({
           <div className="flex items-center mt-4">
             <button
               onClick={() => {
-                navigate("/userprofile");
+                navigate(`/userprofile/${author._id}`);
               }}
             >
               <img
-                src={profile}
+                src={
+                  author.vanity.display_photo
+                    ? author.vanity.display_photo
+                    : profileImg
+                }
                 alt="profile"
                 width="36"
                 height="36"
@@ -175,118 +169,27 @@ export default function PostDialog({
               <div className="flex items-center">
                 <Button
                   onClick={() => {
-                    navigate("/userprofile");
+                    navigate(`/userprofile/${author._id}`);
                   }}
                   variant="link"
                   className="text-lg text-black font-bold mr-2 p-0"
                 >
-                  {author}
+                  {author.info.name.first} {author.info.name.last}
                 </Button>{" "}
                 <p className="px-2 bg-[#220088] text-white text-xs font-semibold">
-                  {org}
+                  LSCS {/** TEMPORARY */}
                 </p>
                 <p className="px-2 bg-[#313131] text-white text-xs font-semibold">
-                  {position}
+                  VP {/** TEMPORARY */}
                 </p>
-                <Dialog>
-                  <DropdownMenu>
-                    <DropdownMenuTrigger className="ml-auto text-gray-500">
-                      <button>
-                        <Ellipsis />
-                      </button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent>
-                      <DropdownMenuSeparator />
-                      <DialogTrigger>
-                        {" "}
-                        <DropdownMenuItem>Edit</DropdownMenuItem>
-                      </DialogTrigger>
-
-                      <DropdownMenuItem className="text-red-500">
-                        Delete
-                      </DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                  <DialogContent className="sm:max-w-[640px]">
-                    <DialogHeader>
-                      <DialogTitle>
-                        <h1 className="text-2xl">Edit</h1>
-                        <h4 className="text-base font-normal">
-                          Posting with{" "}
-                          <span className="font-bold">
-                            La Salle Computer Society - Vice President
-                          </span>
-                        </h4>
-                      </DialogTitle>
-                    </DialogHeader>
-                    <div className="flex gap-4 py-4 flex-col">
-                      <div className="flex items-center">
-                        <img
-                          src={profile}
-                          alt="profile"
-                          width="36"
-                          height="36"
-                          className="rounded-full mr-4"
-                        />
-                        <div className="flex flex-col items-start">
-                          <div className="flex items-center">
-                            {" "}
-                            <p className="text-lg font-bold mr-12">
-                              {author}
-                            </p>{" "}
-                            <p className="px-2 bg-[#220088] text-white text-xs font-semibold">
-                              {org}
-                            </p>
-                            <p className="px-2 bg-[#313131] text-white text-xs font-semibold mr-2">
-                              {position}
-                            </p>
-                            <DropdownMenu>
-                              <DropdownMenuTrigger asChild>
-                                <button>
-                                  <ChevronDown className="font-extrabold" />
-                                </button>
-                              </DropdownMenuTrigger>
-                              <DropdownMenuContent className="w-56">
-                                <DropdownMenuLabel>
-                                  Panel Position
-                                </DropdownMenuLabel>
-                                <DropdownMenuSeparator />
-                                <DropdownMenuRadioGroup
-                                  value={currPos}
-                                  onValueChange={setCurrPos}
-                                >
-                                  {posDIVS}
-                                </DropdownMenuRadioGroup>
-                              </DropdownMenuContent>
-                            </DropdownMenu>
-                          </div>
-                          <p className="text-gray-400 text-xs">{username}</p>
-                        </div>
-                      </div>{" "}
-                      <textarea
-                        name="content"
-                        id="content"
-                        placeholder="Use “/” to add components"
-                        rows={5}
-                        className="bg-gray-100 rounded-2xl p-4 border-gray-200 border focus:outline-lasalle-green outline-none"
-                      >
-                        {content}
-                      </textarea>
-                    </div>
-                    <DialogFooter className="sm:justify-between items-center">
-                      <Button className="bg-lasalle-green rounded-3xl text-lg px-6">
-                        Save
-                      </Button>
-                    </DialogFooter>
-                  </DialogContent>
-                </Dialog>
+                <EditPostDialog postData={props} isModal={true} />
               </div>
               <div className="flex items-start">
-                <p className="text-gray-400 text-xs">{username}</p>
+                <p className="text-gray-400 text-xs">{author.info.username}</p>
 
                 <div className="ml-auto flex items-center">
                   <p className="text-gray-400 text-xs">
-                    <ReactTimeAgo date={time} locale="en-SG" />
+                    <ReactTimeAgo date={meta.created_at} locale="en-SG" />
                   </p>
                   <Dot className="text-gray-500" />
                   <p className="text-gray-400 text-xs">
@@ -298,9 +201,11 @@ export default function PostDialog({
           </div>
         </DialogHeader>
         <div className="flex text-base text-justify flex-col">
-          <p className="mb-2">{content}</p>
+          <p className="mb-2 whitespace-pre-wrap">{content.text}</p>
           <div className="-mx-6">
-            {img && <img src={img} alt="image content" className=""></img>}
+            {media.length > 0 && (
+              <img src={media[0]} alt="image content" className=""></img>
+            )}
           </div>
         </div>
         <hr className="-mx-6" />
@@ -315,7 +220,9 @@ export default function PostDialog({
                 <MessageSquareText className="h-[28px] w-[27.45px]" />
               </button>
               <p className="text-sm">
-                <span className="font-bold">{formatter.format(comments)} </span>
+                <span className="font-bold">
+                  {formatter.format(commentsNum)}{" "}
+                </span>
                 comments
               </p>
             </div>
@@ -325,38 +232,34 @@ export default function PostDialog({
                 <MessageSquareShare className="h-[28px] w-[27.45px]" />
               </button>
               <p className="text-sm">
-                <span className="font-bold">{formatter.format(comments)} </span>
+                <span className="font-bold">{formatter.format(reposts)} </span>
                 reposts
               </p>
             </div>
           </div>
 
-          <Input
-            placeholder="What's YOUR thoughts on this post?"
-            className="text-base md:text-base bg-gray-200 px-8 py-4 my-6 rounded-3xl !ml-0"
-          ></Input>
+          <div className="flex relative">
+            <Input
+              placeholder="What's YOUR thoughts on this post?"
+              className="text-base md:text-base bg-gray-200 px-8 py-4 my-6 rounded-3xl !ml-0"
+            ></Input>
+            <button>
+              <Send className="absolute top-0 bottom-0 m-auto right-4 text-gray-500 h-5"></Send>
+            </button>
+          </div>
 
           <div className="flex flex-col !ml-0">
-            {commentsList &&
-              commentsList.map(
-                ({
-                  profile,
-                  comments,
-                  time,
-                  content,
-                  reactions,
-                }: commentsData) => {
-                  return (
-                    <CommentsCard
-                      profile={profile}
-                      comments={comments}
-                      time={time}
-                      content={content}
-                      reactions={reactions}
-                    />
-                  );
-                }
-              )}
+            {comments &&
+              comments.map((comment, index) => (
+                <CommentsCard
+                  key={index}
+                  author={comment.author}
+                  content={comment.content}
+                  post={comment.post}
+                  meta={comment.meta}
+                  _id={comment._id}
+                />
+              ))}
           </div>
         </DialogFooter>
       </DialogContent>

@@ -12,11 +12,13 @@ import {
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
 import { Terminal } from "lucide-react";
-import CreatePostButton from "./CreatePostButton";
+import CreatePostDialog from "./CreatePostDialog";
+import { useState } from "react";
 
 export default function CreateButton() {
+  const [open, setOpen] = useState(false);
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button className="bg-lasalle-green rounded-3xl text-lg h-12 px-12">
           + Create
@@ -27,7 +29,7 @@ export default function CreateButton() {
           <DialogTitle>Create</DialogTitle>
         </DialogHeader>
         <div className="grid gap-4 py-4">
-          <CreatePostButton />
+          <CreatePostDialog setOpen={setOpen} />
 
           <button className="flex gap-4 p-6 border-2 rounded-2xl hover:bg-slate-100 hover:rounded-2xl transition-all">
             <Terminal className="mr-2" size="36" />

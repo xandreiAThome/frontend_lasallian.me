@@ -18,22 +18,15 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
-
-interface commentsData {
-  profile: { author: string; profile: string };
-  reactions: number;
-  comments: number;
-  time: Date;
-  content: string;
-}
+import type { commentInterface } from "~/lib/interfaces";
+import profileImg from "~/components/assets/profile.jpg";
 
 export default function CommentsCard({
-  profile,
-  reactions,
-  comments,
-  time,
+  author,
   content,
-}: commentsData) {
+  post,
+  meta,
+}: commentInterface) {
   const navigate = useNavigate();
   const formatter = Intl.NumberFormat("en", { notation: "compact" });
   const dummyComment = {
@@ -44,6 +37,8 @@ export default function CommentsCard({
     replies: 500,
   };
   const [isEdit, setIsEdit] = useState(false);
+  const repliesNum = 0;
+  const reactionsNum = 0;
 
   const EditComment = (
     <div>
@@ -83,11 +78,15 @@ export default function CommentsCard({
         }}
       >
         <img
-          src={profile.profile}
+          src={
+            author.vanity.display_photo
+              ? author.vanity.display_photo
+              : profileImg
+          }
           alt="profile"
           width="36"
           height="36"
-          className="rounded-full mr-4"
+          className="rou</div>nded-full mr-4"
         />
       </button>
       <div className="flex flex-col flex-grow">
@@ -99,10 +98,10 @@ export default function CommentsCard({
             variant="link"
             className="text-lg text-black font-bold mr-2 p-0"
           >
-            {profile.author}
+            {author.info.name.first} {author.info.name.last}
           </Button>{" "}
           <p className="text-gray-400 text-xs">
-            <ReactTimeAgo date={time} locale="en-SG" />
+            <ReactTimeAgo date={meta.created_at} locale="en-SG" />
           </p>
           <DropdownMenu>
             <DropdownMenuTrigger className="ml-auto text-gray-500">
@@ -136,7 +135,10 @@ export default function CommentsCard({
               <Heart className="h-4" />
             </button>
             <p className="text-sm">
-              <span className="font-bold">{formatter.format(reactions)} </span>
+              <span className="font-bold">
+                {/** TEMPORARY DATA */}
+                {formatter.format(reactionsNum)}{" "}
+              </span>
             </p>
           </div>
 
@@ -145,7 +147,7 @@ export default function CommentsCard({
               <MessageSquareText className="h-4" />
             </button>
             <p className="text-sm">
-              <span className="font-bold">{formatter.format(comments)} </span>
+              <span className="font-bold">{formatter.format(repliesNum)} </span>
             </p>
           </div>
         </div>

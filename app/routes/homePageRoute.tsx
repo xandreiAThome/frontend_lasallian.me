@@ -1,75 +1,32 @@
 import { BookPlus } from "lucide-react";
 import PostCard from "~/components/homePageComponents/postCard";
-import postData from "~/components/dummyData/postData";
 import OrgPostCard from "~/components/homePageComponents/orgPostCard";
 import axios from "axios";
 import api from "~/lib/api";
-import { getUserId } from "~/.server/sessions";
 import { redirect } from "react-router";
-import type { ComponentProps } from "react";
 import type { Route } from "./+types/homePageRoute";
-
-interface postData {
-  author: string;
-  username: string;
-  profile: string;
-  time: Date;
-  views: number;
-  content: string;
-  reactions: number;
-  comments: number;
-  reposts: number;
-  img: string | null;
-  org: string;
-  position: string;
-  commentsList: {
-    profile: { author: string; profile: string };
-    reactions: number;
-    comments: number;
-    time: Date;
-    content: string;
-  }[];
-}
-
-interface orgPost {
-  author: string;
-  profile: string;
-  time: Date;
-  views: number;
-  content: string;
-  reactions: number;
-  comments: number;
-  reposts: number;
-  img: string | null;
-  org: string;
-  position: string;
-  commentsList: {
-    profile: { author: string; profile: string };
-    reactions: number;
-    comments: number;
-    time: Date;
-    content: string;
-  }[];
-}
+import { getUserObject, getUserToken } from "~/.server/sessions";
+import type { postDataInterface } from "~/lib/interfaces";
 
 export async function loader({ request }: Route.LoaderArgs) {
   // Check if the user is already logged in
-  const userId = await getUserId(request);
-  if (!userId) {
-    throw redirect("/");
-  }
+  const userToken = await getUserToken(request);
+  const userObj = await getUserObject(request);
+  // console.log("jaengibg", userObj);
+  // if (!userToken) {
+  //   throw redirect("/");
+  // }
 
   try {
-    const response = await api.get(
-      `${process.env.API_KEY}/post/normal/679bacd27077c487c7addee1`,
-      {
-        headers: {
-          Authorization: `Bearer ${userId}`,
-        },
-      }
-    );
+    const response = await api.get(`${process.env.API_KEY}/post/all`, {
+      headers: {
+        Authorization: `Bearer ${userToken}`,
+      },
+    });
 
-    console.log(response.data);
+    // console.log(response.data);
+    // console.log("????", response.data[10].author);
+    return { postData: response.data, loggedInUserId: userObj?._id };
   } catch (error) {
     if (axios.isAxiosError(error)) {
       console.error(" error:", error.response?.data || error.message);
@@ -81,7 +38,7 @@ export async function loader({ request }: Route.LoaderArgs) {
 
 export default function HomePage({ loaderData }: Route.ComponentProps) {
   return (
-    <div className="basis-[640px] pt-6 flex flex-col gap-4">
+    <div className="basis-[640px] pt-6 flex flex-col gap-4 animate-fade-in">
       <div className="bg-custom-postcard-white flex items-center px-6 rounded-xl py-4 shadow-lg w-full">
         <img
           src="https://www.shutterstock.com/image-vector/blank-avatar-photo-place-holder-600nw-1095249842.jpg"
@@ -99,77 +56,10 @@ export default function HomePage({ loaderData }: Route.ComponentProps) {
           </p>
         </button>
       </div>
-
-      {postData.individual.map(
-        ({
-          author,
-          username,
-          profile,
-          time,
-          views,
-          content,
-          reactions,
-          comments,
-          reposts,
-          img,
-          org,
-          position,
-          commentsList,
-        }: postData) => {
-          return (
-            <PostCard
-              key={username}
-              author={author}
-              username={username}
-              profile={profile}
-              time={time}
-              views={views}
-              content={content}
-              reactions={reactions}
-              comments={comments}
-              reposts={reposts}
-              img={img}
-              org={org}
-              position={position}
-              commentsList={commentsList}
-            />
-          );
-        }
-      )}
-
-      {postData.org.map(
-        ({
-          author,
-          time,
-          views,
-          content,
-          profile,
-          reactions,
-          comments,
-          reposts,
-          img,
-          org,
-          position,
-          commentsList,
-        }: orgPost) => {
-          return (
-            <OrgPostCard
-              author={author}
-              time={time}
-              views={views}
-              profile={profile}
-              content={content}
-              reactions={reactions}
-              comments={comments}
-              reposts={reposts}
-              img={img}
-              org={org}
-              position={position}
-              commentsList={commentsList}
-            />
-          );
-        }
-      )}
+      {loaderData?.postData &&
+        loaderData.postData.map((props: postDataInterface, index: number) => {
+          return <PostCard {...props} />;
+        })}
     </div>
   );
 }
