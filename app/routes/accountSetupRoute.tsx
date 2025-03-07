@@ -34,6 +34,7 @@ export async function action({ request }: Route.ActionArgs) {
       username: formData.get("username"),
       batchid: formData.get("batchId"),
       program: formData.get("program"),
+      bio: formData.get("bio"),
     },
   };
 
