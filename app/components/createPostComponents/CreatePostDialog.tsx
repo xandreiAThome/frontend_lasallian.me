@@ -28,8 +28,9 @@ import { use, useState } from "react";
 import postData from "~/components/dummyData/postData";
 import { UploadImage } from "./uploadImage";
 import { Textarea } from "../ui/textarea";
-import { Form, useFetcher } from "react-router";
+import { Form, useFetcher, useLoaderData, useRevalidator } from "react-router";
 import { DialogClose } from "@radix-ui/react-dialog";
+import type { authorInterface } from "~/lib/interfaces";
 
 interface positionsData {
   org: string;
@@ -42,7 +43,14 @@ interface CreatePostButtonProps {
   setOpen: (open: boolean) => void;
 }
 
+interface loaderDataInterface {
+  id: string;
+  user: authorInterface;
+}
+
 export default function CreatePostButton({ setOpen }: CreatePostButtonProps) {
+  const loaderData: loaderDataInterface = useLoaderData();
+
   // TEMP
   const positionsTEMP = [
     {
@@ -101,6 +109,7 @@ export default function CreatePostButton({ setOpen }: CreatePostButtonProps) {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget as HTMLFormElement);
+    console.log("kkk", loaderData);
 
     // Format data as required by API
     const postData = {
@@ -112,9 +121,9 @@ export default function CreatePostButton({ setOpen }: CreatePostButtonProps) {
       { json: JSON.stringify(postData) },
       { method: "post", action: "/createPost" }
     );
-
-    // Close the dialog
     setOpen(false);
+    const revalidator = useRevalidator();
+    revalidator.revalidate();
   };
 
   return (
@@ -126,7 +135,7 @@ export default function CreatePostButton({ setOpen }: CreatePostButtonProps) {
           <div>
             <p className="text-justify text-xl font-bold">Post</p>
             <p className="text-justify">
-              Share something publicly to{" "}
+              Share something publicly to
               <span className="font-bold">your</span> feed; doesn't need to be
               professional. This will not be shown to job recruiters.
             </p>
@@ -157,9 +166,9 @@ export default function CreatePostButton({ setOpen }: CreatePostButtonProps) {
               />
               <div className="flex flex-col items-start">
                 <div className="flex items-center">
-                  {" "}
                   <p className="text-lg font-bold mr-12">
-                    {postData.individual[1].author}
+                    {loaderData.user.info.name.first}{" "}
+                    {loaderData.user.info.name.last}
                   </p>{" "}
                   <p className="px-2 bg-[#220088] text-white text-xs font-semibold">
                     {postData.individual[1].org}
@@ -186,7 +195,7 @@ export default function CreatePostButton({ setOpen }: CreatePostButtonProps) {
                   </DropdownMenu>
                 </div>
                 <p className="text-gray-400 text-xs">
-                  {postData.individual[1].username}
+                  {loaderData.user.info.username}
                 </p>
               </div>
             </div>{" "}

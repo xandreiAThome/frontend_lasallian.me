@@ -17,6 +17,17 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "~/components/ui/dialog";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "~/components/ui/alert-dialog";
 import { ChevronDown, Ellipsis } from "lucide-react";
 import type { postDataInterface } from "~/lib/interfaces";
 import { useState } from "react";
@@ -31,7 +42,12 @@ interface positionsData {
   positionColor: string;
 }
 
-export default function EditPostDialog(props: postDataInterface) {
+interface editPostDialogInterface {
+  isModal: boolean;
+  postData: postDataInterface;
+}
+
+export default function EditPostDialog(props: editPostDialogInterface) {
   const loaderData = useLoaderData();
   // console.log("lo", loaderData);
   const fetcher = useFetcher();
@@ -45,8 +61,10 @@ export default function EditPostDialog(props: postDataInterface) {
     author,
     comments,
     _id,
-  } = props;
+  } = props.postData;
   const [currPos, setCurrPos] = useState("LSCS+VP");
+  const [openDialog, setOpenDialog] = useState<string | null>(null);
+
   const positionsTEMP = [
     {
       org: "LSCS",
@@ -129,31 +147,39 @@ export default function EditPostDialog(props: postDataInterface) {
   };
   return (
     <>
-      <Dialog>
-        <DropdownMenu>
-          <DropdownMenuTrigger className="ml-auto text-gray-500">
-            <button>
-              <Ellipsis />
-            </button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent>
-            <DropdownMenuSeparator />
-            <DialogTrigger>
-              {loaderData.loggedInUserId === author._id && (
-                <DropdownMenuItem className="w-full">Edit</DropdownMenuItem>
-              )}
-            </DialogTrigger>
-            <form onSubmit={handleDelete}>
-              {loaderData.loggedInUserId === author._id && (
-                <DropdownMenuItem className="text-red-500">
-                  <button type="submit" name="delete">
-                    Delete
-                  </button>
-                </DropdownMenuItem>
-              )}
-            </form>
-          </DropdownMenuContent>
-        </DropdownMenu>
+      <DropdownMenu modal={false}>
+        <DropdownMenuTrigger className="ml-auto text-gray-500" asChild>
+          <button>
+            <Ellipsis />
+          </button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent>
+          {loaderData.loggedInUserId === author._id && (
+            <DropdownMenuItem
+              className="w-full"
+              onClick={() => setOpenDialog("edit")}
+            >
+              Edit
+            </DropdownMenuItem>
+          )}
+
+          {loaderData.loggedInUserId === author._id && (
+            <DropdownMenuItem
+              className="w-full text-red-500"
+              onClick={() => setOpenDialog("delete")}
+            >
+              Delete
+            </DropdownMenuItem>
+          )}
+        </DropdownMenuContent>
+      </DropdownMenu>
+
+      <Dialog
+        open={openDialog === "edit"}
+        onOpenChange={(open) => {
+          if (!open) setOpenDialog(null);
+        }}
+      >
         <DialogContent className="sm:max-w-[640px]">
           <form onSubmit={handleSubmit}>
             <DialogHeader>
@@ -234,6 +260,33 @@ export default function EditPostDialog(props: postDataInterface) {
           </form>
         </DialogContent>
       </Dialog>
+
+      <AlertDialog
+        open={openDialog === "delete"}
+        onOpenChange={(open) => {
+          if (!open) setOpenDialog(null);
+        }}
+      >
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This action cannot be undone. This will permanently delete your
+              account and remove your data from our servers.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction>
+              <form onSubmit={handleDelete}>
+                <button type="submit" name="delete">
+                  Delete
+                </button>
+              </form>
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </>
   );
 }

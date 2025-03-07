@@ -2,7 +2,11 @@ import { redirect } from "react-router";
 import type { Route } from "./+types/createPostRoute";
 import api from "~/lib/api";
 import axios from "axios";
-import { getUserId, getUserToken } from "~/.server/sessions";
+import { getUserToken } from "~/.server/sessions";
+
+export async function loader() {
+  return redirect("/homepage");
+}
 
 export async function action({ request }: Route.ActionArgs) {
   const userToken = await getUserToken(request);
@@ -41,8 +45,4 @@ export async function action({ request }: Route.ActionArgs) {
       console.log("Unexpected error:", error);
     }
   }
-}
-
-export async function loader() {
-  return redirect("/homepage");
 }

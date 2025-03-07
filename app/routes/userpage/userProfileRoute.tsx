@@ -1,9 +1,4 @@
-import { NavLink, redirect, useParams } from "react-router";
-import Logo from "~/components/assets/logo.svg";
-import { BookPlus } from "lucide-react";
-import { Input } from "~/components/ui/input";
 import PostCard from "~/components/homePageComponents/postCard";
-import postData from "~/components/dummyData/postData";
 import UserBannerCard from "~/components/userPageComponents/userBannerCard";
 import type { postDataInterface } from "~/lib/interfaces";
 import type { Route } from "./+types/userProfileRoute";
@@ -18,7 +13,7 @@ export async function loader({ request, params }: Route.LoaderArgs) {
 
   // console.log("data: ", query);
   //TODO
-  console.log("us", params.userId);
+  // console.log("us", params.userId);
 
   let userProfile = null;
   if (user?._id === params.userId) {

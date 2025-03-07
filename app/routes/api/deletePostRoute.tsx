@@ -2,7 +2,7 @@ import { redirect } from "react-router";
 import type { Route } from "./+types/deletePostRoute";
 import api from "~/lib/api";
 import axios from "axios";
-import { getUserId, getUserToken } from "~/.server/sessions";
+import { getUserToken } from "~/.server/sessions";
 
 export async function action({ request }: Route.ActionArgs) {
   const userToken = await getUserToken(request);

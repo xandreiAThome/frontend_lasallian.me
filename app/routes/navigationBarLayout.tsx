@@ -14,17 +14,18 @@ import CreateButton from "~/components/createPostComponents/CreateButton";
 import { Input } from "~/components/ui/input";
 import { Search } from "lucide-react";
 import type { Route } from "./+types/navigationBarLayout";
-import { getUserId, getUserToken } from "~/.server/sessions";
+import { getUserId, getUserObject, getUserToken } from "~/.server/sessions";
 
 export async function loader({ request }: Route.LoaderArgs) {
   // Check if the user is already logged in
   const userToken = await getUserToken(request);
+  const user = await getUserObject(request);
   if (!userToken) {
     throw redirect("/");
   }
   const userId = await getUserId(request);
   // console.log("ahuwegba", userId);
-  return { userId };
+  return { loggedInUserId: userId, user: user };
 }
 
 export default function NavBar({ loaderData }: Route.ComponentProps) {
@@ -57,7 +58,7 @@ export default function NavBar({ loaderData }: Route.ComponentProps) {
                     "hover:bg-slate-200 hover:rounded-2xl px-4 py-1 transition-all",
                   ].join(" ")
                 }
-                to={`/userprofile/${loaderData.userId}`}
+                to={`/userprofile/${loaderData.loggedInUserId}`}
               >
                 Profile
               </NavLink>
