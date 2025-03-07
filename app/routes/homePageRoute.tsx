@@ -12,7 +12,7 @@ export async function loader({ request }: Route.LoaderArgs) {
   // Check if the user is already logged in
   const userToken = await getUserToken(request);
   const userObj = await getUserObject(request);
-  console.log("jaengibg", userObj);
+  // console.log("jaengibg", userObj);
   // if (!userToken) {
   //   throw redirect("/");
   // }

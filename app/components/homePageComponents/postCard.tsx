@@ -128,7 +128,7 @@ export default function PostCard(props: postDataInterface) {
       <div className="flex items-center">
         <button
           onClick={() => {
-            navigate("/userprofile");
+            navigate(`/userprofile/${_id}`);
           }}
         >
           <img
@@ -148,7 +148,7 @@ export default function PostCard(props: postDataInterface) {
           <div className="flex items-center">
             <Button
               onClick={() => {
-                navigate("/userprofile");
+                navigate(`/userprofile/${_id}`);
               }}
               variant="link"
               className="text-lg text-black font-bold mr-2 p-0"

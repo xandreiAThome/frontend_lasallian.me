@@ -1,4 +1,4 @@
-import { Images } from "lucide-react";
+import { Images, X } from "lucide-react";
 import React from "react";
 import ImageUploading, { type ImageListType } from "react-images-uploading";
 
@@ -51,24 +51,18 @@ export function UploadImage() {
               </button>
 
               {imageList.map((image, index) => (
-                <div key={index}>
+                <div key={index} className="relative">
                   <img src={image.dataURL} alt="" width="200" />
+
                   <div className="flex gap-2">
                     <button
                       type="button"
-                      className="hover:text-green-600 transition-all"
+                      className="hover:text-green-600 transition-all absolute top-0"
                       onClick={() => {
-                        onImageUpdate(index);
+                        onImageRemove(index);
                       }}
                     >
-                      Update
-                    </button>
-                    <button
-                      type="button"
-                      className="hover:text-green-600 transition-all"
-                      onClick={() => onImageRemove(index)}
-                    >
-                      Remove
+                      <X />
                     </button>
                   </div>
                 </div>

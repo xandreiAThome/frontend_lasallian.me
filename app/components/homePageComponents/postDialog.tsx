@@ -61,6 +61,7 @@ export default function PostDialog({
   visibility,
   meta,
   author,
+  _id,
   comments,
 }: postDataInterface) {
   const dummyComment = {
@@ -148,7 +149,7 @@ export default function PostDialog({
           <div className="flex items-center mt-4">
             <button
               onClick={() => {
-                navigate("/userprofile");
+                navigate(`/userprofile/${_id}`);
               }}
             >
               <img
@@ -167,7 +168,7 @@ export default function PostDialog({
               <div className="flex items-center">
                 <Button
                   onClick={() => {
-                    navigate("/userprofile");
+                    navigate(`/userprofile/${_id}`);
                   }}
                   variant="link"
                   className="text-lg text-black font-bold mr-2 p-0"

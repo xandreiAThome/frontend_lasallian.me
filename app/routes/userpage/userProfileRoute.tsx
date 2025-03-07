@@ -16,6 +16,11 @@ export async function loader({ request }: Route.LoaderArgs) {
   const userToken = await getUserToken(request);
   const user = await getUserObject(request);
 
+  const url = new URL(request.url);
+  const query = url.searchParams.get("q");
+  // console.log("data: ", query);
+  //TODO
+
   try {
     const response = await api.get(`${process.env.API_KEY}/post/normal`, {
       headers: {
