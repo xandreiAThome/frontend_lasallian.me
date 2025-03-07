@@ -23,7 +23,7 @@ export async function loader({ request }: Route.LoaderArgs) {
     throw redirect("/");
   }
   const userId = await getUserId(request);
-  console.log("ahuwegba", userId);
+  // console.log("ahuwegba", userId);
   return { userId };
 }
 

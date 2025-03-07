@@ -53,7 +53,7 @@ export async function loader({ request, params }: Route.LoaderArgs) {
 
     // console.log(response.data);
     // console.log(response.data[10].author);
-    return { data: response.data, user: user };
+    return { postData: response.data, loggedInUserId: user?._id, user: user };
   } catch (error) {
     if (axios.isAxiosError(error)) {
       console.error(" error:", error.response?.data || error.message);
@@ -69,7 +69,7 @@ export default function UserProfilePage({ loaderData }: Route.ComponentProps) {
       {loaderData.user && <UserBannerCard {...loaderData.user} />}
 
       {loaderData &&
-        loaderData.data.map(
+        loaderData.postData.map(
           (
             {
               title,

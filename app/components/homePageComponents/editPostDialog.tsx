@@ -34,7 +34,6 @@ interface positionsData {
 export default function EditPostDialog(props: postDataInterface) {
   const loaderData = useLoaderData();
   // console.log("lo", loaderData);
-  const [currPos, setCurrPos] = useState("LSCS+VP");
   const fetcher = useFetcher();
   const {
     title,
@@ -47,6 +46,7 @@ export default function EditPostDialog(props: postDataInterface) {
     comments,
     _id,
   } = props;
+  const [currPos, setCurrPos] = useState("LSCS+VP");
   const positionsTEMP = [
     {
       org: "LSCS",
@@ -93,6 +93,23 @@ export default function EditPostDialog(props: postDataInterface) {
       );
     }
   );
+  const handleDelete = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    console.log("delete");
+    const formData = new FormData(event.currentTarget as HTMLFormElement);
+    console.log("form", formData);
+
+    // Format data as required by API
+    const postData = {
+      id: _id,
+    };
+
+    // Submit the formatted data
+    fetcher.submit(
+      { json: JSON.stringify(postData) },
+      { method: "post", action: "/deletePost" }
+    );
+  };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -126,12 +143,15 @@ export default function EditPostDialog(props: postDataInterface) {
                 <DropdownMenuItem className="w-full">Edit</DropdownMenuItem>
               )}
             </DialogTrigger>
-
-            {loaderData.loggedInUserId === author._id && (
-              <DropdownMenuItem className="text-red-500">
-                Delete
-              </DropdownMenuItem>
-            )}
+            <form onSubmit={handleDelete}>
+              {loaderData.loggedInUserId === author._id && (
+                <DropdownMenuItem className="text-red-500">
+                  <button type="submit" name="delete">
+                    Delete
+                  </button>
+                </DropdownMenuItem>
+              )}
+            </form>
           </DropdownMenuContent>
         </DropdownMenu>
         <DialogContent className="sm:max-w-[640px]">
@@ -205,6 +225,7 @@ export default function EditPostDialog(props: postDataInterface) {
                 <Button
                   className="bg-lasalle-green rounded-3xl text-lg px-6"
                   type="submit"
+                  name="save"
                 >
                   Save
                 </Button>

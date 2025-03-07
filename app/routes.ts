@@ -14,6 +14,7 @@ export default [
   // api routes
   route("createPost", "routes/api/createPostRoute.tsx"),
   route("editPost", "routes/api/editPostRoute.tsx"),
+  route("deletePost", "routes/api/deletePostRoute.tsx"),
 
   layout("routes/auth/authLayout.tsx", [
     index("routes/auth/loginRoute.tsx"),
