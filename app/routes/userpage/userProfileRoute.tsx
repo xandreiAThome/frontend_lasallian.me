@@ -1,4 +1,4 @@
-import { NavLink, redirect } from "react-router";
+import { NavLink, redirect, useParams } from "react-router";
 import Logo from "~/components/assets/logo.svg";
 import { BookPlus } from "lucide-react";
 import { Input } from "~/components/ui/input";
@@ -11,15 +11,38 @@ import { getUserObject, getUserToken } from "~/.server/sessions";
 import api from "~/lib/api";
 import axios from "axios";
 
-export async function loader({ request }: Route.LoaderArgs) {
+export async function loader({ request, params }: Route.LoaderArgs) {
   // Check if the user is already logged in
   const userToken = await getUserToken(request);
   const user = await getUserObject(request);
 
-  const url = new URL(request.url);
-  const query = url.searchParams.get("q");
   // console.log("data: ", query);
   //TODO
+  console.log("us", params.userId);
+
+  let userProfile = null;
+  if (user?._id === params.userId) {
+    userProfile = user;
+  } else {
+    try {
+      const response = await api.get(
+        `${process.env.API_KEY}/user/${params.userId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${userToken}`,
+          },
+        }
+      );
+
+      console.log("lol", response.data);
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.error(" error:", error.response?.data || error.message);
+      } else {
+        console.error("Unexpected error:", error);
+      }
+    }
+  }
 
   try {
     const response = await api.get(`${process.env.API_KEY}/post/normal`, {

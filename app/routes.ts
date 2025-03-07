@@ -11,7 +11,9 @@ export default [
 
   route("logout", "routes/auth/logoutRoute.tsx"),
 
+  // api routes
   route("createPost", "routes/api/createPostRoute.tsx"),
+  route("editPost", "routes/api/editPostRoute.tsx"),
 
   layout("routes/auth/authLayout.tsx", [
     index("routes/auth/loginRoute.tsx"),

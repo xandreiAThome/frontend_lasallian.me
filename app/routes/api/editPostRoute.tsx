@@ -1,8 +1,9 @@
 import { redirect } from "react-router";
-import type { Route } from "./+types/createPostRoute";
+import type { Route } from "./+types/editPostRoute";
 import api from "~/lib/api";
 import axios from "axios";
 import { getUserId, getUserToken } from "~/.server/sessions";
+import { title } from "process";
 
 export async function action({ request }: Route.ActionArgs) {
   const userToken = await getUserToken(request);
@@ -16,20 +17,27 @@ export async function action({ request }: Route.ActionArgs) {
   if (!data || typeof data !== "string") {
     throw new Error("Data is not jsonstring ");
   }
+  const postData = JSON.parse(data);
+
+  const editPostData = {
+    content: postData.content,
+    title: "title",
+  };
+
+  // console.log("Form data:", editPostData);
 
   try {
-    // Parse the JSON string into an object
-    const postData = JSON.parse(data);
-
-    console.log("Form data:", postData);
-
     // Send to your API endpoint
-    const response = await api.post(`${process.env.API_KEY}/post`, postData, {
-      headers: {
-        Authorization: `Bearer ${userToken}`,
-        "Content-Type": "application/json",
-      },
-    });
+    const response = await api.put(
+      `${process.env.API_KEY}/post/${postData.id}`,
+      editPostData,
+      {
+        headers: {
+          Authorization: `Bearer ${userToken}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
 
     console.log("API response:", response.data);
 

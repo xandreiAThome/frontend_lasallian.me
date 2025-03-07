@@ -104,7 +104,6 @@ export default function CreatePostButton({ setOpen }: CreatePostButtonProps) {
 
     // Format data as required by API
     const postData = {
-      title: formData.get("title") || "test title",
       content: { text: formData.get("content") },
     };
 

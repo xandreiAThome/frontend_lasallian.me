@@ -26,7 +26,7 @@ export async function loader({ request }: Route.LoaderArgs) {
 
     // console.log(response.data);
     // console.log("????", response.data[10].author);
-    return response.data;
+    return { postData: response.data, loggedInUserId: userObj?._id };
   } catch (error) {
     if (axios.isAxiosError(error)) {
       console.error(" error:", error.response?.data || error.message);
@@ -56,38 +56,10 @@ export default function HomePage({ loaderData }: Route.ComponentProps) {
           </p>
         </button>
       </div>
-      {loaderData &&
-        loaderData.map(
-          (
-            {
-              title,
-              content,
-              media,
-              type,
-              visibility,
-              meta,
-              author,
-              comments,
-              _id,
-            }: postDataInterface,
-            index: number
-          ) => {
-            return (
-              <PostCard
-                key={index}
-                title={title}
-                content={content}
-                media={media}
-                type={type}
-                visibility={visibility}
-                meta={meta}
-                author={author}
-                comments={comments}
-                _id={_id}
-              />
-            );
-          }
-        )}
+      {loaderData?.postData &&
+        loaderData.postData.map((props: postDataInterface, index: number) => {
+          return <PostCard {...props} />;
+        })}
     </div>
   );
 }
