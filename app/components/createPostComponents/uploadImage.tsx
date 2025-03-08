@@ -2,17 +2,21 @@ import { Images, X } from "lucide-react";
 import React from "react";
 import ImageUploading, { type ImageListType } from "react-images-uploading";
 
-export function UploadImage() {
-  const [images, setImages] = React.useState([]);
-  const maxNumber = 10;
+interface uploadImageInterface {
+  images: ImageListType;
+  setImages: React.Dispatch<React.SetStateAction<ImageListType>>;
+}
+
+export function UploadImage({ images, setImages }: uploadImageInterface) {
+  const maxNumber = 1;
 
   const onChange = (
     imageList: ImageListType,
     addUpdateIndex: number[] | undefined
   ) => {
     // data for submit
-    console.log(imageList, addUpdateIndex);
-    setImages(imageList as never[]);
+    console.log(images, addUpdateIndex);
+    setImages(imageList);
   };
 
   return (
@@ -68,7 +72,7 @@ export function UploadImage() {
                 </div>
               ))}
 
-              {images.length > 0 && (
+              {images.length > 1 && (
                 <button
                   type="button"
                   className="hover:text-green-600 transition-all"

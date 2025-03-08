@@ -11,20 +11,32 @@ export async function action({ request }: Route.ActionArgs) {
   }
 
   const formData = await request.formData();
-  const JSONdata = formData.get("json");
-
-  if (!JSONdata || typeof JSONdata !== "string") {
-    throw new Error("Data is not jsonstring ");
-  }
-  const data = JSON.parse(JSONdata);
 
   try {
     // Parse the JSON string into an object
 
-    const postData = data.content;
-    const location = data.location;
-    // console.log("Form data:", postData);
-    console.log("location", location);
+    const postData = formData.get("content");
+    console.log(postData);
+    const location: string = (formData.get("location") as string) || "";
+    const image = formData.get("image");
+    console.log("Form data:", formData);
+
+    const imageFormData = new FormData();
+    if (image) {
+      imageFormData.append("image", image);
+
+      const imgResp = await api.post(
+        `${process.env.OSS_KEY}/upload`,
+        imageFormData,
+        {
+          headers: {
+            Authorization: `Bearer ${userToken}`,
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      console.log("OSS resp: ", imgResp);
+    }
 
     // Send to your API endpoint
     const response = await api.post(
@@ -39,10 +51,11 @@ export async function action({ request }: Route.ActionArgs) {
     );
 
     console.log("API response:", response.data);
-    return redirect(location.pathname);
+
+    return redirect(location || "/homepage");
   } catch (error) {
     if (axios.isAxiosError(error)) {
-      console.log(" error:", error.response?.data || error.message);
+      console.log("error:", error.response?.data || error.message);
     } else {
       console.log("Unexpected error:", error);
     }

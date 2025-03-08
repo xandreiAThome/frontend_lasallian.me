@@ -24,7 +24,7 @@ import {
   ChevronDown,
   Upload,
 } from "lucide-react";
-import { use, useState } from "react";
+import { use, useState, type ReactElement } from "react";
 import postData from "~/components/dummyData/postData";
 import { UploadImage } from "./uploadImage";
 import { Textarea } from "../ui/textarea";
@@ -38,6 +38,7 @@ import {
 import { DialogClose } from "@radix-ui/react-dialog";
 import type { authorInterface } from "~/lib/interfaces";
 import profileImg from "~/components/assets/profile.jpg";
+import type { ImageListType } from "react-images-uploading";
 
 interface positionsData {
   org: string;
@@ -46,8 +47,13 @@ interface positionsData {
   positionColor: string;
 }
 
+/**
+ * @param setOpen - useState setter for closing a previous dialog
+ * @param buttonProp - html element to display for triggering this dialog
+ */
 interface CreatePostButtonProps {
-  setOpen: (open: boolean) => void;
+  setOpen?: (open: boolean) => void; // for if this dialog is on top of another dialog
+  buttonProp: ReactElement;
 }
 
 interface loaderDataInterface {
@@ -55,9 +61,17 @@ interface loaderDataInterface {
   user: authorInterface;
 }
 
-export default function CreatePostButton({ setOpen }: CreatePostButtonProps) {
+/**
+ * @param setOpen - useState setter for closing a previous dialog
+ * @param buttonProp - html element to display for triggering this dialog
+ */
+export default function CreatePostButton({
+  setOpen,
+  buttonProp,
+}: CreatePostButtonProps) {
   const loaderData: loaderDataInterface = useLoaderData();
   const location = useLocation();
+  const [images, setImages] = useState<ImageListType>([]);
 
   // TEMP
   const positionsTEMP = [
@@ -118,36 +132,32 @@ export default function CreatePostButton({ setOpen }: CreatePostButtonProps) {
     event.preventDefault();
     const formData = new FormData(event.currentTarget as HTMLFormElement);
 
-    // Format data as required by API
-    const postData = {
-      content: { text: formData.get("content") },
-      location: location,
-    };
-    setOpen(false);
+    const image = images[0]?.file;
+    console.log(image);
+
+    // Append data to FormData
+    // formData.append("content", formData.get("content") as string);
+    formData.append("location", location.pathname);
+    if (image) {
+      formData.append("image", image);
+      console.log("lol", image);
+    }
+    if (setOpen) {
+      setOpen(false);
+    }
 
     // Submit the formatted data
-    fetcher.submit(
-      { json: JSON.stringify(postData) },
-      { method: "post", action: "/createPost" }
-    );
+    fetcher.submit(formData, {
+      method: "post",
+      action: "/createPost",
+      encType: "multipart/form-data",
+    });
   };
 
   return (
     <Dialog>
       {" "}
-      <DialogTrigger asChild>
-        <button className="flex gap-4 p-6 border-2 rounded-2xl hover:bg-slate-100 hover:rounded-2xl transition-all">
-          <Terminal className="mr-2" size="36" />
-          <div>
-            <p className="text-justify text-xl font-bold">Post</p>
-            <p className="text-justify">
-              Share something publicly to
-              <span className="font-bold">your</span> feed; doesn't need to be
-              professional. This will not be shown to job recruiters.
-            </p>
-          </div>
-        </button>
-      </DialogTrigger>
+      <DialogTrigger asChild>{buttonProp}</DialogTrigger>
       <DialogContent className="sm:max-w-[640px] overflow-y-auto max-h-screen">
         <DialogHeader>
           <DialogTitle>
@@ -214,7 +224,9 @@ export default function CreatePostButton({ setOpen }: CreatePostButtonProps) {
             >
               {textContent}
             </Textarea>
-            {showImageUpload && <UploadImage />}
+            {showImageUpload && (
+              <UploadImage images={images} setImages={setImages} />
+            )}
           </div>
           <DialogFooter className="sm:justify-between items-center">
             <div className="flex gap-4">

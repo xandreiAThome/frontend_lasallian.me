@@ -37,10 +37,10 @@ export default function ReactionsCard({ reactions }: ReactionsCardProps) {
               <Heart className="h-[28px] w-[27.45px]" />
             )}
           </p>
-          <p className="text-sm">
+          <button type="button" className="text-sm">
             <span className="font-bold">{formatter.format(reactions)} </span>
             reactions
-          </p>
+          </button>
         </HoverCardTrigger>
         <HoverCardContent side="top" className="flex gap-2 justify-center">
           {reactionsList.map(({ name, emoji }) => {
