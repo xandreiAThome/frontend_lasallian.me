@@ -16,14 +16,15 @@ export async function action({ request }: Route.ActionArgs) {
   if (!JSONdata || typeof JSONdata !== "string") {
     throw new Error("Data is not jsonstring ");
   }
+  const data = JSON.parse(JSONdata);
 
   try {
     // Parse the JSON string into an object
-    const data = JSON.parse(JSONdata);
+
     const postData = data.content;
     const location = data.location;
     // console.log("Form data:", postData);
-    // console.log("location", location);
+    console.log("location", location);
 
     // Send to your API endpoint
     const response = await api.post(
@@ -38,8 +39,6 @@ export async function action({ request }: Route.ActionArgs) {
     );
 
     console.log("API response:", response.data);
-
-    console.log("?????????");
     return redirect(location.pathname);
   } catch (error) {
     if (axios.isAxiosError(error)) {
@@ -48,9 +47,9 @@ export async function action({ request }: Route.ActionArgs) {
       console.log("Unexpected error:", error);
     }
   }
-  return redirect("/homePage");
+  return redirect("/homepage");
 }
 
 export async function loader() {
-  return redirect("/todo");
+  return redirect("/homepage");
 }

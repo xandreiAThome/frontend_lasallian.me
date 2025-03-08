@@ -16,10 +16,10 @@ export async function action({ request }: Route.ActionArgs) {
   if (!JSONdata || typeof JSONdata !== "string") {
     throw new Error("Data is not jsonstring ");
   }
-
+  const data = JSON.parse(JSONdata);
   try {
     // Parse the JSON string into an object
-    const data = JSON.parse(JSONdata);
+
     const id = data.id;
     const location = data.location;
     console.log("Form data:", id);
@@ -44,6 +44,7 @@ export async function action({ request }: Route.ActionArgs) {
       console.log("Unexpected error:", error);
     }
   }
+  return redirect("/homepage");
 }
 
 export async function loader() {

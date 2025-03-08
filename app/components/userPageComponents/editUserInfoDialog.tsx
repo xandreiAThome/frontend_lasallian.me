@@ -1,5 +1,11 @@
 import { Ellipsis, Images, Linkedin, Instagram, Facebook } from "lucide-react";
-import { Dialog, DialogContent, DialogTrigger } from "~/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "~/components/ui/dialog";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -18,28 +24,47 @@ import {
 } from "~/components/ui/select";
 import { Input } from "~/components/ui/input";
 import { Button } from "~/components/ui/button";
+import type { authorInterface } from "~/lib/interfaces";
+import { useState } from "react";
 
-export default function EditUserInfoDialog() {
+export default function EditUserInfoDialog(props: authorInterface) {
+  const { vanity, info, meta, _id } = props;
+  const [openDialog, setOpenDialog] = useState<string | null>(null);
   return (
     <>
-      <Dialog>
-        <DropdownMenu>
-          <DropdownMenuTrigger className="ml-auto text-gray-500">
-            <button>
-              <Ellipsis />
-            </button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent>
-            <DropdownMenuSeparator />
-            <DialogTrigger>
-              {" "}
-              <DropdownMenuItem>Edit</DropdownMenuItem>
-            </DialogTrigger>
+      <DropdownMenu>
+        <DropdownMenuTrigger className="ml-auto text-gray-500" asChild>
+          <button>
+            <Ellipsis />
+          </button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent>
+          <DropdownMenuItem
+            className="w-full"
+            onClick={() => setOpenDialog("edit")}
+          >
+            Edit
+          </DropdownMenuItem>
 
-            <DropdownMenuItem className="text-red-500">Delete</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+          <DropdownMenuItem
+            className="w-full text-red-500"
+            onClick={() => setOpenDialog("delete")}
+          >
+            Delete
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+
+      <Dialog
+        open={openDialog === "edit"}
+        onOpenChange={(open) => {
+          if (!open) setOpenDialog(null);
+        }}
+      >
         <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Edit Profile</DialogTitle>
+          </DialogHeader>
           <div className="h-full w-full bg-custom-postcard-white flex flex-col">
             <div className="w-full h-48 bg-gray-300 flex items-center justify-center">
               <button type="button" className="flex gap-1">
@@ -79,8 +104,13 @@ export default function EditUserInfoDialog() {
                       placeholder="@username"
                       className="bg-slate-100"
                       name="username"
+                      defaultValue={info.username}
                     />
-                    <Input placeholder="Bio" className="bg-slate-100" />
+                    <Input
+                      placeholder="Bio"
+                      className="bg-slate-100"
+                      defaultValue={info.bio}
+                    />
                   </div>
                 </div>
               </div>
@@ -94,27 +124,29 @@ export default function EditUserInfoDialog() {
                   <Input
                     className="bg-slate-100 "
                     placeholder="First Name *"
+                    defaultValue={info.name.first}
                   ></Input>
                   <Input
                     className="bg-slate-100 "
                     placeholder="Last Name *"
+                    defaultValue={info.name.last}
                   ></Input>
                 </div>
               </div>
 
               <div className="flex gap-2 px-12 items-center">
-                <Select>
+                <Select defaultValue={info.batchid}>
                   <SelectTrigger className="w-20">
                     <SelectValue placeholder="Select a fruit" />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectGroup>
                       <SelectLabel>Id Number</SelectLabel>
-                      <SelectItem value="apple">120</SelectItem>
-                      <SelectItem value="banana">121</SelectItem>
-                      <SelectItem value="blueberry">122</SelectItem>
-                      <SelectItem value="grapes">123</SelectItem>
-                      <SelectItem value="pineapple">124</SelectItem>
+                      <SelectItem value="120">120</SelectItem>
+                      <SelectItem value="121">121</SelectItem>
+                      <SelectItem value="122">122</SelectItem>
+                      <SelectItem value="123">123</SelectItem>
+                      <SelectItem value="124">124</SelectItem>
                     </SelectGroup>
                   </SelectContent>
                 </Select>
@@ -122,6 +154,7 @@ export default function EditUserInfoDialog() {
                 <Input
                   className="max-w-80 bg-slate-100"
                   placeholder="Degree Program"
+                  value={info.program}
                 ></Input>
               </div>
 
@@ -135,6 +168,7 @@ export default function EditUserInfoDialog() {
                     <Input
                       className="bg-slate-100 max-w-80 pl-9"
                       placeholder="https://facebook.com/..."
+                      defaultValue={info.links.facebook}
                     ></Input>
                     <Facebook className="absolute top-0 bottom-0 m-auto left-1 text-gray-500" />
                   </div>
@@ -143,6 +177,7 @@ export default function EditUserInfoDialog() {
                     <Input
                       className="bg-slate-100 max-w-80 pl-9"
                       placeholder="@juandelacruz..."
+                      defaultValue={info.links.instagram}
                     ></Input>
                     <Instagram className="absolute top-0 bottom-0 m-auto left-1 text-gray-500" />
                   </div>
@@ -151,6 +186,7 @@ export default function EditUserInfoDialog() {
                     <Input
                       className="bg-slate-100 max-w-80 pl-9"
                       placeholder="https://linkedin.com/in/..."
+                      defaultValue={info.links.linkedin}
                     ></Input>
                     <Linkedin className="absolute top-0 bottom-0 m-auto left-1 text-gray-500" />
                   </div>

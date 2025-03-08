@@ -43,12 +43,7 @@ interface positionsData {
   positionColor: string;
 }
 
-interface editPostDialogInterface {
-  isModal: boolean;
-  postData: postDataInterface;
-}
-
-export default function EditPostDialog(props: editPostDialogInterface) {
+export default function EditPostDialog(props: postDataInterface) {
   const loaderData = useLoaderData();
   // console.log("lo", loaderData);
   const fetcher = useFetcher();
@@ -62,7 +57,7 @@ export default function EditPostDialog(props: editPostDialogInterface) {
     author,
     comments,
     _id,
-  } = props.postData;
+  } = props;
   const [currPos, setCurrPos] = useState("LSCS+VP");
   const [openDialog, setOpenDialog] = useState<string | null>(null);
 
@@ -152,7 +147,7 @@ export default function EditPostDialog(props: editPostDialogInterface) {
   };
   return (
     <>
-      <DropdownMenu modal={props.isModal}>
+      <DropdownMenu>
         <DropdownMenuTrigger className="ml-auto text-gray-500" asChild>
           <button>
             <Ellipsis />
@@ -245,9 +240,8 @@ export default function EditPostDialog(props: editPostDialogInterface) {
                 placeholder="Type your message here"
                 rows={5}
                 className="bg-gray-100 rounded-2xl p-4 border-gray-200 border focus:outline-lasalle-green outline-none"
-              >
-                {content.text}
-              </textarea>
+                defaultValue={content.text}
+              ></textarea>
             </div>
             <DialogFooter className="sm:justify-between items-center">
               <DialogClose asChild>

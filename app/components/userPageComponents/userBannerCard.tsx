@@ -43,12 +43,8 @@ import type { authorInterface } from "~/lib/interfaces";
 import EditUserInfoDialog from "./editUserInfoDialog";
 import profileImg from "~/components/assets/profile.jpg";
 
-export default function UserBannerCard({
-  vanity,
-  info,
-  meta,
-  _id,
-}: authorInterface) {
+export default function UserBannerCard(props: authorInterface) {
+  const { vanity, info, meta, _id } = props;
   return (
     <div className="bg-custom-postcard-white rounded-b-xl flex flex-col">
       <div className="w-full h-56 bg-gray-300 flex items-center justify-center bg-center bg-cover bg-[url(https://media.licdn.com/dms/image/v2/D5622AQEsK-oYd5t4kw/feedshare-shrink_2048_1536/feedshare-shrink_2048_1536/0/1731159674567?e=1741219200&v=beta&t=9JwhuJS7mHnFRLGm0RWZTnCvKU-sTloY2hPatPBm5sM)]"></div>
@@ -69,7 +65,7 @@ export default function UserBannerCard({
                 {info.name.first} {info.name.last}
               </p>
 
-              <EditUserInfoDialog />
+              <EditUserInfoDialog {...props} />
             </div>
 
             <div className="flex flex-col gap-2">
