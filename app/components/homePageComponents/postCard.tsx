@@ -94,7 +94,7 @@ export default function PostCard(props: postDataInterface) {
             <p className="px-2 bg-[#313131] text-white text-xs font-semibold">
               VP {/** TEMPORARY */}
             </p>
-            <EditPostDialog postData={props} isModal={false} />
+            <EditPostDialog {...props} />
           </div>
           <div className="flex items-start">
             <p className="text-gray-400 text-xs">{author.info.username}</p>

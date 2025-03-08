@@ -1,6 +1,5 @@
 import { BookPlus } from "lucide-react";
 import PostCard from "~/components/homePageComponents/postCard";
-import OrgPostCard from "~/components/homePageComponents/orgPostCard";
 import axios from "axios";
 import api from "~/lib/api";
 import { redirect } from "react-router";
