@@ -132,8 +132,8 @@ export default function PostDialog(props: postDataInterface) {
   const formatter = Intl.NumberFormat("en", { notation: "compact" });
   const navigate = useNavigate();
   const [currPos, setCurrPos] = useState("LSCS+VP");
-  const [typeComment, setTypeComment] = useState(false);
   const [img, setImg] = useState<string | null>(null);
+  const [submitComment, setSubmitComment] = useState("");
   const fetcher = useFetcher();
   const location = useLocation();
 
@@ -145,6 +145,8 @@ export default function PostDialog(props: postDataInterface) {
     // formData.append("content", formData.get("content") as string);
     formData.append("location", location.pathname);
     formData.append("post_id", _id);
+
+    setSubmitComment("");
 
     // Submit the formatted data
     fetcher.submit(formData, {
@@ -293,6 +295,10 @@ export default function PostDialog(props: postDataInterface) {
               name="content"
               type="text"
               autoComplete="off"
+              onChange={(e) => {
+                setSubmitComment(e.target.value);
+              }}
+              value={submitComment}
             ></Input>
             <button type="submit">
               <Send className="absolute bottom-2 m-auto right-4 text-gray-500 h-5"></Send>

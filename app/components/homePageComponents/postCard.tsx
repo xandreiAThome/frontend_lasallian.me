@@ -62,6 +62,7 @@ export default function PostCard(props: postDataInterface) {
   const [typeComment, setTypeComment] = useState(false);
   const fetcher = useFetcher();
   const location = useLocation();
+  const [submitComment, setSubmitComment] = useState("");
 
   function handleComment(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -71,6 +72,8 @@ export default function PostCard(props: postDataInterface) {
     // formData.append("content", formData.get("content") as string);
     formData.append("location", location.pathname);
     formData.append("post_id", _id);
+
+    setSubmitComment("");
 
     // Submit the formatted data
     fetcher.submit(formData, {
@@ -143,7 +146,7 @@ export default function PostCard(props: postDataInterface) {
 
       <div className="flex items-center mt-4 justify-between gap-4">
         <div className="flex items-center">
-          {/* <ReactionsCard reactions={reactions} /> */}
+          <ReactionsCard reactions={0} />
         </div>
 
         <button
@@ -162,7 +165,7 @@ export default function PostCard(props: postDataInterface) {
             <MessageSquareShare className="h-[28px] w-[27.45px]" />
           </button>
           <p className="text-sm">
-            <span className="font-bold">{formatter.format(commentsNum)} </span>
+            <span className="font-bold">0 </span>
             reposts
           </p>
         </div>
@@ -175,6 +178,8 @@ export default function PostCard(props: postDataInterface) {
             name="content"
             type="text"
             autoComplete="off"
+            onChange={(e) => setSubmitComment(e.target.value)}
+            value={submitComment}
           ></Input>
           <button type="submit">
             <Send className="absolute bottom-2 m-auto right-4 text-gray-500 h-5"></Send>
