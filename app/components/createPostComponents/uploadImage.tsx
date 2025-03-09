@@ -5,9 +5,14 @@ import ImageUploading, { type ImageListType } from "react-images-uploading";
 interface uploadImageInterface {
   images: ImageListType;
   setImages: React.Dispatch<React.SetStateAction<ImageListType>>;
+  uploadButtonDiv: React.ReactElement;
 }
 
-export function UploadImage({ images, setImages }: uploadImageInterface) {
+export default function UploadImage({
+  images,
+  setImages,
+  uploadButtonDiv,
+}: uploadImageInterface) {
   const maxNumber = 1;
 
   const onChange = (
@@ -37,6 +42,7 @@ export function UploadImage({ images, setImages }: uploadImageInterface) {
           dragProps,
         }) => (
           // write your building UI
+
           <div className="text-lasalle-green flex gap-2">
             <div className="w-full">
               <button
@@ -44,18 +50,13 @@ export function UploadImage({ images, setImages }: uploadImageInterface) {
                 style={isDragging ? { color: "red" } : undefined}
                 onClick={onImageUpload}
                 {...dragProps}
-                className="flex gap-2 w-full h-24 flex-col bg-gray-50 rounded-md items-center justify-center hover:text-green-600 transition-all mb-4"
+                className="flex gap-2 w-full h-24 flex-col bg-gray-50 rounded-md items-center justify-center hover:text-green-600 transition-all"
               >
-                <div className="flex gap-2">
-                  <Images />
-                  <p>Upload Image</p>
-                </div>
-
-                <p className="text-sm">or drag and drop</p>
+                {uploadButtonDiv}
               </button>
 
               {imageList.map((image, index) => (
-                <div key={index} className="relative">
+                <div key={index} className="relative mt-2">
                   <img src={image.dataURL} alt="" width="200" />
 
                   <div className="flex gap-2">

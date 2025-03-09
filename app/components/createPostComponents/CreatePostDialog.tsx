@@ -26,7 +26,7 @@ import {
 } from "lucide-react";
 import { use, useState, type ReactElement } from "react";
 import postData from "~/components/dummyData/postData";
-import { UploadImage } from "./uploadImage";
+import UploadImage from "./uploadImage";
 import { Textarea } from "../ui/textarea";
 import {
   Form,
@@ -225,7 +225,20 @@ export default function CreatePostButton({
               {textContent}
             </Textarea>
             {showImageUpload && (
-              <UploadImage images={images} setImages={setImages} />
+              <UploadImage
+                images={images}
+                setImages={setImages}
+                uploadButtonDiv={
+                  <div>
+                    <div className="flex gap-2">
+                      <Images />
+                      <p>Upload Image</p>
+                    </div>
+
+                    <p className="text-sm">or drag and drop</p>
+                  </div>
+                }
+              />
             )}
           </div>
           <DialogFooter className="sm:justify-between items-center">

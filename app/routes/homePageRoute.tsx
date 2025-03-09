@@ -18,7 +18,7 @@ export async function loader({ request }: Route.LoaderArgs) {
   // }
 
   try {
-    const response = await api.get(`${process.env.API_KEY}/post/all`, {
+    const response = await api.get(`${process.env.API_KEY}/post/normal`, {
       headers: {
         Authorization: `Bearer ${userToken}`,
       },
@@ -39,6 +39,7 @@ export async function loader({ request }: Route.LoaderArgs) {
       console.error("Unexpected error:", error);
     }
   }
+  return { loggedInUserId: userObj?._id, user: userObj, userToken: userToken };
 }
 
 export default function HomePage({ loaderData }: Route.ComponentProps) {

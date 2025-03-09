@@ -150,7 +150,7 @@ export default function NavBar({ loaderData }: Route.ComponentProps) {
               }}
               className="bg-custom-postcard-white pl-12 max-w-full rounded-3xl h-11"
               placeholder="Search..."
-              name="q"
+              name="query"
             ></Input>
             <button type="submit">
               <Search className="absolute top-0 bottom-0 m-auto left-4 text-gray-500" />

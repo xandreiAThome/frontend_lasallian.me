@@ -7,7 +7,7 @@ import {
   Terminal,
 } from "lucide-react";
 import ReactTimeAgo from "react-time-ago";
-import { useNavigate } from "react-router";
+import { Form, useFetcher, useLocation, useNavigate } from "react-router";
 import { Button } from "~/components/ui/button";
 import { useState } from "react";
 import {
@@ -26,6 +26,7 @@ export default function CommentsCard({
   content,
   post,
   meta,
+  _id,
 }: commentInterface) {
   const navigate = useNavigate();
   const formatter = Intl.NumberFormat("en", { notation: "compact" });
@@ -39,39 +40,76 @@ export default function CommentsCard({
   const [isEdit, setIsEdit] = useState(false);
   const repliesNum = 0;
   const reactionsNum = 0;
+  const fetcher = useFetcher();
+  const location = useLocation();
+
+  const handleDelete = () => {
+    console.log("delete");
+
+    // Format data as required by API
+    const postData = {
+      id: _id,
+      location: location,
+    };
+
+    // Submit the formatted data
+    fetcher.submit(
+      { json: JSON.stringify(postData) },
+      { method: "post", action: "/deleteComment" }
+    );
+  };
+
+  function handleEdit(event: React.FormEvent<HTMLFormElement>) {
+    console.log("edit");
+    setIsEdit(false);
+    const formData = new FormData(event.currentTarget as HTMLFormElement);
+
+    // Format data as required by API
+    const postData = {
+      content: formData.get("edit"),
+      id: _id,
+      location: location,
+    };
+
+    // Submit the formatted data
+    fetcher.submit(
+      { json: JSON.stringify(postData) },
+      { method: "post", action: "/editComment" }
+    );
+  }
 
   const EditComment = (
     <div>
-      <textarea
-        className="bg-gray-100 rounded-2xl p-4 border-gray-200 border focus:outline-lasalle-green outline-none w-full"
-        name="edit"
-        id="edit"
-        rows={1}
-      >
-        {content}
-      </textarea>
-      <div>
-        <p className="text-sm">
-          {" "}
-          Press{" "}
-          <Button variant="link" onClick={() => setIsEdit(false)}>
-            edit
-          </Button>{" "}
-          to save or Esc to
-          <Button
-            variant="link"
-            onClick={() => setIsEdit(false)}
-            className="text-red-500"
-          >
-            cancel
-          </Button>
-        </p>
-      </div>
+      <Form onSubmit={handleEdit}>
+        <textarea
+          className="bg-gray-100 rounded-2xl p-4 border-gray-200 border focus:outline-lasalle-green outline-none w-full"
+          name="edit"
+          id="edit"
+          rows={1}
+        >
+          {content}
+        </textarea>
+        <div>
+          <p className="text-sm">
+            <Button type="submit" variant="link">
+              Save
+            </Button>
+            <Button
+              variant="link"
+              onClick={() => setIsEdit(false)}
+              className="text-red-500"
+              type="button"
+            >
+              Cancel
+            </Button>
+          </p>
+        </div>
+      </Form>
     </div>
   );
 
   return (
-    <div className="flex items-start mb-6 !ml-0">
+    <div className="flex items-start mb-6 !ml-0 mt-4">
       <button
         onClick={() => {
           navigate("/userprofile");
@@ -86,7 +124,7 @@ export default function CommentsCard({
           alt="profile"
           width="36"
           height="36"
-          className="rou</div>nded-full mr-4"
+          className="rounded-full mr-4"
         />
       </button>
       <div className="flex flex-col flex-grow">
@@ -114,7 +152,7 @@ export default function CommentsCard({
               <DropdownMenuItem onClick={() => setIsEdit(true)}>
                 Edit
               </DropdownMenuItem>
-              <DropdownMenuItem className="text-red-500">
+              <DropdownMenuItem className="text-red-500" onClick={handleDelete}>
                 Delete
               </DropdownMenuItem>
             </DropdownMenuContent>

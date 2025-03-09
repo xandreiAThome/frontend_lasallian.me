@@ -11,10 +11,14 @@ export default [
 
   route("logout", "routes/auth/logoutRoute.tsx"),
 
-  // api routes
-  route("createPost", "routes/api/createPostRoute.tsx"),
-  route("editPost", "routes/api/editPostRoute.tsx"),
-  route("deletePost", "routes/api/deletePostRoute.tsx"),
+  // posts api
+  route("createPost", "routes/api/posts/createPostRoute.tsx"),
+  route("editPost", "routes/api/posts/editPostRoute.tsx"),
+  route("deletePost", "routes/api/posts/deletePostRoute.tsx"),
+  // comment api
+  route("createComment", "routes/api/comments/createCommentRoute.tsx"),
+  route("deleteComment", "routes/api/comments/deleteCommentRoute.tsx"),
+  route("editComment", "routes/api/comments/editCommentRoute.tsx"),
 
   layout("routes/auth/authLayout.tsx", [
     index("routes/auth/loginRoute.tsx"),

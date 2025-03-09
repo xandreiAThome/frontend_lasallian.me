@@ -32,7 +32,13 @@ import {
 import ReactTimeAgo from "react-time-ago";
 import { Input } from "~/components/ui/input";
 import CommentsCard from "./commentsCard";
-import { useLoaderData, useNavigate } from "react-router";
+import {
+  Form,
+  useFetcher,
+  useLoaderData,
+  useLocation,
+  useNavigate,
+} from "react-router";
 import { useEffect, useState } from "react";
 import ReactionsCard from "./reactionsCard";
 import type { commentInterface, postDataInterface } from "~/lib/interfaces";
@@ -46,14 +52,6 @@ interface positionsData {
   position: string;
   orgColor: string;
   positionColor: string;
-}
-
-interface commentsData {
-  profile: { author: string; profile: string };
-  reactions: number;
-  comments: number;
-  time: Date;
-  content: string;
 }
 
 export default function PostDialog(props: postDataInterface) {
@@ -136,6 +134,26 @@ export default function PostDialog(props: postDataInterface) {
   const [currPos, setCurrPos] = useState("LSCS+VP");
   const [typeComment, setTypeComment] = useState(false);
   const [img, setImg] = useState<string | null>(null);
+  const fetcher = useFetcher();
+  const location = useLocation();
+
+  function handleComment(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget as HTMLFormElement);
+
+    // Append data to FormData
+    // formData.append("content", formData.get("content") as string);
+    formData.append("location", location.pathname);
+    formData.append("post_id", _id);
+
+    // Submit the formatted data
+    fetcher.submit(formData, {
+      method: "post",
+      action: "/createComment",
+      encType: "multipart/form-data",
+    });
+  }
+
   // TEMP
 
   useEffect(() => {
@@ -145,8 +163,8 @@ export default function PostDialog(props: postDataInterface) {
           const response = await fetch(`${media[0]}`, {
             headers: {
               Authorization: `Bearer ${loaderData.userToken}`,
-              "Content-Type": "multipart/form-data",
             },
+            method: "get",
           });
 
           if (!response.ok) {
@@ -268,15 +286,18 @@ export default function PostDialog(props: postDataInterface) {
             </div>
           </div>
 
-          <div className="flex relative">
+          <Form className="flex relative" onSubmit={handleComment}>
             <Input
               placeholder="What's YOUR thoughts on this post?"
-              className="text-base md:text-base bg-gray-200 px-8 py-4 my-6 rounded-3xl !ml-0"
+              className="text-base md:text-base bg-gray-200 px-8 py-4 mt-4 rounded-3xl !ml-0"
+              name="content"
+              type="text"
+              autoComplete="off"
             ></Input>
-            <button>
-              <Send className="absolute top-0 bottom-0 m-auto right-4 text-gray-500 h-5"></Send>
+            <button type="submit">
+              <Send className="absolute bottom-2 m-auto right-4 text-gray-500 h-5"></Send>
             </button>
-          </div>
+          </Form>
 
           <div className="flex flex-col !ml-0">
             {comments &&
