@@ -16,6 +16,9 @@ import {
 import type { Route } from "./+types/accountSetupRoute";
 import api from "~/lib/api";
 import axios from "axios";
+import { useState } from "react";
+import type { ImageListType } from "react-images-uploading";
+import UploadProfile from "~/components/imageComponents/uploadProfileComponent";
 
 export async function action({ request }: Route.ActionArgs) {
   const url = new URL(request.url);
@@ -69,6 +72,8 @@ export async function action({ request }: Route.ActionArgs) {
 //       Make page responsive
 
 export default function AccountSetup() {
+  const [img, setImg] = useState<ImageListType>([]);
+
   return (
     <div className="flex h-full bg-custom-bg-white justify-around">
       <div className="max-w-96 flex-col items-baseline justify-between hidden md:flex p-6">
@@ -98,7 +103,7 @@ export default function AccountSetup() {
           className="h-full w-full bg-custom-postcard-white flex flex-col"
         >
           <div className="w-full h-48 bg-gray-300 flex items-center justify-center">
-            <button type="button" className="flex gap-1">
+            <button type="button" className="flex gap-1 text-lasalle-green">
               <Images className="text-lasalle-green" />
               <p className="font-semibold text-lasalle-green">
                 Add Cover Photo
@@ -107,6 +112,7 @@ export default function AccountSetup() {
           </div>
           <div className="pb-6">
             <div className="relative flex p-6">
+              {/* <UploadProfile images={img} setImages={setImg}></UploadProfile> */}
               <div className="w-32 h-32 lg:w-36 lg:h-36 rounded-full bg-gray-300 m-4 border-custom-bg-white border-4 absolute left-0 -top-20 flex justify-center items-center">
                 <button type="button" className="flex flex-col items-center">
                   <Images className="text-lasalle-green"></Images>

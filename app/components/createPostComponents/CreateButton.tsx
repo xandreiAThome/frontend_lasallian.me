@@ -29,7 +29,23 @@ export default function CreateButton() {
           <DialogTitle>Create</DialogTitle>
         </DialogHeader>
         <div className="grid gap-4 py-4">
-          <CreatePostDialog setOpen={setOpen} />
+          <CreatePostDialog
+            setOpen={setOpen}
+            buttonProp={
+              <button className="flex gap-4 p-6 border-2 rounded-2xl hover:bg-slate-100 hover:rounded-2xl transition-all">
+                <Terminal className="mr-2" size="36" />
+                <div>
+                  <p className="text-justify text-xl font-bold">Post</p>
+                  <p className="text-justify">
+                    Share something publicly to
+                    <span className="font-bold">your</span> feed; doesn't need
+                    to be professional. This will not be shown to job
+                    recruiters.
+                  </p>
+                </div>
+              </button>
+            }
+          />
 
           <button className="flex gap-4 p-6 border-2 rounded-2xl hover:bg-slate-100 hover:rounded-2xl transition-all">
             <Terminal className="mr-2" size="36" />

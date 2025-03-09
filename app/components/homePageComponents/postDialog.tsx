@@ -32,26 +32,26 @@ import {
 import ReactTimeAgo from "react-time-ago";
 import { Input } from "~/components/ui/input";
 import CommentsCard from "./commentsCard";
-import { useNavigate } from "react-router";
-import { useState } from "react";
-import ReactionsCard from "./reactionsCard";
+import {
+  Form,
+  useFetcher,
+  useLoaderData,
+  useLocation,
+  useNavigate,
+} from "react-router";
+import { useEffect, useState } from "react";
+import ReactionsCard from "./reactionsPostCard";
 import type { commentInterface, postDataInterface } from "~/lib/interfaces";
 import profileImg from "~/components/assets/profile.jpg";
 import EditPostDialog from "./editPostDialog";
+import api from "~/lib/api";
+import axios from "axios";
 
 interface positionsData {
   org: string;
   position: string;
   orgColor: string;
   positionColor: string;
-}
-
-interface commentsData {
-  profile: { author: string; profile: string };
-  reactions: number;
-  comments: number;
-  time: Date;
-  content: string;
 }
 
 export default function PostDialog(props: postDataInterface) {
@@ -73,6 +73,7 @@ export default function PostDialog(props: postDataInterface) {
     reactions: 4300,
     replies: 500,
   };
+  const loaderData = useLoaderData();
 
   // TEMP
   const positionsTEMP = [
@@ -131,16 +132,64 @@ export default function PostDialog(props: postDataInterface) {
   const formatter = Intl.NumberFormat("en", { notation: "compact" });
   const navigate = useNavigate();
   const [currPos, setCurrPos] = useState("LSCS+VP");
-  const [typeComment, setTypeComment] = useState(false);
+  const [img, setImg] = useState<string | null>(null);
+  const [submitComment, setSubmitComment] = useState("");
+  const fetcher = useFetcher();
+  const location = useLocation();
+
+  function handleComment(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget as HTMLFormElement);
+
+    // Append data to FormData
+    // formData.append("content", formData.get("content") as string);
+    formData.append("location", location.pathname);
+    formData.append("post_id", _id);
+
+    setSubmitComment("");
+
+    // Submit the formatted data
+    fetcher.submit(formData, {
+      method: "post",
+      action: "/createComment",
+      encType: "multipart/form-data",
+    });
+  }
+
+  // TEMP
+
+  useEffect(() => {
+    async function getImg() {
+      if (media.length > 0) {
+        try {
+          const response = await fetch(`${media[0]}`, {
+            headers: {
+              Authorization: `Bearer ${loaderData.userToken}`,
+            },
+            method: "get",
+          });
+
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          const blob = await response.blob();
+          setImg(URL.createObjectURL(blob));
+        } catch (error) {
+          console.log("error:", error);
+        }
+      }
+    }
+    getImg();
+  }, []);
 
   return (
     <Dialog>
       <DialogTrigger asChild>
         <button className="flex text-base text-justify my-4 flex-col">
           <p className="mb-2">{content.text}</p>
-          <div className="-mx-6">
+          <div className="-mx-6 flex justify-center">
             {media.length > 0 && (
-              <img src={media[0]} alt="image content" className=""></img>
+              <img src={img ?? ""} alt="image content" className=""></img>
             )}
           </div>
         </button>
@@ -202,9 +251,9 @@ export default function PostDialog(props: postDataInterface) {
         </DialogHeader>
         <div className="flex text-base text-justify flex-col">
           <p className="mb-2 whitespace-pre-wrap">{content.text}</p>
-          <div className="-mx-6">
+          <div className="-mx-6 flex justify-center">
             {media.length > 0 && (
-              <img src={media[0]} alt="image content" className=""></img>
+              <img src={img ?? ""} alt="image content" className=""></img>
             )}
           </div>
         </div>
@@ -238,17 +287,24 @@ export default function PostDialog(props: postDataInterface) {
             </div>
           </div>
 
-          <div className="flex relative">
+          <Form className="flex relative mb-4" onSubmit={handleComment}>
             <Input
               placeholder="What's YOUR thoughts on this post?"
-              className="text-base md:text-base bg-gray-200 px-8 py-4 my-6 rounded-3xl !ml-0"
+              className="text-base md:text-base bg-gray-200 px-8 py-4 mt-4 rounded-3xl !ml-0"
+              name="content"
+              type="text"
+              autoComplete="off"
+              onChange={(e) => {
+                setSubmitComment(e.target.value);
+              }}
+              value={submitComment}
             ></Input>
-            <button>
-              <Send className="absolute top-0 bottom-0 m-auto right-4 text-gray-500 h-5"></Send>
+            <button type="submit">
+              <Send className="absolute bottom-2 m-auto right-4 text-gray-500 h-5"></Send>
             </button>
-          </div>
+          </Form>
 
-          <div className="flex flex-col !ml-0">
+          <div className="flex flex-col !ml-0 gap-2">
             {comments &&
               comments.map((comment, index) => (
                 <CommentsCard

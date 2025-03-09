@@ -85,6 +85,21 @@ export async function getUserObject(
 }
 
 /**
+ * Sets the user object in the session.
+ * @param {Request} request - The incoming request.
+ * @param {User["user"]} user - The user object to store in the session.
+ * @returns {Promise<void>}
+ */
+export async function setUserObject(
+  request: Request,
+  user: User["user"]
+): Promise<void> {
+  const session = await getUserSession(request);
+  session.set("user", user);
+  await sessionStorage.commitSession(session);
+}
+
+/**
  * Creates a new user session.
  * @param {Object} params - The parameters for creating the session.
  * @param {Request} params.request - The incoming request.

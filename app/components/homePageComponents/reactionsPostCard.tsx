@@ -21,14 +21,21 @@ export default function ReactionsCard({ reactions }: ReactionsCardProps) {
     { name: "angry", emoji: "😡" },
   ];
   const [reaction, setReaction] = useState("");
+
+  function handleReaction(emoji: string) {
+    setReaction(emoji);
+    setOpen(false);
+  }
+
+  function handleDefaultReaction() {
+    reaction ? setReaction("") : setReaction("❤️");
+  }
   return (
     <>
       <HoverCard open={open} onOpenChange={setOpen}>
         <HoverCardTrigger
           className="flex items-center hover:bg-slate-200 px-2 hover:rounded-md cursor-pointer"
-          onClick={() => {
-            reaction ? setReaction("") : setReaction("❤️");
-          }}
+          onClick={handleDefaultReaction}
         >
           <p className="mr-2 ">
             {reaction ? (
@@ -37,10 +44,10 @@ export default function ReactionsCard({ reactions }: ReactionsCardProps) {
               <Heart className="h-[28px] w-[27.45px]" />
             )}
           </p>
-          <p className="text-sm">
+          <button type="button" className="text-sm">
             <span className="font-bold">{formatter.format(reactions)} </span>
             reactions
-          </p>
+          </button>
         </HoverCardTrigger>
         <HoverCardContent side="top" className="flex gap-2 justify-center">
           {reactionsList.map(({ name, emoji }) => {
@@ -48,8 +55,7 @@ export default function ReactionsCard({ reactions }: ReactionsCardProps) {
               <button
                 className="text-2xl transition-all hover:scale-125"
                 onClick={() => {
-                  setReaction(emoji);
-                  setOpen(false);
+                  handleReaction(emoji);
                 }}
               >
                 {emoji}

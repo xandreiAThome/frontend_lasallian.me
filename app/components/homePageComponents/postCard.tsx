@@ -12,14 +12,21 @@ import TimeAgo from "javascript-time-ago";
 import en from "javascript-time-ago/locale/en";
 import ReactTimeAgo from "react-time-ago";
 import PostDialog from "./postDialog";
-import { useNavigate } from "react-router";
+import {
+  Form,
+  useFetcher,
+  useLoaderData,
+  useLocation,
+  useNavigate,
+} from "react-router";
 import { Button } from "~/components/ui/button";
-import { useState, type JSX } from "react";
-import ReactionsCard from "./reactionsCard";
+import { useEffect, useState, type JSX } from "react";
+import ReactionsCard from "./reactionsPostCard";
 import { Input } from "../ui/input";
 import type { postDataInterface, commentInterface } from "~/lib/interfaces";
 import profileImg from "~/components/assets/profile.jpg";
 import EditPostDialog from "./editPostDialog";
+import api from "~/lib/api";
 
 interface positionsData {
   org: string;
@@ -40,13 +47,12 @@ export default function PostCard(props: postDataInterface) {
     meta,
     author,
     comments,
+    reactions,
     _id,
   } = props;
 
   // Compatibility variables for existing code
-  const img = media?.[0];
   const views = 0; // Default value as it's not in the new interface
-  const reactions = 0; // Default value as it's not in the new interface
   const commentsNum = comments && Array.isArray(comments) ? comments.length : 0; // Default value as it's not in the new interface
   const reposts = 0; // Default value as it's not in the new interface
   const commentsList: commentInterface[] = []; // Default value as it's not in the new interface
@@ -54,7 +60,28 @@ export default function PostCard(props: postDataInterface) {
   const navigate = useNavigate();
   const [currPos, setCurrPos] = useState("LSCS+VP");
   const [typeComment, setTypeComment] = useState(false);
-  // TEMP
+  const fetcher = useFetcher();
+  const location = useLocation();
+  const [submitComment, setSubmitComment] = useState("");
+
+  function handleComment(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget as HTMLFormElement);
+
+    // Append data to FormData
+    // formData.append("content", formData.get("content") as string);
+    formData.append("location", location.pathname);
+    formData.append("post_id", _id);
+
+    setSubmitComment("");
+
+    // Submit the formatted data
+    fetcher.submit(formData, {
+      method: "post",
+      action: "/createComment",
+      encType: "multipart/form-data",
+    });
+  }
 
   return (
     <div className="bg-custom-postcard-white flex flex-col px-6 rounded-xl py-4 shadow-lg">
@@ -119,7 +146,7 @@ export default function PostCard(props: postDataInterface) {
 
       <div className="flex items-center mt-4 justify-between gap-4">
         <div className="flex items-center">
-          <ReactionsCard reactions={reactions} />
+          <ReactionsCard reactions={0} />
         </div>
 
         <button
@@ -138,21 +165,26 @@ export default function PostCard(props: postDataInterface) {
             <MessageSquareShare className="h-[28px] w-[27.45px]" />
           </button>
           <p className="text-sm">
-            <span className="font-bold">{formatter.format(commentsNum)} </span>
+            <span className="font-bold">0 </span>
             reposts
           </p>
         </div>
       </div>
       {typeComment && (
-        <div className="flex relative">
+        <Form className="flex relative" onSubmit={handleComment}>
           <Input
             placeholder="What's YOUR thoughts on this post?"
             className="text-base md:text-base bg-gray-200 px-8 py-4 mt-4 rounded-3xl !ml-0"
+            name="content"
+            type="text"
+            autoComplete="off"
+            onChange={(e) => setSubmitComment(e.target.value)}
+            value={submitComment}
           ></Input>
-          <button>
+          <button type="submit">
             <Send className="absolute bottom-2 m-auto right-4 text-gray-500 h-5"></Send>
           </button>
-        </div>
+        </Form>
       )}
     </div>
   );

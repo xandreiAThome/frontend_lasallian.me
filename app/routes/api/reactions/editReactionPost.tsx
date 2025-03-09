@@ -1,5 +1,5 @@
 import { redirect } from "react-router";
-import type { Route } from "./+types/createPostRoute";
+import type { Route } from "./+types/editReactionPost";
 import api from "~/lib/api";
 import axios from "axios";
 import { getUserToken } from "~/.server/sessions";
@@ -11,25 +11,25 @@ export async function action({ request }: Route.ActionArgs) {
   }
 
   const formData = await request.formData();
-  const JSONdata = formData.get("json");
+  const data = formData.get("json");
 
-  if (!JSONdata || typeof JSONdata !== "string") {
+  if (!data || typeof data !== "string") {
     throw new Error("Data is not jsonstring ");
   }
-  const data = JSON.parse(JSONdata);
+  const postData = JSON.parse(data);
+
+  const editPostData = {
+    content: postData.content,
+    title: "title",
+  };
+
+  // console.log("Form data:", editPostData);
 
   try {
-    // Parse the JSON string into an object
-
-    const postData = data.content;
-    const location = data.location;
-    // console.log("Form data:", postData);
-    console.log("location", location);
-
     // Send to your API endpoint
-    const response = await api.post(
-      `${process.env.API_KEY}/post`,
-      { content: postData },
+    const response = await api.put(
+      `${process.env.API_KEY}/post/${postData.id}`,
+      editPostData,
       {
         headers: {
           Authorization: `Bearer ${userToken}`,
@@ -39,7 +39,8 @@ export async function action({ request }: Route.ActionArgs) {
     );
 
     console.log("API response:", response.data);
-    return redirect(location.pathname);
+
+    return redirect(postData.location.pathname);
   } catch (error) {
     if (axios.isAxiosError(error)) {
       console.log(" error:", error.response?.data || error.message);
@@ -47,7 +48,6 @@ export async function action({ request }: Route.ActionArgs) {
       console.log("Unexpected error:", error);
     }
   }
-  return redirect("/homepage");
 }
 
 export async function loader() {
