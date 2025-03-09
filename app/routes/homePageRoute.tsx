@@ -30,6 +30,7 @@ export async function loader({ request }: Route.LoaderArgs) {
       postData: response.data,
       loggedInUserId: userObj?._id,
       user: userObj,
+      userToken: userToken,
     };
   } catch (error) {
     if (axios.isAxiosError(error)) {

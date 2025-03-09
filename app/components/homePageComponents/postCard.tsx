@@ -12,14 +12,15 @@ import TimeAgo from "javascript-time-ago";
 import en from "javascript-time-ago/locale/en";
 import ReactTimeAgo from "react-time-ago";
 import PostDialog from "./postDialog";
-import { useNavigate } from "react-router";
+import { useLoaderData, useNavigate } from "react-router";
 import { Button } from "~/components/ui/button";
-import { useState, type JSX } from "react";
+import { useEffect, useState, type JSX } from "react";
 import ReactionsCard from "./reactionsCard";
 import { Input } from "../ui/input";
 import type { postDataInterface, commentInterface } from "~/lib/interfaces";
 import profileImg from "~/components/assets/profile.jpg";
 import EditPostDialog from "./editPostDialog";
+import api from "~/lib/api";
 
 interface positionsData {
   org: string;
@@ -44,7 +45,6 @@ export default function PostCard(props: postDataInterface) {
   } = props;
 
   // Compatibility variables for existing code
-  const img = media?.[0];
   const views = 0; // Default value as it's not in the new interface
   const reactions = 0; // Default value as it's not in the new interface
   const commentsNum = comments && Array.isArray(comments) ? comments.length : 0; // Default value as it's not in the new interface
@@ -54,7 +54,6 @@ export default function PostCard(props: postDataInterface) {
   const navigate = useNavigate();
   const [currPos, setCurrPos] = useState("LSCS+VP");
   const [typeComment, setTypeComment] = useState(false);
-  // TEMP
 
   return (
     <div className="bg-custom-postcard-white flex flex-col px-6 rounded-xl py-4 shadow-lg">

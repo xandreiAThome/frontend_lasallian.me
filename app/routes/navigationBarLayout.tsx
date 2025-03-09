@@ -25,7 +25,7 @@ export async function loader({ request }: Route.LoaderArgs) {
   }
   const userId = await getUserId(request);
   // console.log("ahuwegba", userId);
-  return { loggedInUserId: userId, user: user };
+  return { loggedInUserId: userId, user: user, userToken: userToken };
 }
 
 export default function NavBar({ loaderData }: Route.ComponentProps) {

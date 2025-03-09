@@ -32,12 +32,14 @@ import {
 import ReactTimeAgo from "react-time-ago";
 import { Input } from "~/components/ui/input";
 import CommentsCard from "./commentsCard";
-import { useNavigate } from "react-router";
-import { useState } from "react";
+import { useLoaderData, useNavigate } from "react-router";
+import { useEffect, useState } from "react";
 import ReactionsCard from "./reactionsCard";
 import type { commentInterface, postDataInterface } from "~/lib/interfaces";
 import profileImg from "~/components/assets/profile.jpg";
 import EditPostDialog from "./editPostDialog";
+import api from "~/lib/api";
+import axios from "axios";
 
 interface positionsData {
   org: string;
@@ -73,6 +75,7 @@ export default function PostDialog(props: postDataInterface) {
     reactions: 4300,
     replies: 500,
   };
+  const loaderData = useLoaderData();
 
   // TEMP
   const positionsTEMP = [
@@ -132,15 +135,42 @@ export default function PostDialog(props: postDataInterface) {
   const navigate = useNavigate();
   const [currPos, setCurrPos] = useState("LSCS+VP");
   const [typeComment, setTypeComment] = useState(false);
+  const [img, setImg] = useState<string | null>(null);
+  // TEMP
+
+  useEffect(() => {
+    async function getImg() {
+      if (media.length > 0) {
+        try {
+          const response = await fetch(`${media[0]}`, {
+            headers: {
+              Authorization: `Bearer ${loaderData.userToken}`,
+              "Content-Type": "multipart/form-data",
+            },
+          });
+
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          const blob = await response.blob();
+          setImg(URL.createObjectURL(blob));
+        } catch (error) {
+          console.log("error:", error);
+        }
+      }
+    }
+    getImg();
+    console.log("hi");
+  }, []);
 
   return (
     <Dialog>
       <DialogTrigger asChild>
         <button className="flex text-base text-justify my-4 flex-col">
           <p className="mb-2">{content.text}</p>
-          <div className="-mx-6">
+          <div className="-mx-6 flex justify-center">
             {media.length > 0 && (
-              <img src={media[0]} alt="image content" className=""></img>
+              <img src={img ?? ""} alt="image content" className=""></img>
             )}
           </div>
         </button>
@@ -202,9 +232,9 @@ export default function PostDialog(props: postDataInterface) {
         </DialogHeader>
         <div className="flex text-base text-justify flex-col">
           <p className="mb-2 whitespace-pre-wrap">{content.text}</p>
-          <div className="-mx-6">
+          <div className="-mx-6 flex justify-center">
             {media.length > 0 && (
-              <img src={media[0]} alt="image content" className=""></img>
+              <img src={img ?? ""} alt="image content" className=""></img>
             )}
           </div>
         </div>
