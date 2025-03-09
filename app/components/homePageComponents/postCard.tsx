@@ -21,7 +21,7 @@ import {
 } from "react-router";
 import { Button } from "~/components/ui/button";
 import { useEffect, useState, type JSX } from "react";
-import ReactionsCard from "./reactionsCard";
+import ReactionsCard from "./reactionsPostCard";
 import { Input } from "../ui/input";
 import type { postDataInterface, commentInterface } from "~/lib/interfaces";
 import profileImg from "~/components/assets/profile.jpg";
@@ -47,12 +47,12 @@ export default function PostCard(props: postDataInterface) {
     meta,
     author,
     comments,
+    reactions,
     _id,
   } = props;
 
   // Compatibility variables for existing code
   const views = 0; // Default value as it's not in the new interface
-  const reactions = 0; // Default value as it's not in the new interface
   const commentsNum = comments && Array.isArray(comments) ? comments.length : 0; // Default value as it's not in the new interface
   const reposts = 0; // Default value as it's not in the new interface
   const commentsList: commentInterface[] = []; // Default value as it's not in the new interface
@@ -143,7 +143,7 @@ export default function PostCard(props: postDataInterface) {
 
       <div className="flex items-center mt-4 justify-between gap-4">
         <div className="flex items-center">
-          <ReactionsCard reactions={reactions} />
+          {/* <ReactionsCard reactions={reactions} /> */}
         </div>
 
         <button

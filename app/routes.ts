@@ -20,6 +20,14 @@ export default [
   route("deleteComment", "routes/api/comments/deleteCommentRoute.tsx"),
   route("editComment", "routes/api/comments/editCommentRoute.tsx"),
 
+  // reaction api
+  route("sendReactionPost", "routes/api/reactions/sendReactionPost.tsx"),
+  route("editReactionPost", "routes/api/reactions/editReactionPost.tsx"),
+  route("deleteReactionPost", "routes/api/reactions/deleteReactionPost.tsx"),
+
+  // other api
+  route("editUserProfile", "routes/api/editUserProfileRoute.tsx"),
+
   layout("routes/auth/authLayout.tsx", [
     index("routes/auth/loginRoute.tsx"),
     route("register", "routes/auth/RegisterRoute.tsx"),

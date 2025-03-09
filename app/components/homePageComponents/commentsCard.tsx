@@ -109,7 +109,7 @@ export default function CommentsCard({
   );
 
   return (
-    <div className="flex items-start mb-6 !ml-0 mt-4">
+    <div className="flex items-start !ml-0">
       <button
         onClick={() => {
           navigate("/userprofile");

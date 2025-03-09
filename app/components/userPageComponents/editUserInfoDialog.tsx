@@ -26,10 +26,52 @@ import { Input } from "~/components/ui/input";
 import { Button } from "~/components/ui/button";
 import type { authorInterface } from "~/lib/interfaces";
 import { useState } from "react";
+import { Form, useFetcher, useLocation } from "react-router";
 
 export default function EditUserInfoDialog(props: authorInterface) {
   const { vanity, info, meta, _id } = props;
   const [openDialog, setOpenDialog] = useState<string | null>(null);
+  const fetcher = useFetcher();
+  const location = useLocation();
+
+  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget as HTMLFormElement);
+
+    // Append data to FormData
+    // formData.append("content", formData.get("content") as string);
+    const jsonData = {
+      info: {
+        username: formData.get("username"),
+        bio: formData.get("bio"),
+        name: {
+          first: formData.get("first"),
+          last: formData.get("last"),
+        },
+
+        batchid: formData.get("batchid"),
+        program: formData.get("program"),
+        links: {
+          facebook: formData.get("facebook"),
+          instagram: formData.get("instagram"),
+          linkedin: formData.get("linkedln"),
+        },
+      },
+      location: location,
+    };
+
+    formData.append("json", JSON.stringify(jsonData));
+
+    setOpenDialog(null);
+
+    // Submit the formatted data
+    fetcher.submit(formData, {
+      method: "post",
+      action: "/editUserProfile",
+      encType: "multipart/form-data",
+    });
+  }
+
   return (
     <>
       <DropdownMenu>
@@ -46,12 +88,12 @@ export default function EditUserInfoDialog(props: authorInterface) {
             Edit
           </DropdownMenuItem>
 
-          <DropdownMenuItem
+          {/* <DropdownMenuItem
             className="w-full text-red-500"
             onClick={() => setOpenDialog("delete")}
           >
             Delete
-          </DropdownMenuItem>
+          </DropdownMenuItem> */}
         </DropdownMenuContent>
       </DropdownMenu>
 
@@ -65,7 +107,10 @@ export default function EditUserInfoDialog(props: authorInterface) {
           <DialogHeader>
             <DialogTitle>Edit Profile</DialogTitle>
           </DialogHeader>
-          <div className="h-full w-full bg-custom-postcard-white flex flex-col">
+          <Form
+            className="h-full w-full bg-custom-postcard-white flex flex-col"
+            onSubmit={handleSubmit}
+          >
             <div className="w-full h-48 bg-gray-300 flex items-center justify-center">
               <button type="button" className="flex gap-1">
                 <Images className="text-lasalle-green" />
@@ -110,6 +155,7 @@ export default function EditUserInfoDialog(props: authorInterface) {
                       placeholder="Bio"
                       className="bg-slate-100"
                       defaultValue={info.bio}
+                      name="bio"
                     />
                   </div>
                 </div>
@@ -124,18 +170,20 @@ export default function EditUserInfoDialog(props: authorInterface) {
                   <Input
                     className="bg-slate-100 "
                     placeholder="First Name *"
+                    name="first"
                     defaultValue={info.name.first}
                   ></Input>
                   <Input
                     className="bg-slate-100 "
                     placeholder="Last Name *"
+                    name="last"
                     defaultValue={info.name.last}
                   ></Input>
                 </div>
               </div>
 
               <div className="flex gap-2 px-12 items-center">
-                <Select defaultValue={info.batchid}>
+                <Select defaultValue={info.batchid} name="batchid">
                   <SelectTrigger className="w-20">
                     <SelectValue placeholder="Select a fruit" />
                   </SelectTrigger>
@@ -154,6 +202,7 @@ export default function EditUserInfoDialog(props: authorInterface) {
                 <Input
                   className="max-w-80 bg-slate-100"
                   placeholder="Degree Program"
+                  name="program"
                   value={info.program}
                 ></Input>
               </div>
@@ -169,6 +218,7 @@ export default function EditUserInfoDialog(props: authorInterface) {
                       className="bg-slate-100 max-w-80 pl-9"
                       placeholder="https://facebook.com/..."
                       defaultValue={info.links.facebook}
+                      name="facebook"
                     ></Input>
                     <Facebook className="absolute top-0 bottom-0 m-auto left-1 text-gray-500" />
                   </div>
@@ -177,6 +227,7 @@ export default function EditUserInfoDialog(props: authorInterface) {
                     <Input
                       className="bg-slate-100 max-w-80 pl-9"
                       placeholder="@juandelacruz..."
+                      name="instagram"
                       defaultValue={info.links.instagram}
                     ></Input>
                     <Instagram className="absolute top-0 bottom-0 m-auto left-1 text-gray-500" />
@@ -186,6 +237,7 @@ export default function EditUserInfoDialog(props: authorInterface) {
                     <Input
                       className="bg-slate-100 max-w-80 pl-9"
                       placeholder="https://linkedin.com/in/..."
+                      name="linkedln"
                       defaultValue={info.links.linkedin}
                     ></Input>
                     <Linkedin className="absolute top-0 bottom-0 m-auto left-1 text-gray-500" />
@@ -202,7 +254,7 @@ export default function EditUserInfoDialog(props: authorInterface) {
                 </Button>
               </div>
             </div>
-          </div>
+          </Form>
         </DialogContent>
       </Dialog>
     </>

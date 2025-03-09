@@ -24,7 +24,7 @@ export async function loader({ request }: Route.LoaderArgs) {
       },
     });
 
-    // console.log(response.data);
+    console.log(response.data);
     // console.log("????", response.data[10].author);
     return {
       postData: response.data,

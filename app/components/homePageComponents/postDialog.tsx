@@ -40,7 +40,7 @@ import {
   useNavigate,
 } from "react-router";
 import { useEffect, useState } from "react";
-import ReactionsCard from "./reactionsCard";
+import ReactionsCard from "./reactionsPostCard";
 import type { commentInterface, postDataInterface } from "~/lib/interfaces";
 import profileImg from "~/components/assets/profile.jpg";
 import EditPostDialog from "./editPostDialog";
@@ -286,7 +286,7 @@ export default function PostDialog(props: postDataInterface) {
             </div>
           </div>
 
-          <Form className="flex relative" onSubmit={handleComment}>
+          <Form className="flex relative mb-4" onSubmit={handleComment}>
             <Input
               placeholder="What's YOUR thoughts on this post?"
               className="text-base md:text-base bg-gray-200 px-8 py-4 mt-4 rounded-3xl !ml-0"
@@ -299,7 +299,7 @@ export default function PostDialog(props: postDataInterface) {
             </button>
           </Form>
 
-          <div className="flex flex-col !ml-0">
+          <div className="flex flex-col !ml-0 gap-2">
             {comments &&
               comments.map((comment, index) => (
                 <CommentsCard

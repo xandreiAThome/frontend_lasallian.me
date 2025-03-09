@@ -8,7 +8,7 @@ import OrgPostDialog from "./orgPostDialog";
 import { useNavigate } from "react-router";
 import { use, useState } from "react";
 import { Button } from "~/components/ui/button";
-import ReactionsCard from "./reactionsCard";
+import ReactionsCard from "./reactionsPostCard";
 import { Input } from "../ui/input";
 
 interface postsData {

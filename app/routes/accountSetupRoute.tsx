@@ -113,6 +113,14 @@ export default function AccountSetup() {
           <div className="pb-6">
             <div className="relative flex p-6">
               {/* <UploadProfile images={img} setImages={setImg}></UploadProfile> */}
+              <div className="w-32 h-32 lg:w-36 lg:h-36 rounded-full bg-gray-300 m-4 border-custom-bg-white border-4 absolute left-0 -top-20 flex justify-center items-center">
+                <button type="button" className="flex flex-col items-center">
+                  <Images className="text-lasalle-green"></Images>
+                  <p className="text-lasalle-green font-bold">
+                    + Display Photo{" "}
+                  </p>
+                </button>
+              </div>
 
               <div className="pl-36 flex flex-col flex-1">
                 <div className="flex justify-between">

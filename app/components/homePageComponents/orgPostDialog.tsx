@@ -22,7 +22,7 @@ import ReactTimeAgo from "react-time-ago";
 import { Input } from "~/components/ui/input";
 import CommentsCard from "./commentsCard";
 import { useNavigate } from "react-router";
-import ReactionsCard from "./reactionsCard";
+import ReactionsCard from "./reactionsPostCard";
 
 interface postsData {
   author: string;

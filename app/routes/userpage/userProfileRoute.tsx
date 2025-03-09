@@ -2,15 +2,33 @@ import PostCard from "~/components/homePageComponents/postCard";
 import UserBannerCard from "~/components/userPageComponents/userBannerCard";
 import type { authorInterface, postDataInterface } from "~/lib/interfaces";
 import type { Route } from "./+types/userProfileRoute";
-import { getUserObject, getUserToken } from "~/.server/sessions";
+import { getUserToken } from "~/.server/sessions";
 import api from "~/lib/api";
 import axios from "axios";
 
 export async function loader({ request, params }: Route.LoaderArgs) {
   // Check if the user is already logged in
   const userToken = await getUserToken(request);
-  const user = await getUserObject(request);
-  console.log(params);
+  let user;
+  try {
+    const response = await api.get(`${process.env.API_KEY}/user`, {
+      headers: {
+        Authorization: `Bearer ${userToken}`,
+        "Content-Type": "application/json",
+      },
+    });
+    user = response.data.user;
+
+    console.log("API response:", response.data);
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.log("error:", error.response?.data || error.message);
+    } else {
+      console.log("Unexpected error:", error);
+    }
+  }
+
+  console.log("user", user);
 
   // console.log("data: ", query);
   //TODO
@@ -30,7 +48,7 @@ export async function loader({ request, params }: Route.LoaderArgs) {
         }
       );
 
-      console.log("lol", response.data);
+      // console.log("lol", response.data);
       userProfile = response.data;
     } catch (error) {
       if (axios.isAxiosError(error)) {
@@ -78,6 +96,7 @@ export default function UserProfilePage({ loaderData }: Route.ComponentProps) {
               meta,
               author,
               comments,
+              reactions,
               _id,
             }: postDataInterface,
             index: number
@@ -93,6 +112,7 @@ export default function UserProfilePage({ loaderData }: Route.ComponentProps) {
                 meta={meta}
                 author={author}
                 comments={comments}
+                reactions={reactions}
                 _id={_id}
               />
             );
