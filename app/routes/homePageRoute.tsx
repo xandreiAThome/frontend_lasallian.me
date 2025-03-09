@@ -73,7 +73,7 @@ export default function HomePage({ loaderData }: Route.ComponentProps) {
       </div>
       {loaderData?.postData &&
         loaderData.postData.map((props: postDataInterface, index: number) => {
-          return <PostCard {...props} />;
+          return <PostCard {...props} key={props._id} />;
         })}
     </div>
   );

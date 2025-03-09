@@ -69,6 +69,7 @@ export async function loader({ request, params }: Route.LoaderArgs) {
       postData: response.data,
       loggedInUserId: user?._id,
       user: userProfile,
+      userToken: userToken,
     };
   } catch (error) {
     if (axios.isAxiosError(error)) {
