@@ -10,7 +10,9 @@ interface ReactionsCardProps {
   reactions: number;
 }
 
-export default function ReactionsPostCard({ reactions }: ReactionsCardProps) {
+export default function ReactionsCommentCard({
+  reactions,
+}: ReactionsCardProps) {
   const formatter = Intl.NumberFormat("en", { notation: "compact" });
   const [open, setOpen] = useState(false);
   const reactionsList = [
@@ -39,9 +41,9 @@ export default function ReactionsPostCard({ reactions }: ReactionsCardProps) {
         >
           <p className="mr-2 ">
             {reaction ? (
-              <p className="text-xl">{reaction}</p>
+              <p className="text-base">{reaction}</p>
             ) : (
-              <Heart className="h-[28px] w-[27.45px]" />
+              <Heart className="h-[24px] w-[23.5px]" />
             )}
           </p>
           <button type="button" className="text-sm">

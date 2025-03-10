@@ -64,6 +64,7 @@ export default function PostDialog(props: postDataInterface) {
     meta,
     author,
     comments,
+    reactions,
     _id,
   } = props;
   const dummyComment = {
@@ -125,7 +126,6 @@ export default function PostDialog(props: postDataInterface) {
 
   // Compatibility variables for existing code
   const views = 0; // Default value as it's not in the new interface
-  const reactions = 0; // Default value as it's not in the new interface
   const commentsNum = comments && Array.isArray(comments) ? comments.length : 0; // Default value as it's not in the new interface
   const reposts = 0; // Default value as it's not in the new interface
   const commentsList: commentInterface[] = []; // Default value as it's not in the new interface
@@ -261,7 +261,7 @@ export default function PostDialog(props: postDataInterface) {
         <DialogFooter className="sm:justify-center sm:flex-col flex-col">
           <div className="flex justify-between flex-1 gap-4">
             <div className="flex items-center">
-              <ReactionsCard reactions={reactions}></ReactionsCard>
+              <ReactionsCard reactions={reactions.length}></ReactionsCard>
             </div>
 
             <div className="flex items-center">
@@ -314,6 +314,7 @@ export default function PostDialog(props: postDataInterface) {
                   post={comment.post}
                   meta={comment.meta}
                   _id={comment._id}
+                  reactions={comment.reactions}
                 />
               ))}
           </div>

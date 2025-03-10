@@ -21,7 +21,7 @@ import {
 } from "react-router";
 import { Button } from "~/components/ui/button";
 import { useEffect, useState, type JSX } from "react";
-import ReactionsCard from "./reactionsPostCard";
+import ReactionsPostCard from "./reactionsPostCard";
 import { Input } from "../ui/input";
 import type { postDataInterface, commentInterface } from "~/lib/interfaces";
 import profileImg from "~/components/assets/profile.jpg";
@@ -146,7 +146,7 @@ export default function PostCard(props: postDataInterface) {
 
       <div className="flex items-center mt-4 justify-between gap-4">
         <div className="flex items-center">
-          <ReactionsCard reactions={0} />
+          <ReactionsPostCard reactions={reactions.length} />
         </div>
 
         <button
