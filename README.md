@@ -8,4 +8,4 @@
 
 `npm run dev`
 
-## Populate the env using the example
+## Populate an env file, env.example has the fields
