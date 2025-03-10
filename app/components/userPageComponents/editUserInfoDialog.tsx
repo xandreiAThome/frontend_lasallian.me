@@ -26,13 +26,14 @@ import { Input } from "~/components/ui/input";
 import { Button } from "~/components/ui/button";
 import type { authorInterface } from "~/lib/interfaces";
 import { useState } from "react";
-import { Form, useFetcher, useLocation } from "react-router";
+import { Form, useFetcher, useLoaderData, useLocation } from "react-router";
 
 export default function EditUserInfoDialog(props: authorInterface) {
   const { vanity, info, meta, _id } = props;
   const [openDialog, setOpenDialog] = useState<string | null>(null);
   const fetcher = useFetcher();
   const location = useLocation();
+  const loaderData = useLoaderData();
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -82,6 +83,7 @@ export default function EditUserInfoDialog(props: authorInterface) {
         </DropdownMenuTrigger>
         <DropdownMenuContent>
           <DropdownMenuItem
+            disabled={loaderData.loggedInUserId !== loaderData.user._id}
             className="w-full"
             onClick={() => setOpenDialog("edit")}
           >

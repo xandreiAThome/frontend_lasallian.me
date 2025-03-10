@@ -135,13 +135,13 @@ export default function UserBannerCard(props: authorInterface) {
           <span className="flex items-center gap-1">
             <Linkedin size="16" />
             <span className="text-lasalle-green font-semibold">
-              <a href={info.links.linkedin || ""}>sdyr</a>
+              <a href={info.links.linkedin || ""}>placeholder</a>
             </span>
           </span>
           <span className="flex items-center gap-1">
             <Instagram size="16" />
             <span className="text-lasalle-green font-semibold">
-              <a href={info.links.instagram || ""}>seandvv</a>
+              <a href={info.links.instagram || ""}>placeholder</a>
             </span>
           </span>
           <span className="flex items-center gap-1">
@@ -157,14 +157,14 @@ export default function UserBannerCard(props: authorInterface) {
           <UserRound size={16} />
           {info.program}
         </span>
-        <span className="flex gap-1 items-center">
+        {/* <span className="flex gap-1 items-center">
           <ExternalLink size={16} />
           <span className="text-lasalle-green font-semibold">
             <a href={info.links.other ? info.links.other[0] : ""}>
               robenta.tech
             </a>
           </span>
-        </span>
+        </span> */}
         <div className="flex gap-2 mt-2">
           <Button className="bg-lasalle-green rounded-3xl text-lg font-bold">
             + Follow
