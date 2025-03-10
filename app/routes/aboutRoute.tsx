@@ -1,4 +1,4 @@
-import { Undo2 } from "lucide-react";
+import { Link2, Undo2 } from "lucide-react";
 import { Link, useNavigate, useNavigation } from "react-router";
 import Logo from "~/components/assets/logo.svg";
 import { Button } from "~/components/ui/button";
@@ -71,6 +71,13 @@ export default function AboutRoute() {
             <p className="text-lasalle-green text-xl">Fullstack Developer</p>
           </div>
         </div>
+        <a
+          href="https://zel.kim/refs"
+          className="text-3xl text-lasalle-green border-b-2 border-lasalle-green hover:border-green-500 hover:text-green-500 flex items-center gap-2"
+        >
+          <Link2 />
+          References
+        </a>
       </main>
       <footer className="">
         <p className="text-center p-2 text-gray-400">
