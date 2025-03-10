@@ -18,14 +18,14 @@ export async function loader({ request }: Route.LoaderArgs) {
   // }
 
   try {
-    const response = await api.get(`${process.env.API_KEY}/post/normal`, {
+    const response = await api.get(`${process.env.API_KEY}/post/all`, {
       headers: {
         Authorization: `Bearer ${userToken}`,
       },
     });
 
-    console.log(response.data);
-    // console.log("????", response.data[10].author);
+    // console.log(response.data);
+
     return {
       postData: response.data,
       loggedInUserId: userObj?._id,
@@ -44,7 +44,7 @@ export async function loader({ request }: Route.LoaderArgs) {
 
 export default function HomePage({ loaderData }: Route.ComponentProps) {
   return (
-    <div className="basis-[640px] pt-6 flex flex-col gap-4 animate-fade-in">
+    <div className="basis-[640px] pt-6 flex flex-col gap-4 animate-fade-in pb-6">
       <div className="bg-custom-postcard-white flex items-center px-6 rounded-xl py-4 shadow-lg w-full">
         <img
           alt="profile"

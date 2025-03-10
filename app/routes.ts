@@ -11,6 +11,8 @@ export default [
 
   route("logout", "routes/auth/logoutRoute.tsx"),
 
+  route("about", "routes/aboutRoute.tsx"),
+
   // posts api
   route("createPost", "routes/api/posts/createPostRoute.tsx"),
   route("editPost", "routes/api/posts/editPostRoute.tsx"),
