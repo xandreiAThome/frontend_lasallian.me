@@ -110,6 +110,19 @@ export default function NavBar({ loaderData }: Route.ComponentProps) {
                     "hover:bg-slate-200 hover:rounded-2xl px-4 py-1 transition-all",
                   ].join(" ")
                 }
+                to="/about"
+              >
+                About
+              </NavLink>
+            </li>
+            <li>
+              <NavLink
+                className={({ isActive, isPending, isTransitioning }) =>
+                  [
+                    isActive ? "text-lasalle-green" : "",
+                    "hover:bg-slate-200 hover:rounded-2xl px-4 py-1 transition-all",
+                  ].join(" ")
+                }
                 to="/todo"
               >
                 Settings

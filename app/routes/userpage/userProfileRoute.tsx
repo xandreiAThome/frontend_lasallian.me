@@ -67,7 +67,7 @@ export async function loader({ request, params }: Route.LoaderArgs) {
     });
     return {
       postData: response.data,
-      loggedInUserId: user?._id,
+      loggedInUserId: userProfile?._id,
       user: userProfile,
       userToken: userToken,
     };
@@ -82,7 +82,7 @@ export async function loader({ request, params }: Route.LoaderArgs) {
 }
 export default function UserProfilePage({ loaderData }: Route.ComponentProps) {
   return (
-    <div className="basis-[640px] flex flex-col gap-4 animate-fade-in">
+    <div className="basis-[640px] flex flex-col gap-4 animate-fade-in pb-6">
       {loaderData.user && <UserBannerCard {...loaderData.user} />}
 
       {loaderData &&
