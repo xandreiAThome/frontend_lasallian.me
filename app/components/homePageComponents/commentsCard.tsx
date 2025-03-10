@@ -7,7 +7,13 @@ import {
   Terminal,
 } from "lucide-react";
 import ReactTimeAgo from "react-time-ago";
-import { Form, useFetcher, useLocation, useNavigate } from "react-router";
+import {
+  Form,
+  useFetcher,
+  useLoaderData,
+  useLocation,
+  useNavigate,
+} from "react-router";
 import { Button } from "~/components/ui/button";
 import { useState } from "react";
 import {
@@ -38,6 +44,7 @@ export default function CommentsCard({
   const reactionsNum = 0;
   const fetcher = useFetcher();
   const location = useLocation();
+  const loaderData = useLoaderData();
 
   const handleDelete = () => {
     console.log("delete");
@@ -145,12 +152,19 @@ export default function CommentsCard({
             </DropdownMenuTrigger>
             <DropdownMenuContent>
               <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={() => setIsEdit(true)}>
-                Edit
-              </DropdownMenuItem>
-              <DropdownMenuItem className="text-red-500" onClick={handleDelete}>
-                Delete
-              </DropdownMenuItem>
+              {loaderData.loggedInUserId === author._id && (
+                <>
+                  <DropdownMenuItem onClick={() => setIsEdit(true)}>
+                    Edit
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    className="text-red-500"
+                    onClick={handleDelete}
+                  >
+                    Delete
+                  </DropdownMenuItem>
+                </>
+              )}
             </DropdownMenuContent>
           </DropdownMenu>
         </div>

@@ -7,3 +7,5 @@
 ## How to run
 
 `npm run dev`
+
+## Populate the env using the example
