@@ -154,21 +154,23 @@ export default function EditPostDialog(props: postDataInterface) {
           </button>
         </DropdownMenuTrigger>
         <DropdownMenuContent>
-          <DropdownMenuItem
-            disabled={loaderData.loggedInUserId !== author._id}
-            className="w-full"
-            onClick={() => setOpenDialog("edit")}
-          >
-            Edit
-          </DropdownMenuItem>
+          {loaderData.loggedInUserId === author._id && (
+            <>
+              <DropdownMenuItem
+                className="w-full"
+                onClick={() => setOpenDialog("edit")}
+              >
+                Edit
+              </DropdownMenuItem>
 
-          <DropdownMenuItem
-            disabled={loaderData.loggedInUserId !== author._id}
-            className="w-full text-red-500"
-            onClick={() => setOpenDialog("delete")}
-          >
-            Delete
-          </DropdownMenuItem>
+              <DropdownMenuItem
+                className="w-full text-red-500"
+                onClick={() => setOpenDialog("delete")}
+              >
+                Delete
+              </DropdownMenuItem>
+            </>
+          )}
         </DropdownMenuContent>
       </DropdownMenu>
 

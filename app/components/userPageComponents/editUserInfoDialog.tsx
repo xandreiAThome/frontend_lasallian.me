@@ -82,13 +82,14 @@ export default function EditUserInfoDialog(props: authorInterface) {
           </button>
         </DropdownMenuTrigger>
         <DropdownMenuContent>
-          <DropdownMenuItem
-            disabled={loaderData.loggedInUserId !== loaderData.user._id}
-            className="w-full"
-            onClick={() => setOpenDialog("edit")}
-          >
-            Edit
-          </DropdownMenuItem>
+          {loaderData.loggedInUserId === loaderData.user._id && (
+            <DropdownMenuItem
+              className="w-full"
+              onClick={() => setOpenDialog("edit")}
+            >
+              Edit
+            </DropdownMenuItem>
+          )}
 
           {/* <DropdownMenuItem
             className="w-full text-red-500"
