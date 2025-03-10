@@ -18,6 +18,7 @@ interface commentInterface {
   post: postDataInterface;
   meta: { created_at: Date; updated_at: Date };
   _id: string;
+  reactions: reactionInterface[];
 }
 
 interface reactionInterface {

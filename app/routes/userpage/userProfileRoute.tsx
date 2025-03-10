@@ -64,13 +64,18 @@ export async function loader({ request, params }: Route.LoaderArgs) {
   }
 
   try {
-    const response = await api.get(`${process.env.API_KEY}/post/normal`, {
-      headers: {
-        Authorization: `Bearer ${userToken}`,
-      },
-    });
+    const response = await api.get(
+      `${process.env.API_KEY}/post/all/${userProfile?._id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${userToken}`,
+        },
+      }
+    );
+
+    console.log(response.data);
     return {
-      postData: response.data,
+      postData: response.data.posts,
       loggedInUserId: user?._id,
       user: userProfile,
       userToken: userToken,

@@ -27,7 +27,7 @@ export async function action({ request }: Route.ActionArgs) {
       imageFormData.append("image", image);
 
       const imgResp = await api.post(
-        `${process.env.OSS_KEY}/upload`,
+        `${process.env.OSS_KEY}upload`,
         imageFormData,
         {
           headers: {

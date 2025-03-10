@@ -20,6 +20,7 @@ import {
 } from "~/components/ui/dropdown-menu";
 import type { commentInterface } from "~/lib/interfaces";
 import profileImg from "~/components/assets/profile.jpg";
+import ReactionsCommentCard from "./reactionsCommentCard";
 
 export default function CommentsCard({
   author,
@@ -27,16 +28,11 @@ export default function CommentsCard({
   post,
   meta,
   _id,
+  reactions,
 }: commentInterface) {
   const navigate = useNavigate();
   const formatter = Intl.NumberFormat("en", { notation: "compact" });
-  const dummyComment = {
-    author: "zel",
-    time: new Date("2022-10-31T09:00:00.594Z"),
-    content: "congrats bro! #selfsupport",
-    reactions: 4300,
-    replies: 500,
-  };
+
   const [isEdit, setIsEdit] = useState(false);
   const repliesNum = 0;
   const reactionsNum = 0;
@@ -169,15 +165,7 @@ export default function CommentsCard({
 
         <div className="flex gap-4 mt-2">
           <div className="flex items-center">
-            <button className="mr-2">
-              <Heart className="h-4" />
-            </button>
-            <p className="text-sm">
-              <span className="font-bold">
-                {/** TEMPORARY DATA */}
-                {formatter.format(reactionsNum)}{" "}
-              </span>
-            </p>
+            <ReactionsCommentCard reactions={reactions.length} />
           </div>
 
           <div className="flex items-center">
