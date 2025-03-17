@@ -1,6 +1,6 @@
 import { Ellipsis, Facebook, Images, Instagram, Linkedin } from "lucide-react";
 import { Form, redirect } from "react-router";
-import { Button } from "~/components/ui/button";
+import { Button, buttonVariants } from "~/components/ui/button";
 import { Checkbox } from "~/components/ui/checkbox";
 import { Input } from "~/components/ui/input";
 import Logo from "~/components/assets/logo.svg";
@@ -19,6 +19,8 @@ import axios from "axios";
 import { useState } from "react";
 import type { ImageListType } from "react-images-uploading";
 import UploadProfile from "~/components/imageComponents/uploadProfileComponent";
+import UploadImage from "~/components/createPostComponents/uploadImage";
+import UploadProfileDialog from "~/components/imageComponents/uploadProfileDialog";
 
 export async function action({ request }: Route.ActionArgs) {
   const url = new URL(request.url);
@@ -112,15 +114,7 @@ export default function AccountSetup() {
           </div>
           <div className="pb-6">
             <div className="relative flex p-6">
-              {/* <UploadProfile images={img} setImages={setImg}></UploadProfile> */}
-              <div className="w-32 h-32 lg:w-36 lg:h-36 rounded-full bg-gray-300 m-4 border-custom-bg-white border-4 absolute left-0 -top-20 flex justify-center items-center">
-                <button type="button" className="flex flex-col items-center">
-                  <Images className="text-lasalle-green"></Images>
-                  <p className="text-lasalle-green font-bold">
-                    + Display Photo{" "}
-                  </p>
-                </button>
-              </div>
+              <UploadProfileDialog setImages={setImg} images={img} />
 
               <div className="pl-36 flex flex-col flex-1">
                 <div className="flex justify-between">
