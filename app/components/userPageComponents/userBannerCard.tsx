@@ -9,54 +9,80 @@ import {
   UserRound,
   ExternalLink,
 } from "lucide-react";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "~/components/ui/dialog";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuRadioGroup,
-  DropdownMenuRadioItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "~/components/ui/dropdown-menu";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "~/components/ui/select";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Input } from "~/components/ui/input";
 import { Button } from "~/components/ui/button";
 import type { authorInterface } from "~/lib/interfaces";
 import EditUserInfoDialog from "./editUserInfoDialog";
-import profileImg from "~/components/assets/profile.jpg";
+import profileImgDefault from "~/components/assets/profile.jpg";
+import { useLoaderData } from "react-router";
+import { useEffect, useState } from "react";
 
 export default function UserBannerCard(props: authorInterface) {
   const { vanity, info, meta, _id } = props;
+  const [profileImg, setProfileImg] = useState<string | null>(null);
+  const [coverImg, setCoverImg] = useState<string | null>(null);
+  const loaderData = useLoaderData();
+
+  useEffect(() => {
+    async function getImg() {
+      if (vanity.display_photo) {
+        try {
+          const response = await fetch(`${vanity.display_photo}`, {
+            headers: {
+              Authorization: `Bearer ${loaderData.userToken}`,
+            },
+            method: "get",
+          });
+
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          const blob = await response.blob();
+          setProfileImg(URL.createObjectURL(blob));
+        } catch (error) {
+          console.log("error:", error);
+        }
+      }
+
+      if (vanity.cover_photo) {
+        try {
+          const response = await fetch(`${vanity.cover_photo}`, {
+            headers: {
+              Authorization: `Bearer ${loaderData.userToken}`,
+            },
+            method: "get",
+          });
+
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          const blob = await response.blob();
+          setCoverImg(URL.createObjectURL(blob));
+        } catch (error) {
+          console.log("error:", error);
+        }
+      }
+    }
+    getImg();
+  }, [vanity.cover_photo, vanity.display_photo]);
   return (
     <div className="bg-custom-postcard-white rounded-b-xl flex flex-col">
-      <div className="w-full h-56 bg-gray-300 flex items-center justify-center bg-center bg-cover bg-[url(https://media.licdn.com/dms/image/v2/D5622AQEsK-oYd5t4kw/feedshare-shrink_2048_1536/feedshare-shrink_2048_1536/0/1731159674567?e=1741219200&v=beta&t=9JwhuJS7mHnFRLGm0RWZTnCvKU-sTloY2hPatPBm5sM)]"></div>
+      <div className="w-full h-48 bg-gray-300 flex items-center justify-center">
+        {coverImg && (
+          <img src={coverImg} alt="" className="w-full h-48 object-cover" />
+        )}
+      </div>
 
       <div className="">
         <div className="relative flex px-6 py-4">
           <div className="w-32 h-32 lg:w-36 lg:h-36 rounded-full bg-gray-300 m-4 border-custom-bg-white border-4 absolute left-0 -top-20 flex justify-center items-center">
-            <img
-              src={vanity.display_photo ? vanity.display_photo : profileImg}
-              alt=""
-              className="rounded-full"
-            />
+            <Avatar className="w-32 h-32 lg:w-36 lg:h-36 rounded-full bg-gray-300 m-4 border-custom-bg-white border-4 ">
+              <AvatarImage alt="@shadcn" src={profileImg ?? ""} />
+              <AvatarFallback className="flex flex-col bg-gray-300">
+                <img src={profileImgDefault} alt="" />
+              </AvatarFallback>
+            </Avatar>
           </div>
 
           <div className="pl-36 flex flex-col flex-grow">
@@ -65,7 +91,11 @@ export default function UserBannerCard(props: authorInterface) {
                 {info.name.first} {info.name.last}
               </p>
 
-              <EditUserInfoDialog {...props} />
+              <EditUserInfoDialog
+                author={props}
+                coverPic={coverImg}
+                profilePic={profileImg}
+              />
             </div>
 
             <div className="flex flex-col gap-2">

@@ -8,9 +8,13 @@ import {
 
 interface ReactionsCardProps {
   reactions: number;
+  position?: "top" | "right" | "bottom" | "left";
 }
 
-export default function ReactionsPostCard({ reactions }: ReactionsCardProps) {
+export default function ReactionsPostCard({
+  reactions,
+  position,
+}: ReactionsCardProps) {
   const formatter = Intl.NumberFormat("en", { notation: "compact" });
   const [open, setOpen] = useState(false);
   const reactionsList = [
@@ -49,7 +53,10 @@ export default function ReactionsPostCard({ reactions }: ReactionsCardProps) {
             reactions
           </button>
         </HoverCardTrigger>
-        <HoverCardContent side="top" className="flex gap-2 justify-center">
+        <HoverCardContent
+          side={position ?? "top"}
+          className="flex gap-2 justify-center z-[1000] overflow-visible"
+        >
           {reactionsList.map(({ name, emoji }) => {
             return (
               <button

@@ -1,4 +1,4 @@
-import { ArrowRightLeft, Images, ImageUp, X } from "lucide-react";
+import { ArrowRightLeft, Images, X } from "lucide-react";
 import React from "react";
 import ImageUploading, { type ImageListType } from "react-images-uploading";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
@@ -9,7 +9,7 @@ interface uploadImageInterface {
   defaultImage: string | null;
 }
 
-export default function UploadProfile({
+export default function UploadCover({
   images,
   setImages,
   defaultImage,
@@ -26,7 +26,7 @@ export default function UploadProfile({
   };
 
   return (
-    <div className="flex flex-col justify-center">
+    <div className="flex w-full flex-col justify-center">
       <ImageUploading
         multiple
         value={images}
@@ -45,39 +45,35 @@ export default function UploadProfile({
           // write your building UI
           <>
             {!images[0] && !defaultImage && (
-              <div className="w-32 h-32 lg:w-36 lg:h-36 rounded-full bg-gray-300 m-4 border-custom-bg-white border-4  flex justify-center items-center">
+              <div className="w-full h-48 bg-gray-300 flex items-center justify-center">
                 <button
                   type="button"
-                  className="flex flex-col items-center"
+                  className="flex gap-2 w-full h-full justify-center items-center"
                   onClick={onImageUpload}
                   {...dragProps}
                 >
                   <Images className="text-lasalle-green"></Images>
                   <p className="text-lasalle-green font-bold">
-                    + Display Photo{" "}
+                    Add Cover Photo
                   </p>
                 </button>
               </div>
             )}
 
             {(images[0] || defaultImage) && (
-              <div key={0} className="relative mt-2">
-                <Avatar className="w-32 h-32 lg:w-36 lg:h-36 rounded-full bg-gray-300 m-4 border-custom-bg-white border-4">
-                  <AvatarImage
-                    alt="@shadcn"
-                    src={images[0]?.dataURL || defaultImage || undefined}
-                  />
-                  <AvatarFallback className="flex flex-col bg-gray-300">
-                    <Images className="text-lasalle-green"></Images>
-                    <p className="text-lasalle-green font-bold">
-                      + Display Photo
-                    </p>
-                  </AvatarFallback>
-                </Avatar>
+              <div
+                key={0}
+                className="relative w-full h-48 bg-gray-300 flex items-center justify-center"
+              >
+                <img
+                  src={images[0]?.dataURL || defaultImage || undefined}
+                  alt="cover photo"
+                  className="w-full h-48 object-cover"
+                />
 
                 <button
                   type="button"
-                  className="hover:text-green-600 transition-all absolute top-0"
+                  className="hover:text-green-600 transition-all absolute -top-6 left-0"
                   onClick={() => {
                     console.log(images[0]);
                     onImageRemove(0);
@@ -88,7 +84,7 @@ export default function UploadProfile({
 
                 <button
                   type="button"
-                  className="hover:text-green-600 transition-all absolute top-0 right-0 text-lasalle-green"
+                  className="hover:text-green-600 transition-all absolute -top-6 right-0 text-lasalle-green"
                   onClick={() => onImageUpdate(0)}
                 >
                   <ArrowRightLeft />

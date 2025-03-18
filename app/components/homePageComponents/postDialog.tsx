@@ -42,11 +42,9 @@ import {
 import { useEffect, useState } from "react";
 import ReactionsCard from "./reactionsPostCard";
 import type { commentInterface, postDataInterface } from "~/lib/interfaces";
-import profileImg from "~/components/assets/profile.jpg";
+import profileImgDefault from "~/components/assets/profile.jpg";
 import EditPostDialog from "./editPostDialog";
-import api from "~/lib/api";
-import axios from "axios";
-
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 interface positionsData {
   org: string;
   position: string;
@@ -136,6 +134,31 @@ export default function PostDialog(props: postDataInterface) {
   const [submitComment, setSubmitComment] = useState("");
   const fetcher = useFetcher();
   const location = useLocation();
+  const [profileImg, setProfileImg] = useState<string | null>(null);
+
+  useEffect(() => {
+    async function getImg() {
+      if (author.vanity.display_photo) {
+        try {
+          const response = await fetch(`${author.vanity.display_photo}`, {
+            headers: {
+              Authorization: `Bearer ${loaderData.userToken}`,
+            },
+            method: "get",
+          });
+
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          const blob = await response.blob();
+          setProfileImg(URL.createObjectURL(blob));
+        } catch (error) {
+          console.log("error:", error);
+        }
+      }
+    }
+    getImg();
+  }, [author.vanity.display_photo]);
 
   function handleComment(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -194,7 +217,7 @@ export default function PostDialog(props: postDataInterface) {
           </div>
         </button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[640px] overflow-y-auto max-h-screen">
+      <DialogContent className="sm:max-w-[640px] max-h-screen overflow-y-auto hide-scroll">
         <DialogHeader>
           <div className="flex items-center mt-4">
             <button
@@ -202,17 +225,12 @@ export default function PostDialog(props: postDataInterface) {
                 navigate(`/userprofile/${author._id}`);
               }}
             >
-              <img
-                src={
-                  author.vanity.display_photo
-                    ? author.vanity.display_photo
-                    : profileImg
-                }
-                alt="profile"
-                width="36"
-                height="36"
-                className="rounded-full mr-4"
-              />
+              <Avatar className="w-10 h-10 mr-2">
+                <AvatarImage alt="@shadcn" src={profileImg ?? ""} />
+                <AvatarFallback className="flex flex-col bg-gray-300">
+                  <img src={profileImgDefault} alt="" />
+                </AvatarFallback>
+              </Avatar>
             </button>
             <div className="flex flex-col flex-grow">
               <div className="flex items-center">
@@ -253,7 +271,11 @@ export default function PostDialog(props: postDataInterface) {
           <p className="mb-2 whitespace-pre-wrap">{content.text}</p>
           <div className="-mx-6 flex justify-center">
             {media.length > 0 && (
-              <img src={img ?? ""} alt="image content" className=""></img>
+              <img
+                src={img ?? undefined}
+                alt="image content"
+                className=""
+              ></img>
             )}
           </div>
         </div>
@@ -261,7 +283,7 @@ export default function PostDialog(props: postDataInterface) {
         <DialogFooter className="sm:justify-center sm:flex-col flex-col">
           <div className="flex justify-between flex-1 gap-4">
             <div className="flex items-center">
-              <ReactionsCard reactions={reactions.length}></ReactionsCard>
+              <ReactionsCard reactions={reactions.length} position="right" />
             </div>
 
             <div className="flex items-center">

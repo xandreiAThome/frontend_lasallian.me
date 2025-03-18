@@ -27,13 +27,24 @@ import { Button } from "~/components/ui/button";
 import type { authorInterface } from "~/lib/interfaces";
 import { useState } from "react";
 import { Form, useFetcher, useLoaderData, useLocation } from "react-router";
+import UploadCoverDialog from "../imageComponents/uploadCoverDialog";
+import type { ImageListType } from "react-images-uploading";
+import UploadProfileDialog from "../imageComponents/uploadProfileDialog";
 
-export default function EditUserInfoDialog(props: authorInterface) {
-  const { vanity, info, meta, _id } = props;
+interface editUserInfoInterface {
+  author: authorInterface;
+  profilePic: string | null;
+  coverPic: string | null;
+}
+
+export default function EditUserInfoDialog(props: editUserInfoInterface) {
+  const { vanity, info, meta, _id } = props.author;
   const [openDialog, setOpenDialog] = useState<string | null>(null);
   const fetcher = useFetcher();
   const location = useLocation();
   const loaderData = useLoaderData();
+  const [profileImg, setProfileImg] = useState<ImageListType>([]);
+  const [coverImg, setCoverImg] = useState<ImageListType>([]);
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -62,6 +73,20 @@ export default function EditUserInfoDialog(props: authorInterface) {
     };
 
     formData.append("json", JSON.stringify(jsonData));
+
+    const profilePic = profileImg[0]?.file;
+    const coverPic = coverImg[0]?.file;
+    if (profilePic) {
+      formData.append("profilepic", profilePic);
+    } else if (vanity.display_photo) {
+      formData.append("profilepicURL", vanity.display_photo);
+    }
+
+    if (coverPic) {
+      formData.append("coverpic", coverPic);
+    } else if (vanity.cover_photo) {
+      formData.append("coverpicURL", vanity.cover_photo);
+    }
 
     setOpenDialog(null);
 
@@ -106,7 +131,7 @@ export default function EditUserInfoDialog(props: authorInterface) {
           if (!open) setOpenDialog(null);
         }}
       >
-        <DialogContent>
+        <DialogContent className="min-w-[640px]">
           <DialogHeader>
             <DialogTitle>Edit Profile</DialogTitle>
           </DialogHeader>
@@ -115,23 +140,19 @@ export default function EditUserInfoDialog(props: authorInterface) {
             onSubmit={handleSubmit}
           >
             <div className="w-full h-48 bg-gray-300 flex items-center justify-center">
-              <button type="button" className="flex gap-1">
-                <Images className="text-lasalle-green" />
-                <p className="font-semibold text-lasalle-green">
-                  Add Cover Photo
-                </p>
-              </button>
+              <UploadCoverDialog
+                setImages={setCoverImg}
+                images={coverImg}
+                defaultImage={props.coverPic}
+              />
             </div>
             <div className="pb-6">
               <div className="relative flex p-6">
-                <div className="w-32 h-32 lg:w-36 lg:h-36 rounded-full bg-gray-300 m-4 border-custom-bg-white border-4 absolute left-0 -top-20 flex justify-center items-center">
-                  <button type="button" className="flex flex-col items-center">
-                    <Images className="text-lasalle-green"></Images>
-                    <p className="text-lasalle-green font-bold">
-                      + Display Photo{" "}
-                    </p>
-                  </button>
-                </div>
+                <UploadProfileDialog
+                  images={profileImg}
+                  setImages={setProfileImg}
+                  defaultImage={props.profilePic}
+                />
 
                 <div className="pl-36 flex flex-col flex-1">
                   <div className="flex justify-between">
@@ -152,12 +173,14 @@ export default function EditUserInfoDialog(props: authorInterface) {
                       placeholder="@username"
                       className="bg-slate-100"
                       name="username"
+                      autoComplete="off"
                       defaultValue={info.username}
                     />
                     <Input
                       placeholder="Bio"
                       className="bg-slate-100"
                       defaultValue={info.bio}
+                      autoComplete="off"
                       name="bio"
                     />
                   </div>
@@ -174,12 +197,14 @@ export default function EditUserInfoDialog(props: authorInterface) {
                     className="bg-slate-100 "
                     placeholder="First Name *"
                     name="first"
+                    autoComplete="off"
                     defaultValue={info.name.first}
                   ></Input>
                   <Input
                     className="bg-slate-100 "
                     placeholder="Last Name *"
                     name="last"
+                    autoComplete="off"
                     defaultValue={info.name.last}
                   ></Input>
                 </div>
@@ -206,7 +231,7 @@ export default function EditUserInfoDialog(props: authorInterface) {
                   className="max-w-80 bg-slate-100"
                   placeholder="Degree Program"
                   name="program"
-                  value={info.program}
+                  defaultValue={info.program}
                 ></Input>
               </div>
 
@@ -222,6 +247,7 @@ export default function EditUserInfoDialog(props: authorInterface) {
                       placeholder="https://facebook.com/..."
                       defaultValue={info.links.facebook}
                       name="facebook"
+                      autoComplete="off"
                     ></Input>
                     <Facebook className="absolute top-0 bottom-0 m-auto left-1 text-gray-500" />
                   </div>
@@ -231,6 +257,7 @@ export default function EditUserInfoDialog(props: authorInterface) {
                       className="bg-slate-100 max-w-80 pl-9"
                       placeholder="@juandelacruz..."
                       name="instagram"
+                      autoComplete="off"
                       defaultValue={info.links.instagram}
                     ></Input>
                     <Instagram className="absolute top-0 bottom-0 m-auto left-1 text-gray-500" />
@@ -241,6 +268,7 @@ export default function EditUserInfoDialog(props: authorInterface) {
                       className="bg-slate-100 max-w-80 pl-9"
                       placeholder="https://linkedin.com/in/..."
                       name="linkedln"
+                      autoComplete="off"
                       defaultValue={info.links.linkedin}
                     ></Input>
                     <Linkedin className="absolute top-0 bottom-0 m-auto left-1 text-gray-500" />

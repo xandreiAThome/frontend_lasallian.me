@@ -90,7 +90,10 @@ export default function EditPostDialog(props: postDataInterface) {
   const posDIVS = positionsTEMP.map(
     ({ org, position, orgColor, positionColor }: positionsData) => {
       return (
-        <DropdownMenuRadioItem value={`${org}+${position}`}>
+        <DropdownMenuRadioItem
+          value={`${org}+${position}`}
+          key={`${org}+${position}`}
+        >
           <p
             style={{ backgroundColor: orgColor }}
             className=" text-white text-xs font-semibold px-2"

@@ -15,7 +15,7 @@ import {
   useNavigate,
 } from "react-router";
 import { Button } from "~/components/ui/button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -25,8 +25,9 @@ import {
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
 import type { commentInterface } from "~/lib/interfaces";
-import profileImg from "~/components/assets/profile.jpg";
+import profileImgDefault from "~/components/assets/profile.jpg";
 import ReactionsCommentCard from "./reactionsCommentCard";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 
 export default function CommentsCard({
   author,
@@ -45,6 +46,31 @@ export default function CommentsCard({
   const fetcher = useFetcher();
   const location = useLocation();
   const loaderData = useLoaderData();
+  const [profileImg, setProfileImg] = useState<string | null>(null);
+
+  useEffect(() => {
+    async function getImg() {
+      if (author.vanity.display_photo) {
+        try {
+          const response = await fetch(`${author.vanity.display_photo}`, {
+            headers: {
+              Authorization: `Bearer ${loaderData.userToken}`,
+            },
+            method: "get",
+          });
+
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          const blob = await response.blob();
+          setProfileImg(URL.createObjectURL(blob));
+        } catch (error) {
+          console.log("error:", error);
+        }
+      }
+    }
+    getImg();
+  }, [author.vanity.display_photo]);
 
   const handleDelete = () => {
     console.log("delete");
@@ -118,17 +144,12 @@ export default function CommentsCard({
           navigate("/userprofile");
         }}
       >
-        <img
-          src={
-            author.vanity.display_photo
-              ? author.vanity.display_photo
-              : profileImg
-          }
-          alt="profile"
-          width="36"
-          height="36"
-          className="rounded-full mr-4"
-        />
+        <Avatar className="w-9 h-9 mr-2">
+          <AvatarImage alt="@shadcn" src={profileImg ?? undefined} />
+          <AvatarFallback className="flex flex-col bg-gray-300">
+            <img src={profileImgDefault} alt="" />
+          </AvatarFallback>
+        </Avatar>
       </button>
       <div className="flex flex-col flex-grow">
         <div className="flex items-center">

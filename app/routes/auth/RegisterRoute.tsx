@@ -64,7 +64,7 @@ export async function action({ request }: Route.ActionArgs) {
       },
     });
 
-    console.log("Registration successful:", response.data);
+    console.log("Registration successful:", response.data.session_token);
     return redirect(
       `/setup?token=${encodeURIComponent(response.data.session_token)}`
     );
@@ -82,7 +82,7 @@ export async function action({ request }: Route.ActionArgs) {
       console.error("Unexpected error:", error);
     }
     // Handle error appropriately
-    return { error: "Registration failed. Please try again." };
+    // return { error: "Registration failed. Please try again." };
   }
 }
 

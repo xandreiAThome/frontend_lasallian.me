@@ -2,11 +2,13 @@ import { BookPlus } from "lucide-react";
 import PostCard from "~/components/homePageComponents/postCard";
 import axios from "axios";
 import api from "~/lib/api";
-import profileImg from "~/components/assets/profile.jpg";
+import profileImgDefault from "~/components/assets/profile.jpg";
 import type { Route } from "./+types/homePageRoute";
 import { getUserObject, getUserToken } from "~/.server/sessions";
 import type { postDataInterface } from "~/lib/interfaces";
 import CreatePostButton from "~/components/createPostComponents/CreatePostDialog";
+import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
+import { useEffect, useState } from "react";
 
 export async function loader({ request }: Route.LoaderArgs) {
   // Check if the user is already logged in
@@ -43,20 +45,41 @@ export async function loader({ request }: Route.LoaderArgs) {
 }
 
 export default function HomePage({ loaderData }: Route.ComponentProps) {
+  const author = loaderData.user;
+  const [profileImg, setProfileImg] = useState<string | null>(null);
+
+  useEffect(() => {
+    async function getImg() {
+      if (author?.vanity?.display_photo) {
+        try {
+          const response = await fetch(`${author.vanity.display_photo}`, {
+            headers: {
+              Authorization: `Bearer ${loaderData.userToken}`,
+            },
+            method: "get",
+          });
+
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          const blob = await response.blob();
+          setProfileImg(URL.createObjectURL(blob));
+        } catch (error) {
+          console.log("error:", error);
+        }
+      }
+    }
+    getImg();
+  }, [author?.vanity?.display_photo]);
   return (
     <div className="basis-[640px] pt-6 flex flex-col gap-4 animate-fade-in pb-6">
       <div className="bg-custom-postcard-white flex items-center px-6 rounded-xl py-4 shadow-lg w-full">
-        <img
-          alt="profile"
-          width="42"
-          height="42"
-          className="rounded-full mr-4"
-          src={
-            loaderData?.user?.vanity?.display_photo
-              ? loaderData?.user.vanity.display_photo
-              : profileImg
-          }
-        />
+        <Avatar className="w-10 h-10 mr-2">
+          <AvatarImage alt="@shadcn" src={profileImg ?? undefined} />
+          <AvatarFallback className="flex flex-col bg-gray-300">
+            <img src={profileImgDefault} alt="" />
+          </AvatarFallback>
+        </Avatar>
 
         <CreatePostButton
           buttonProp={

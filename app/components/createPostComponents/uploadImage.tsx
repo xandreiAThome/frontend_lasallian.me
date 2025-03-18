@@ -59,17 +59,15 @@ export default function UploadImage({
                 <div key={index} className="relative mt-2">
                   <img src={image.dataURL} alt="" width="200" />
 
-                  <div className="flex gap-2">
-                    <button
-                      type="button"
-                      className="hover:text-green-600 transition-all absolute top-0"
-                      onClick={() => {
-                        onImageRemove(index);
-                      }}
-                    >
-                      <X />
-                    </button>
-                  </div>
+                  <button
+                    type="button"
+                    className="hover:text-green-600 transition-all absolute top-0"
+                    onClick={() => {
+                      onImageRemove(index);
+                    }}
+                  >
+                    <X />
+                  </button>
                 </div>
               ))}
 

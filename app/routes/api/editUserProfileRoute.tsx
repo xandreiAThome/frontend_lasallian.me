@@ -13,17 +13,67 @@ export async function action({ request }: Route.ActionArgs) {
   const formData = await request.formData();
   const JSONdata = formData.get("json");
 
+  let profileImgLink = formData.get("profilepicURL")?.toString() || "";
+  let coverImgLink = formData.get("coverpicURL")?.toString() || "";
+  const profilePic = formData.get("profilepic");
+  const coverPic = formData.get("coverpic");
+  const profileImgFormData = new FormData();
+  if (profilePic) {
+    profileImgFormData.append("image", profilePic);
+
+    const imgResp = await api.post(
+      `${process.env.OSS_KEY}upload`,
+      profileImgFormData,
+      {
+        headers: {
+          Authorization: `Bearer ${userToken}`,
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+    console.log("OSS resp: ", imgResp);
+    profileImgLink = imgResp.data.image;
+  }
+
+  const coverImgFormData = new FormData();
+  if (coverPic) {
+    coverImgFormData.append("image", coverPic);
+
+    const imgResp = await api.post(
+      `${process.env.OSS_KEY}upload`,
+      coverImgFormData,
+      {
+        headers: {
+          Authorization: `Bearer ${userToken}`,
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+    console.log("OSS resp: ", imgResp);
+    coverImgLink = imgResp.data.image;
+  }
+
   if (!JSONdata || typeof JSONdata !== "string") {
     throw new Error("Data is not jsonstring ");
   }
   const data = JSON.parse(JSONdata);
   const location = data.location;
   console.log("k", data.info);
+  const vanity: { display_photo?: string; cover_photo?: string } = {};
+  if (profileImgLink) {
+    vanity.display_photo = profileImgLink;
+  }
+  if (coverImgLink) {
+    vanity.cover_photo = coverImgLink;
+  }
   try {
     // Send to your API endpoint
     const response = await api.put(
       `${process.env.API_KEY}/user`,
-      { info: data.info },
+      {
+        info: data.info,
+        vanity: { display_photo: profileImgLink, cover_photo: coverImgLink },
+      },
       {
         headers: {
           Authorization: `Bearer ${userToken}`,
