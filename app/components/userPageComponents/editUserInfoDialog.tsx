@@ -27,6 +27,9 @@ import { Button } from "~/components/ui/button";
 import type { authorInterface } from "~/lib/interfaces";
 import { useState } from "react";
 import { Form, useFetcher, useLoaderData, useLocation } from "react-router";
+import UploadCoverDialog from "../imageComponents/uploadCoverDialog";
+import type { ImageListType } from "react-images-uploading";
+import UploadProfileDialog from "../imageComponents/uploadProfileDialog";
 
 export default function EditUserInfoDialog(props: authorInterface) {
   const { vanity, info, meta, _id } = props;
@@ -34,6 +37,8 @@ export default function EditUserInfoDialog(props: authorInterface) {
   const fetcher = useFetcher();
   const location = useLocation();
   const loaderData = useLoaderData();
+  const [profileImg, setProfileImg] = useState<ImageListType>([]);
+  const [coverImg, setCoverImg] = useState<ImageListType>([]);
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -62,6 +67,20 @@ export default function EditUserInfoDialog(props: authorInterface) {
     };
 
     formData.append("json", JSON.stringify(jsonData));
+
+    const profilePic = profileImg[0]?.file;
+    const coverPic = coverImg[0]?.file;
+    if (profilePic) {
+      formData.append("profilepic", profilePic);
+    } else if (vanity.display_photo) {
+      formData.append("profilepicURL", vanity.display_photo);
+    }
+
+    if (coverPic) {
+      formData.append("coverpic", coverPic);
+    } else if (vanity.cover_photo) {
+      formData.append("coverpicURL", vanity.cover_photo);
+    }
 
     setOpenDialog(null);
 
@@ -106,7 +125,7 @@ export default function EditUserInfoDialog(props: authorInterface) {
           if (!open) setOpenDialog(null);
         }}
       >
-        <DialogContent>
+        <DialogContent className="min-w-[640px]">
           <DialogHeader>
             <DialogTitle>Edit Profile</DialogTitle>
           </DialogHeader>
@@ -115,23 +134,14 @@ export default function EditUserInfoDialog(props: authorInterface) {
             onSubmit={handleSubmit}
           >
             <div className="w-full h-48 bg-gray-300 flex items-center justify-center">
-              <button type="button" className="flex gap-1">
-                <Images className="text-lasalle-green" />
-                <p className="font-semibold text-lasalle-green">
-                  Add Cover Photo
-                </p>
-              </button>
+              <UploadCoverDialog setImages={setCoverImg} images={coverImg} />
             </div>
             <div className="pb-6">
               <div className="relative flex p-6">
-                <div className="w-32 h-32 lg:w-36 lg:h-36 rounded-full bg-gray-300 m-4 border-custom-bg-white border-4 absolute left-0 -top-20 flex justify-center items-center">
-                  <button type="button" className="flex flex-col items-center">
-                    <Images className="text-lasalle-green"></Images>
-                    <p className="text-lasalle-green font-bold">
-                      + Display Photo{" "}
-                    </p>
-                  </button>
-                </div>
+                <UploadProfileDialog
+                  images={profileImg}
+                  setImages={setProfileImg}
+                />
 
                 <div className="pl-36 flex flex-col flex-1">
                   <div className="flex justify-between">

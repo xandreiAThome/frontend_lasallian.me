@@ -43,7 +43,7 @@ export default function ReactionsCommentCard({
             {reaction ? (
               <p className="text-base">{reaction}</p>
             ) : (
-              <Heart className="h-[24px] w-[23.5px]" />
+              <Heart className="h-[24px] w-[22px]" />
             )}
           </p>
           <button type="button" className="text-sm">

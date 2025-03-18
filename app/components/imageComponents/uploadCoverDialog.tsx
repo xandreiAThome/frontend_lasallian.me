@@ -7,49 +7,53 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "~/components/ui/dialog";
-import UploadProfile from "./uploadProfileComponent";
 import type { ImageListType } from "react-images-uploading";
 import { Images } from "lucide-react";
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Button } from "../ui/button";
 import { DialogClose } from "@radix-ui/react-dialog";
+import UploadCover from "./uploadCoverComponent";
 
 interface uploadImageInterface {
   images: ImageListType;
   setImages: React.Dispatch<React.SetStateAction<ImageListType>>;
 }
 
-export default function UploadProfileDialog(props: uploadImageInterface) {
+export default function UploadCoverDialog(props: uploadImageInterface) {
   return (
     <>
       <Dialog>
         <DialogTrigger asChild>
-          <div className="w-32 h-32 lg:w-36 lg:h-36 rounded-full bg-gray-300 m-4 border-custom-bg-white border-4 absolute left-0 -top-20 flex justify-center items-center">
-            <button type="button" className="flex flex-col items-center">
-              <Avatar className="w-32 h-32 lg:w-36 lg:h-36 rounded-full bg-gray-300 m-4 border-custom-bg-white border-4 ">
-                <AvatarImage
-                  alt="@shadcn"
+          <div className="w-full h-48 bg-gray-300 flex items-center justify-center">
+            <button
+              type="button"
+              className="flex flex-col w-full h-48 items-center justify-center"
+            >
+              {props.images[0] ? (
+                <img
                   src={props.images[0] && props.images[0].dataURL}
+                  alt="cover photo"
+                  className="w-full h-48 object-cover"
                 />
-                <AvatarFallback className="flex flex-col bg-gray-300">
+              ) : (
+                <div className="flex gap-2">
                   <Images className="text-lasalle-green"></Images>
                   <p className="text-lasalle-green font-bold">
-                    + Display Photo
+                    Add Cover Photo
                   </p>
-                </AvatarFallback>
-              </Avatar>
+                </div>
+              )}
             </button>
           </div>
         </DialogTrigger>
 
-        <DialogContent className="flex justify-center items-center flex-col">
+        <DialogContent className="flex min-w-[640px] justify-center items-center flex-col">
           <DialogTitle>
-            <h3 className="text-xl">Edit Profile Picture</h3>
+            <h3 className="text-xl mb-4">Edit Cover Photo</h3>
           </DialogTitle>
-          <UploadProfile
+          <UploadCover
             images={props.images}
             setImages={props.setImages}
-          ></UploadProfile>
+          ></UploadCover>
           <DialogClose>
             <Button>Save</Button>
           </DialogClose>

@@ -174,7 +174,7 @@ export default function CreatePostButton({
           <div className="flex gap-4 py-4 flex-col">
             <div className="flex items-center">
               <img
-                src={loaderData.user.vanity.display_photo || profileImg}
+                src={loaderData.user.vanity?.display_photo || profileImg}
                 alt="profile"
                 width="36"
                 height="36"
@@ -183,8 +183,8 @@ export default function CreatePostButton({
               <div className="flex flex-col items-start">
                 <div className="flex items-center">
                   <p className="text-lg font-bold mr-12">
-                    {loaderData.user.info.name.first}{" "}
-                    {loaderData.user.info.name.last}
+                    {loaderData.user.info?.name.first}{" "}
+                    {loaderData.user.info?.name.last}
                   </p>{" "}
                   <p className="px-2 bg-[#220088] text-white text-xs font-semibold">
                     {postData.individual[1].org}
@@ -211,7 +211,7 @@ export default function CreatePostButton({
                   </DropdownMenu>
                 </div>
                 <p className="text-gray-400 text-xs">
-                  {loaderData.user.info.username}
+                  {loaderData.user.info?.username}
                 </p>
               </div>
             </div>{" "}

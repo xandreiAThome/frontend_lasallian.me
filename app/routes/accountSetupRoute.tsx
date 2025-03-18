@@ -1,5 +1,5 @@
 import { Ellipsis, Facebook, Images, Instagram, Linkedin } from "lucide-react";
-import { Form, redirect } from "react-router";
+import { Form, redirect, useFetcher } from "react-router";
 import { Button, buttonVariants } from "~/components/ui/button";
 import { Checkbox } from "~/components/ui/checkbox";
 import { Input } from "~/components/ui/input";
@@ -21,14 +21,53 @@ import type { ImageListType } from "react-images-uploading";
 import UploadProfile from "~/components/imageComponents/uploadProfileComponent";
 import UploadImage from "~/components/createPostComponents/uploadImage";
 import UploadProfileDialog from "~/components/imageComponents/uploadProfileDialog";
+import UploadCoverDialog from "~/components/imageComponents/uploadCoverDialog";
 
 export async function action({ request }: Route.ActionArgs) {
   const url = new URL(request.url);
   const token = url.searchParams.get("token");
-
   console.log("Token from URL:", token);
-
   const formData = await request.formData();
+
+  // let profileImgLink = "";
+  // let coverImgLink = "";
+  // const profilePic = formData.get("profilepic");
+  // const coverPic = formData.get("coverpic");
+  // const profileImgFormData = new FormData();
+  // if (profilePic) {
+  //   profileImgFormData.append("image", profilePic);
+
+  //   const imgResp = await api.post(
+  //     `${process.env.OSS_KEY}upload`,
+  //     profileImgFormData,
+  //     {
+  //       headers: {
+  //         Authorization: `Bearer ${token}`,
+  //         "Content-Type": "multipart/form-data",
+  //       },
+  //     }
+  //   );
+  //   console.log("OSS resp: ", imgResp);
+  //   profileImgLink = imgResp.data.image;
+  // }
+
+  // const coverImgFormData = new FormData();
+  // if (coverPic) {
+  //   coverImgFormData.append("image", coverPic);
+
+  //   const imgResp = await api.post(
+  //     `${process.env.OSS_KEY}upload`,
+  //     coverImgFormData,
+  //     {
+  //       headers: {
+  //         Authorization: `Bearer ${token}`,
+  //         "Content-Type": "multipart/form-data",
+  //       },
+  //     }
+  //   );
+  //   console.log("OSS resp: ", imgResp);
+  //   coverImgLink = imgResp.data.image;
+  // }
 
   const reqBody = {
     info: {
@@ -41,9 +80,8 @@ export async function action({ request }: Route.ActionArgs) {
       program: formData.get("program"),
       bio: formData.get("bio"),
     },
+    // vanity: { display_photo: profileImgLink, cover_photo: coverImgLink },
   };
-
-  console.log(reqBody);
 
   try {
     // Send to your API endpoint
@@ -57,9 +95,7 @@ export async function action({ request }: Route.ActionArgs) {
         },
       }
     );
-
     console.log("API response:", response.data);
-
     return redirect("/");
   } catch (error) {
     if (axios.isAxiosError(error)) {
@@ -70,11 +106,44 @@ export async function action({ request }: Route.ActionArgs) {
   }
 }
 
+export async function loader({ request }: Route.ActionArgs) {
+  const url = new URL(request.url);
+  const token = url.searchParams.get("token");
+  if (!token) {
+    redirect("/");
+  }
+}
+
 // TODO: setup the input names and values
 //       Make page responsive
 
 export default function AccountSetup() {
   const [img, setImg] = useState<ImageListType>([]);
+  const [coverImg, setCoverImg] = useState<ImageListType>([]);
+  const fetcher = useFetcher();
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget as HTMLFormElement);
+
+    const image = img[0]?.file;
+    const coverImage = coverImg[0]?.file;
+
+    if (image) {
+      formData.append("profilepic", image);
+    }
+
+    if (coverImage) {
+      formData.append("coverpic", coverImage);
+    }
+    // console.log(formData);
+
+    // Submit the formatted data
+    fetcher.submit(formData, {
+      method: "post",
+      encType: "multipart/form-data",
+    });
+  };
 
   return (
     <div className="flex h-full bg-custom-bg-white justify-around">
@@ -101,17 +170,10 @@ export default function AccountSetup() {
 
       <main className="basis-[640px] flex justify-center py-6">
         <Form
-          method="post"
+          onSubmit={handleSubmit}
           className="h-full w-full bg-custom-postcard-white flex flex-col"
         >
-          <div className="w-full h-48 bg-gray-300 flex items-center justify-center">
-            <button type="button" className="flex gap-1 text-lasalle-green">
-              <Images className="text-lasalle-green" />
-              <p className="font-semibold text-lasalle-green">
-                Add Cover Photo
-              </p>
-            </button>
-          </div>
+          <UploadCoverDialog images={coverImg} setImages={setCoverImg} />
           <div className="pb-6">
             <div className="relative flex p-6">
               <UploadProfileDialog setImages={setImg} images={img} />

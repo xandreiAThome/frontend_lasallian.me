@@ -24,9 +24,9 @@ import { useEffect, useState, type JSX } from "react";
 import ReactionsPostCard from "./reactionsPostCard";
 import { Input } from "../ui/input";
 import type { postDataInterface, commentInterface } from "~/lib/interfaces";
-import profileImg from "~/components/assets/profile.jpg";
+import profileImgDefault from "~/components/assets/profile.jpg";
 import EditPostDialog from "./editPostDialog";
-import api from "~/lib/api";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 
 interface positionsData {
   org: string;
@@ -63,6 +63,32 @@ export default function PostCard(props: postDataInterface) {
   const fetcher = useFetcher();
   const location = useLocation();
   const [submitComment, setSubmitComment] = useState("");
+  const loaderData = useLoaderData();
+  const [profileImg, setProfileImg] = useState<string | null>(null);
+
+  useEffect(() => {
+    async function getImg() {
+      if (author.vanity.display_photo) {
+        try {
+          const response = await fetch(`${author.vanity.display_photo}`, {
+            headers: {
+              Authorization: `Bearer ${loaderData.userToken}`,
+            },
+            method: "get",
+          });
+
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          const blob = await response.blob();
+          setProfileImg(URL.createObjectURL(blob));
+        } catch (error) {
+          console.log("error:", error);
+        }
+      }
+    }
+    getImg();
+  }, [author.vanity.display_photo]);
 
   function handleComment(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -91,17 +117,12 @@ export default function PostCard(props: postDataInterface) {
             navigate(`/userprofile/${author._id}`);
           }}
         >
-          <img
-            src={
-              author.vanity.display_photo
-                ? author.vanity.display_photo
-                : profileImg
-            }
-            alt="profile"
-            width="36"
-            height="36"
-            className="rounded-full mr-4"
-          />
+          <Avatar className="w-10 h-10 mr-2">
+            <AvatarImage alt="@shadcn" src={profileImg ?? ""} />
+            <AvatarFallback className="flex flex-col bg-gray-300">
+              <img src={profileImgDefault} alt="" />
+            </AvatarFallback>
+          </Avatar>
         </button>
 
         <div className="flex flex-col flex-grow">

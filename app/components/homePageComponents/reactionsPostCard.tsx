@@ -49,7 +49,10 @@ export default function ReactionsPostCard({ reactions }: ReactionsCardProps) {
             reactions
           </button>
         </HoverCardTrigger>
-        <HoverCardContent side="top" className="flex gap-2 justify-center">
+        <HoverCardContent
+          side="top"
+          className="flex gap-2 justify-center z-[1000]"
+        >
           {reactionsList.map(({ name, emoji }) => {
             return (
               <button
