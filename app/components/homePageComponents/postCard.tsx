@@ -118,7 +118,7 @@ export default function PostCard(props: postDataInterface) {
           }}
         >
           <Avatar className="w-10 h-10 mr-2">
-            <AvatarImage alt="@shadcn" src={profileImg ?? ""} />
+            <AvatarImage alt="@shadcn" src={profileImg ?? undefined} />
             <AvatarFallback className="flex flex-col bg-gray-300">
               <img src={profileImgDefault} alt="" />
             </AvatarFallback>

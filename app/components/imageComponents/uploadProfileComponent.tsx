@@ -1,4 +1,4 @@
-import { ArrowRightLeft, Images, X } from "lucide-react";
+import { ArrowRightLeft, Images, ImageUp, X } from "lucide-react";
 import React from "react";
 import ImageUploading, { type ImageListType } from "react-images-uploading";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
@@ -6,11 +6,13 @@ import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 interface uploadImageInterface {
   images: ImageListType;
   setImages: React.Dispatch<React.SetStateAction<ImageListType>>;
+  defaultImage: string | null;
 }
 
 export default function UploadProfile({
   images,
   setImages,
+  defaultImage,
 }: uploadImageInterface) {
   const maxNumber = 1;
 
@@ -42,7 +44,7 @@ export default function UploadProfile({
         }) => (
           // write your building UI
           <>
-            {!images[0] && (
+            {!images[0] && !defaultImage && (
               <div className="w-32 h-32 lg:w-36 lg:h-36 rounded-full bg-gray-300 m-4 border-custom-bg-white border-4  flex justify-center items-center">
                 <button
                   type="button"
@@ -58,14 +60,19 @@ export default function UploadProfile({
               </div>
             )}
 
-            {images[0] && (
+            {(images[0] || defaultImage) && (
               <div key={0} className="relative mt-2">
-                <Avatar className="w-32 h-32 lg:w-36 lg:h-36 rounded-full bg-gray-300 m-4 border-custom-bg-white border-4 ">
+                <Avatar className="w-32 h-32 lg:w-36 lg:h-36 rounded-full bg-gray-300 m-4 border-custom-bg-white border-4">
                   <AvatarImage
                     alt="@shadcn"
-                    src={images[0] && images[0].dataURL}
+                    src={images[0]?.dataURL || defaultImage || undefined}
                   />
-                  <AvatarFallback>CN</AvatarFallback>
+                  <AvatarFallback className="flex flex-col bg-gray-300">
+                    <Images className="text-lasalle-green"></Images>
+                    <p className="text-lasalle-green font-bold">
+                      + Display Photo
+                    </p>
+                  </AvatarFallback>
                 </Avatar>
 
                 <button

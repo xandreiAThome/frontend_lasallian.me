@@ -6,11 +6,13 @@ import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 interface uploadImageInterface {
   images: ImageListType;
   setImages: React.Dispatch<React.SetStateAction<ImageListType>>;
+  defaultImage: string | null;
 }
 
 export default function UploadCover({
   images,
   setImages,
+  defaultImage,
 }: uploadImageInterface) {
   const maxNumber = 1;
 
@@ -42,7 +44,7 @@ export default function UploadCover({
         }) => (
           // write your building UI
           <>
-            {!images[0] && (
+            {!images[0] && !defaultImage && (
               <div className="w-full h-48 bg-gray-300 flex items-center justify-center">
                 <button
                   type="button"
@@ -58,13 +60,13 @@ export default function UploadCover({
               </div>
             )}
 
-            {images[0] && (
+            {(images[0] || defaultImage) && (
               <div
                 key={0}
                 className="relative w-full h-48 bg-gray-300 flex items-center justify-center"
               >
                 <img
-                  src={images[0] && images[0].dataURL}
+                  src={images[0]?.dataURL || defaultImage || undefined}
                   alt="cover photo"
                   className="w-full h-48 object-cover"
                 />

@@ -69,11 +69,9 @@ export default function UserBannerCard(props: authorInterface) {
   return (
     <div className="bg-custom-postcard-white rounded-b-xl flex flex-col">
       <div className="w-full h-48 bg-gray-300 flex items-center justify-center">
-        <img
-          src={coverImg ?? ""}
-          alt="cover photo"
-          className="w-full h-48 object-cover"
-        />
+        {coverImg && (
+          <img src={coverImg} alt="" className="w-full h-48 object-cover" />
+        )}
       </div>
 
       <div className="">
@@ -93,7 +91,11 @@ export default function UserBannerCard(props: authorInterface) {
                 {info.name.first} {info.name.last}
               </p>
 
-              <EditUserInfoDialog {...props} />
+              <EditUserInfoDialog
+                author={props}
+                coverPic={coverImg}
+                profilePic={profileImg}
+              />
             </div>
 
             <div className="flex flex-col gap-2">

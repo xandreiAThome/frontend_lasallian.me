@@ -145,7 +145,7 @@ export default function CommentsCard({
         }}
       >
         <Avatar className="w-9 h-9 mr-2">
-          <AvatarImage alt="@shadcn" src={profileImg ?? ""} />
+          <AvatarImage alt="@shadcn" src={profileImg ?? undefined} />
           <AvatarFallback className="flex flex-col bg-gray-300">
             <img src={profileImgDefault} alt="" />
           </AvatarFallback>

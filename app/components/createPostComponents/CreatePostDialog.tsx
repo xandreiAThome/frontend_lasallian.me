@@ -24,7 +24,7 @@ import {
   ChevronDown,
   Upload,
 } from "lucide-react";
-import { use, useState, type ReactElement } from "react";
+import { use, useEffect, useState, type ReactElement } from "react";
 import postData from "~/components/dummyData/postData";
 import UploadImage from "./uploadImage";
 import { Textarea } from "../ui/textarea";
@@ -39,6 +39,8 @@ import { DialogClose } from "@radix-ui/react-dialog";
 import type { authorInterface } from "~/lib/interfaces";
 import profileImg from "~/components/assets/profile.jpg";
 import type { ImageListType } from "react-images-uploading";
+import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
+import profileImgDefault from "~/components/assets/profile.jpg";
 
 interface positionsData {
   org: string;
@@ -56,11 +58,6 @@ interface CreatePostButtonProps {
   buttonProp: ReactElement;
 }
 
-interface loaderDataInterface {
-  id: string;
-  user: authorInterface;
-}
-
 /**
  * @param setOpen - useState setter for closing a previous dialog
  * @param buttonProp - html element to display for triggering this dialog
@@ -69,7 +66,8 @@ export default function CreatePostButton({
   setOpen,
   buttonProp,
 }: CreatePostButtonProps) {
-  const loaderData: loaderDataInterface = useLoaderData();
+  const loaderData = useLoaderData();
+  const author = loaderData.user;
   const location = useLocation();
   const [images, setImages] = useState<ImageListType>([]);
 
@@ -126,6 +124,7 @@ export default function CreatePostButton({
   const [position, setPosition] = useState("LSCS+VP");
   const [textContent, setTextContent] = useState("");
   const [showImageUpload, setShowImageUpload] = useState(false);
+  const [profileImg, setProfileImg] = useState<string | null>(null);
   const fetcher = useFetcher();
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -154,6 +153,30 @@ export default function CreatePostButton({
     });
   };
 
+  useEffect(() => {
+    async function getImg() {
+      if (author?.vanity?.display_photo) {
+        try {
+          const response = await fetch(`${author.vanity.display_photo}`, {
+            headers: {
+              Authorization: `Bearer ${loaderData.userToken}`,
+            },
+            method: "get",
+          });
+
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          const blob = await response.blob();
+          setProfileImg(URL.createObjectURL(blob));
+        } catch (error) {
+          console.log("error:", error);
+        }
+      }
+    }
+    getImg();
+  }, [author?.vanity?.display_photo]);
+
   return (
     <Dialog>
       {" "}
@@ -173,13 +196,12 @@ export default function CreatePostButton({
         <Form onSubmit={handleSubmit}>
           <div className="flex gap-4 py-4 flex-col">
             <div className="flex items-center">
-              <img
-                src={loaderData.user.vanity?.display_photo || profileImg}
-                alt="profile"
-                width="36"
-                height="36"
-                className="rounded-full mr-4"
-              />
+              <Avatar className="w-10 h-10 mr-2">
+                <AvatarImage alt="@shadcn" src={profileImg ?? undefined} />
+                <AvatarFallback className="flex flex-col bg-gray-300">
+                  <img src={profileImgDefault} alt="" />
+                </AvatarFallback>
+              </Avatar>
               <div className="flex flex-col items-start">
                 <div className="flex items-center">
                   <p className="text-lg font-bold mr-12">

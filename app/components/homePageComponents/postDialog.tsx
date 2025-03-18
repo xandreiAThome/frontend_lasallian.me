@@ -217,7 +217,7 @@ export default function PostDialog(props: postDataInterface) {
           </div>
         </button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[640px] overflow-y-auto max-h-screen overflow-visible">
+      <DialogContent className="sm:max-w-[640px] max-h-screen overflow-y-auto hide-scroll">
         <DialogHeader>
           <div className="flex items-center mt-4">
             <button
@@ -271,7 +271,11 @@ export default function PostDialog(props: postDataInterface) {
           <p className="mb-2 whitespace-pre-wrap">{content.text}</p>
           <div className="-mx-6 flex justify-center">
             {media.length > 0 && (
-              <img src={img ?? ""} alt="image content" className=""></img>
+              <img
+                src={img ?? undefined}
+                alt="image content"
+                className=""
+              ></img>
             )}
           </div>
         </div>
@@ -279,7 +283,7 @@ export default function PostDialog(props: postDataInterface) {
         <DialogFooter className="sm:justify-center sm:flex-col flex-col">
           <div className="flex justify-between flex-1 gap-4">
             <div className="flex items-center">
-              <ReactionsCard reactions={reactions.length}></ReactionsCard>
+              <ReactionsCard reactions={reactions.length} position="right" />
             </div>
 
             <div className="flex items-center">

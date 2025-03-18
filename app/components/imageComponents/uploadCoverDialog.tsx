@@ -8,7 +8,7 @@ import {
   DialogTrigger,
 } from "~/components/ui/dialog";
 import type { ImageListType } from "react-images-uploading";
-import { Images } from "lucide-react";
+import { Images, ImageUp } from "lucide-react";
 import { Button } from "../ui/button";
 import { DialogClose } from "@radix-ui/react-dialog";
 import UploadCover from "./uploadCoverComponent";
@@ -16,6 +16,7 @@ import UploadCover from "./uploadCoverComponent";
 interface uploadImageInterface {
   images: ImageListType;
   setImages: React.Dispatch<React.SetStateAction<ImageListType>>;
+  defaultImage: string | null;
 }
 
 export default function UploadCoverDialog(props: uploadImageInterface) {
@@ -28,12 +29,22 @@ export default function UploadCoverDialog(props: uploadImageInterface) {
               type="button"
               className="flex flex-col w-full h-48 items-center justify-center"
             >
-              {props.images[0] ? (
-                <img
-                  src={props.images[0] && props.images[0].dataURL}
-                  alt="cover photo"
-                  className="w-full h-48 object-cover"
-                />
+              {props.images[0] || props.defaultImage ? (
+                <div className="flex flex-col w-full h-48 items-center justify-center relative">
+                  <img
+                    src={
+                      props.images[0]?.dataURL ||
+                      props.defaultImage ||
+                      undefined
+                    }
+                    alt="cover photo"
+                    className="w-full h-48 object-cover"
+                  />
+                  <div className="bg-white right-1 p-1 rounded-sm text-lasalle-green absolute bottom-1 flex text-sm items-center">
+                    <ImageUp className="h-4 w-4" />
+                    <p>Edit Cover Photo</p>
+                  </div>
+                </div>
               ) : (
                 <div className="flex gap-2">
                   <Images className="text-lasalle-green"></Images>
@@ -53,6 +64,7 @@ export default function UploadCoverDialog(props: uploadImageInterface) {
           <UploadCover
             images={props.images}
             setImages={props.setImages}
+            defaultImage={props.defaultImage}
           ></UploadCover>
           <DialogClose>
             <Button>Save</Button>

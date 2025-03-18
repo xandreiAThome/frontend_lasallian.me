@@ -21,7 +21,7 @@ export async function loader({ request, params }: Route.LoaderArgs) {
 
     user = response.data;
 
-    console.log("API response:", response.data);
+    // console.log("API response:", response.data);
   } catch (error) {
     if (axios.isAxiosError(error)) {
       console.log("error:", error.response?.data || error.message);
@@ -30,8 +30,6 @@ export async function loader({ request, params }: Route.LoaderArgs) {
     }
     user = userCookieObj;
   }
-
-  console.log("userk", user);
 
   // console.log("data: ", query);
   //TODO
