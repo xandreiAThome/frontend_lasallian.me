@@ -7,7 +7,7 @@ interface postDataInterface {
   meta: { created_at: Date; updated_at: Date };
   author: authorInterface;
   comments: commentInterface[];
-  reactions: reactionInterface[];
+  reactions: reactionPostInterface[];
   _id: string;
   // organization todo
 }
@@ -18,14 +18,21 @@ interface commentInterface {
   post: postDataInterface;
   meta: { created_at: Date; updated_at: Date };
   _id: string;
-  reactions: reactionInterface[];
+  reactions: reactionCommentInterface[];
 }
 
-interface reactionInterface {
+interface reactionPostInterface {
   _id: string;
   type: string;
-  user: string;
-  target: string;
+  user: authorInterface;
+  target: postDataInterface;
+}
+
+interface reactionCommentInterface {
+  _id: string;
+  type: string;
+  user: authorInterface;
+  target: commentInterface;
 }
 
 interface authorInterface {

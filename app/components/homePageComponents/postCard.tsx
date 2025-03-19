@@ -167,7 +167,7 @@ export default function PostCard(props: postDataInterface) {
 
       <div className="flex items-center mt-4 justify-between gap-4">
         <div className="flex items-center">
-          <ReactionsPostCard reactions={reactions.length} />
+          <ReactionsPostCard reactions={reactions.length} postId={_id} />
         </div>
 
         <button

@@ -283,7 +283,11 @@ export default function PostDialog(props: postDataInterface) {
         <DialogFooter className="sm:justify-center sm:flex-col flex-col">
           <div className="flex justify-between flex-1 gap-4">
             <div className="flex items-center">
-              <ReactionsCard reactions={reactions.length} position="right" />
+              <ReactionsCard
+                reactions={reactions.length}
+                position="right"
+                postId={_id}
+              />
             </div>
 
             <div className="flex items-center">
