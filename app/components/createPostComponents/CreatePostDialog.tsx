@@ -1,12 +1,28 @@
+import { DialogClose } from "@radix-ui/react-dialog";
+import {
+  CalendarDays,
+  ChevronDown,
+  Images
+} from "lucide-react";
+import { useEffect, useState, type ReactElement } from "react";
+import type { ImageListType } from "react-images-uploading";
+import {
+  Form,
+  useFetcher,
+  useLoaderData,
+  useLocation
+} from "react-router";
+import profileImgDefault from "~/components/assets/profile.jpg";
+import postData from "~/components/dummyData/postData";
+import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 import { Button } from "~/components/ui/button";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
+  DialogTrigger
 } from "~/components/ui/dialog";
 import {
   DropdownMenu,
@@ -17,31 +33,11 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
-import {
-  Terminal,
-  Images,
-  CalendarDays,
-  ChevronDown,
-  Upload,
-} from "lucide-react";
-import { use, useEffect, useState, type ReactElement } from "react";
-import postData from "~/components/dummyData/postData";
-import UploadImage from "./uploadImage";
+import type { badgeInterface } from "~/lib/interfaces";
 import { Textarea } from "../ui/textarea";
-import {
-  Form,
-  useFetcher,
-  useLoaderData,
-  useLocation,
-  useRevalidator,
-} from "react-router";
-import { DialogClose } from "@radix-ui/react-dialog";
-import type { authorInterface } from "~/lib/interfaces";
-import profileImg from "~/components/assets/profile.jpg";
-import type { ImageListType } from "react-images-uploading";
-import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
-import profileImgDefault from "~/components/assets/profile.jpg";
+import UploadImage from "./uploadImage";
 
+// TODO: Replace with badge
 interface positionsData {
   org: string;
   position: string;
@@ -71,57 +67,63 @@ export default function CreatePostButton({
   const location = useLocation();
   const [images, setImages] = useState<ImageListType>([]);
 
-  // TEMP
-  const positionsTEMP = [
-    {
-      org: "LSCS",
-      position: "VP",
-      orgColor: "#220088",
-      positionColor: "#313131",
-    },
-    {
-      org: "LSCS",
-      position: "RND",
-      orgColor: "#220088",
-      positionColor: "#313131",
-    },
-    {
-      org: "TLS",
-      position: "WEB",
-      orgColor: "#007D3F",
-      positionColor: "#313131",
-    },
-    {
-      org: "GDSC",
-      position: "MKT",
-      orgColor: "#FFCD05",
-      positionColor: "#313131",
-    },
-  ];
+  console.log(loaderData);
+  console.log(loaderData.user);
 
   // TEMP
-  const posDIVS = positionsTEMP.map(
-    ({ org, position, orgColor, positionColor }: positionsData) => {
+  // const positionsTEMP = [
+  //   {
+  //     org: "LSCS",
+  //     position: "VP",
+  //     orgColor: "#220088",
+  //     positionColor: "#313131",
+  //   },
+  //   {
+  //     org: "LSCS",
+  //     position: "RND",
+  //     orgColor: "#220088",
+  //     positionColor: "#313131",
+  //   },
+  //   {
+  //     org: "TLS",
+  //     position: "WEB",
+  //     orgColor: "#007D3F",
+  //     positionColor: "#313131",
+  //   },
+  //   {
+  //     org: "GDSC",
+  //     position: "MKT",
+  //     orgColor: "#FFCD05",
+  //     positionColor: "#313131",
+  //   },
+  // ];
+
+  const userBadges = loaderData.user.vanity.badges;
+
+  // TEMP TMEP
+  const posDIVS = userBadges.map(
+    ({ main_title, sub_title, main_color, sub_color }: badgeInterface) => {
       return (
-        <DropdownMenuRadioItem value={`${org}+${position}`}>
+        <DropdownMenuRadioItem value={`${main_title}+${sub_title}`}>
           <p
-            style={{ backgroundColor: orgColor }}
+            style={{ backgroundColor: main_color }}
             className=" text-white text-xs font-semibold px-2"
           >
-            {org}
+            {main_title}
           </p>
           <p
-            style={{ backgroundColor: positionColor }}
+            style={{ backgroundColor: sub_color }}
             className=" text-white text-xs font-semibold px-2"
           >
-            {position}
+            {sub_title}
           </p>
         </DropdownMenuRadioItem>
       );
     }
   );
 
-  const [position, setPosition] = useState("LSCS+VP");
+  // const [position, setPosition] = useState("");
+  const [badge, setBadge] = useState("");
   const [textContent, setTextContent] = useState("");
   const [showImageUpload, setShowImageUpload] = useState(false);
   const [profileImg, setProfileImg] = useState<string | null>(null);
@@ -209,10 +211,10 @@ export default function CreatePostButton({
                     {loaderData.user.info?.name.last}
                   </p>{" "}
                   <p className="px-2 bg-[#220088] text-white text-xs font-semibold">
-                    {postData.individual[1].org}
+                    Select
                   </p>
                   <p className="px-2 bg-[#313131] text-white text-xs font-semibold mr-2">
-                    {postData.individual[1].position}
+                    Badge
                   </p>
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
@@ -221,11 +223,13 @@ export default function CreatePostButton({
                       </button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent className="w-56">
-                      <DropdownMenuLabel>Panel Position</DropdownMenuLabel>
+                      <DropdownMenuLabel>Your Badges</DropdownMenuLabel>
                       <DropdownMenuSeparator />
                       <DropdownMenuRadioGroup
-                        value={position}
-                        onValueChange={setPosition}
+                        // value={position}
+                        // onValueChange={setPosition}
+                        value={badge}
+                        onValueChange={setBadge}
                       >
                         {posDIVS}
                       </DropdownMenuRadioGroup>

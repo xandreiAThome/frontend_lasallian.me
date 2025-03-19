@@ -6,10 +6,23 @@ interface postDataInterface {
   visibility: string;
   meta: { created_at: Date; updated_at: Date };
   author: authorInterface;
+  badge: badgeInterface;
   comments: commentInterface[];
   reactions: reactionInterface[];
   _id: string;
   // organization todo
+  // TODO: Add badge
+}
+
+interface badgeInterface {
+  badge_type: string;
+  badge_key: string;
+  text_color: string;
+  main_title: string;
+  main_color: string;
+  sub_title: string;
+  sub_color: string;
+  badge_expiry: string;
 }
 
 interface commentInterface {
@@ -55,4 +68,5 @@ interface authorInterface {
   _id: string;
 }
 
-export type { authorInterface, postDataInterface, commentInterface };
+export type { authorInterface, commentInterface, postDataInterface, badgeInterface };
+
