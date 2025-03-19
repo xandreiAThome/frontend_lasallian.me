@@ -41,7 +41,7 @@ export default function ReactionsPostCard({
     setOpen(false);
   }
 
-  async function handleDefaultReaction() {
+  function handleDefaultReaction() {
     const formData = new FormData();
     if (reaction) {
       setReaction("");
