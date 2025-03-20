@@ -24,13 +24,6 @@ import EditPostDialog from "./editPostDialog";
 import PostDialog from "./postDialog";
 import ReactionsPostCard from "./reactionsPostCard";
 
-interface positionsData {
-  org: string;
-  position: string;
-  orgColor: string;
-  positionColor: string;
-}
-
 TimeAgo.addDefaultLocale(en);
 
 // TODO ADD BADGE
@@ -136,12 +129,16 @@ export default function PostCard(props: postDataInterface) {
               {author.info.name.first} {author.info.name.last}
             </Button>{" "}
             <p
-              style={{ backgroundColor: badge?.main_color || '#220088',}}
+              style={{ backgroundColor: badge?.main_color || '#220088',
+                        color: badge?.main_text_color || 'white',
+              }}
               className="px-2 text-white text-xs font-semibold">
               {badge?.main_title || 'LSCS'}
             </p>
             <p 
-              style={{ backgroundColor: badge?.sub_color || '#313131',}}
+              style={{ backgroundColor: badge?.sub_color || '#313131',
+                        color: badge?.sub_text_color || 'white',
+              }}
               className="px-2 text-white text-xs font-semibold">
               {badge?.sub_title || 'VP'}
             </p>

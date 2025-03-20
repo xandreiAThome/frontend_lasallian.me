@@ -1,14 +1,14 @@
-import { BookPlus } from "lucide-react";
-import PostCard from "~/components/homePageComponents/postCard";
 import axios from "axios";
-import api from "~/lib/api";
-import profileImgDefault from "~/components/assets/profile.jpg";
-import type { Route } from "./+types/homePageRoute";
-import { getUserObject, getUserToken } from "~/.server/sessions";
-import type { postDataInterface } from "~/lib/interfaces";
-import CreatePostButton from "~/components/createPostComponents/CreatePostDialog";
-import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
+import { BookPlus } from "lucide-react";
 import { useEffect, useState } from "react";
+import { getUserObject, getUserToken } from "~/.server/sessions";
+import profileImgDefault from "~/components/assets/profile.jpg";
+import CreatePostButton from "~/components/createPostComponents/CreatePostDialog";
+import PostCard from "~/components/homePageComponents/postCard";
+import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
+import api from "~/lib/api";
+import type { postDataInterface } from "~/lib/interfaces";
+import type { Route } from "./+types/homePageRoute";
 
 export async function loader({ request }: Route.LoaderArgs) {
   // Check if the user is already logged in

@@ -1,69 +1,44 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import type { badgeInterface } from "~/lib/interfaces";
 
 import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuLabel,
-    DropdownMenuRadioGroup,
-    DropdownMenuRadioItem,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuLabel,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
 
 import {
-    ChevronDown,
+  ChevronDown,
 } from "lucide-react";
 
 type BadgeDropDownProps = {
-    badgeIds: string[];
+    badgeIds: badgeInterface[];
+    callback: (selectedBadgeId: string) => void;  // To let the parent know which badge is selected
 }
 
 export default function BadgeDropDown({
-    badgeIds
+    badgeIds,
+    callback,
 }: BadgeDropDownProps) {
-
-    const [badges, setBadges] = useState<badgeInterface[]>([])
     const [selectedBadge, setSelectedBadge] = useState<string>()
 
-    const fetchBadgeData = async () => {
-        try {
-            const response = await fetch(`${process.env.API_KEY}/badge/array`, {
-                method: 'POST',
-                headers: {
-                'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ ids: badgeIds }), // Send the array of badge IDs in the request body
-            });
-
-            if (!response.ok) {
-                throw new Error('Failed to fetch badge')
-            }
-
-            const data = await response.json();
-            setBadges(data.badge);
-        } catch (err) {
-            console.error('Failed to fetch badges. Please try again.');
-        }
-    };
-
-    useEffect(() => {
-        fetchBadgeData();
-    }, []);
-
-    const badgeDIVS = badges.map(
-        ({ main_title, sub_title, main_color, sub_color }: badgeInterface) => {
+    const badgeDIVS = badgeIds.map(
+        ({ main_title, sub_title, main_color, sub_color, main_text_color, sub_text_color }: badgeInterface) => {
             return (
               <DropdownMenuRadioItem value={`${main_title}+${sub_title}`}>
                 <p
-                  style={{ backgroundColor: main_color }}
-                  className=" text-white text-xs font-semibold px-2"
+                  style={{ backgroundColor: main_color, color: main_text_color }}
+                  className="text-xs font-semibold px-2"
                 >
                   {main_title}
                 </p>
                 <p
-                  style={{ backgroundColor: sub_color }}
-                  className=" text-white text-xs font-semibold px-2"
+                  style={{ backgroundColor: sub_color, color: sub_text_color }}
+                  className="text-xs font-semibold px-2"
                 >
                   {sub_title}
                 </p>
@@ -72,31 +47,47 @@ export default function BadgeDropDown({
         }
     )
 
+    const handleBadgeChange = (selectedBadgeId: string) => {
+      setSelectedBadge(selectedBadgeId);
+      callback(selectedBadgeId);
+    }
+
     return (
         <>
-        <p className="px-2 bg-[#220088] text-white text-xs font-semibold">
-                    Select
-                  </p>
-                  <p className="px-2 bg-[#313131] text-white text-xs font-semibold mr-2">
-                    Badge
-                  </p>
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <button type="button">
-                        <ChevronDown className="font-extrabold" />
-                      </button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent className="w-56">
-                      <DropdownMenuLabel>Your Badges</DropdownMenuLabel>
-                      <DropdownMenuSeparator />
-                      <DropdownMenuRadioGroup
-                        value={selectedBadge}
-                        onValueChange={setSelectedBadge}
-                      >
-                        {badgeDIVS}
-                      </DropdownMenuRadioGroup>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                  </>
+        <p
+          className={`px-2 text-white text-xs font-semibold ${
+            selectedBadge ? 'bg-[#220088]' : 'bg-[#313131]'
+          }`}
+        >
+          {selectedBadge ? selectedBadge : 'Select'}
+        </p>
+        <p
+          className={`px-2 text-white text-xs font-semibold mr-2 ${
+            selectedBadge ? 'bg-[#220088]' : 'bg-[#313131]'
+          }`}
+        >
+          {selectedBadge ? 'Badge' : 'Badge'}
+        </p>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <button type="button">
+              <ChevronDown className="font-extrabold" />
+            </button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent className="w-56">
+            <DropdownMenuLabel>Your Badges</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuRadioItem value="" onSelect={() => handleBadgeChange("")}>
+            <p className="text-xs font-semibold px-2 text-center text-gray-500">No Badge</p>
+          </DropdownMenuRadioItem>
+            <DropdownMenuRadioGroup
+              value={selectedBadge}
+              onValueChange={handleBadgeChange}
+            >
+              {badgeDIVS}
+            </DropdownMenuRadioGroup>
+          </DropdownMenuContent>
+        </DropdownMenu>
+        </>
     )
 }

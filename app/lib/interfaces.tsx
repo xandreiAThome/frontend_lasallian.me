@@ -10,14 +10,14 @@ interface postDataInterface {
   comments: commentInterface[];
   reactions: reactionInterface[];
   _id: string;
-  // organization todo
-  // TODO: Add badge
 }
 
 interface badgeInterface {
+  _id: string;
   badge_type: string;
   badge_key: string;
-  text_color: string;
+  main_text_color: string;
+  sub_text_color: string;
   main_title: string;
   main_color: string;
   sub_title: string;
@@ -45,7 +45,7 @@ interface authorInterface {
   vanity: {
     display_photo?: string;
     cover_photo?: string;
-    //badges todo
+    badges: badgeInterface[];
   };
   info: {
     name: { first: string; last: string };
@@ -68,5 +68,5 @@ interface authorInterface {
   _id: string;
 }
 
-export type { authorInterface, commentInterface, postDataInterface, badgeInterface };
+export type { authorInterface, badgeInterface, commentInterface, postDataInterface };
 
