@@ -1,5 +1,5 @@
 import { redirect } from "react-router";
-import type { Route } from "./+types/deleteReaction";
+import type { Route } from "./+types/deleteReactionComment";
 import api from "~/lib/api";
 import axios from "axios";
 import { getUserToken } from "~/.server/sessions";
@@ -11,32 +11,22 @@ export async function action({ request }: Route.ActionArgs) {
   }
 
   const formData = await request.formData();
-  const JSONdata = formData.get("json");
 
-  if (!JSONdata || typeof JSONdata !== "string") {
-    throw new Error("Data is not jsonstring ");
-  }
-  const data = JSON.parse(JSONdata);
   try {
-    // Parse the JSON string into an object
-
-    const id = data.id;
-    const location = data.location;
-    console.log("Form data:", id);
-
-    console.log("Form data:", id);
+    const commentId = formData.get("commentId") as string;
 
     // Send to your API endpoint
-    const response = await api.delete(`${process.env.API_KEY}/post/${id}`, {
-      headers: {
-        Authorization: `Bearer ${userToken}`,
-        "Content-Type": "application/json",
-      },
-    });
+    const response = await api.delete(
+      `${process.env.API_KEY}/reaction/comment`,
+      {
+        data: { commentid: commentId },
+        headers: {
+          Authorization: `Bearer ${userToken}`,
+        },
+      }
+    );
 
     console.log("API response:", response.data);
-
-    return redirect(location.pathname);
   } catch (error) {
     if (axios.isAxiosError(error)) {
       console.log(" error:", error.response?.data || error.message);
@@ -44,7 +34,6 @@ export async function action({ request }: Route.ActionArgs) {
       console.log("Unexpected error:", error);
     }
   }
-  return redirect("/homepage");
 }
 
 export async function loader() {

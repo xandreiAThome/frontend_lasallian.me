@@ -1,5 +1,5 @@
 import { redirect } from "react-router";
-import type { Route } from "./+types/editCommentRoute";
+import type { Route } from "./+types/sendReactionComment";
 import api from "~/lib/api";
 import axios from "axios";
 import { getUserToken } from "~/.server/sessions";
@@ -11,24 +11,17 @@ export async function action({ request }: Route.ActionArgs) {
   }
 
   const formData = await request.formData();
-  const data = formData.get("json");
-
-  if (!data || typeof data !== "string") {
-    throw new Error("Data is not jsonstring ");
-  }
-  const parsedData = JSON.parse(data);
-
-  const editPostData = {
-    content: parsedData.content,
-  };
-
-  // console.log("Form data:", editPostData);
 
   try {
+    // Parse the JSON string into an object
+
+    const commentId = formData.get("commentId") as string;
+    const reaction = formData.get("reaction") as string;
+
     // Send to your API endpoint
-    const response = await api.put(
-      `${process.env.API_KEY}/comment/${parsedData.id}`,
-      editPostData,
+    const response = await api.post(
+      `${process.env.API_KEY}/reaction/comment`,
+      { commentid: commentId, reaction: reaction },
       {
         headers: {
           Authorization: `Bearer ${userToken}`,
@@ -38,11 +31,9 @@ export async function action({ request }: Route.ActionArgs) {
     );
 
     console.log("API response:", response.data);
-
-    // return redirect(parsedData.location.pathname);
   } catch (error) {
     if (axios.isAxiosError(error)) {
-      console.log(" error:", error.response?.data || error.message);
+      console.log("error:", error.response?.data || error.message);
     } else {
       console.log("Unexpected error:", error);
     }

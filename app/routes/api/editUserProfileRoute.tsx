@@ -84,7 +84,7 @@ export async function action({ request }: Route.ActionArgs) {
 
     console.log("API response:", response.data);
 
-    return redirect(location.pathname || "/homepage");
+    // return redirect(location.pathname || "/homepage");
   } catch (error) {
     if (axios.isAxiosError(error)) {
       console.log(" error:", error.response?.data || error.message);

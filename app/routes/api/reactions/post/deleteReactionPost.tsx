@@ -1,5 +1,5 @@
 import { redirect } from "react-router";
-import type { Route } from "./+types/deletePostRoute";
+import type { Route } from "./+types/deleteReactionPost";
 import api from "~/lib/api";
 import axios from "axios";
 import { getUserToken } from "~/.server/sessions";
@@ -11,32 +11,19 @@ export async function action({ request }: Route.ActionArgs) {
   }
 
   const formData = await request.formData();
-  const JSONdata = formData.get("json");
 
-  if (!JSONdata || typeof JSONdata !== "string") {
-    throw new Error("Data is not jsonstring ");
-  }
-  const data = JSON.parse(JSONdata);
   try {
-    // Parse the JSON string into an object
-
-    const id = data.id;
-    const location = data.location;
-    console.log("Form data:", id);
-
-    console.log("Form data:", id);
+    const postId = formData.get("postId") as string;
 
     // Send to your API endpoint
-    const response = await api.delete(`${process.env.API_KEY}/post/${id}`, {
+    const response = await api.delete(`${process.env.API_KEY}/reaction/post`, {
+      data: { postid: postId },
       headers: {
         Authorization: `Bearer ${userToken}`,
-        "Content-Type": "application/json",
       },
     });
 
     console.log("API response:", response.data);
-
-    // return redirect(location.pathname);
   } catch (error) {
     if (axios.isAxiosError(error)) {
       console.log(" error:", error.response?.data || error.message);
@@ -44,7 +31,6 @@ export async function action({ request }: Route.ActionArgs) {
       console.log("Unexpected error:", error);
     }
   }
-  // return redirect("/homepage");
 }
 
 export async function loader() {

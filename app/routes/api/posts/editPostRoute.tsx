@@ -40,7 +40,7 @@ export async function action({ request }: Route.ActionArgs) {
 
     console.log("API response:", response.data);
 
-    return redirect(postData.location.pathname);
+    // return redirect(postData.location.pathname);
   } catch (error) {
     if (axios.isAxiosError(error)) {
       console.log(" error:", error.response?.data || error.message);

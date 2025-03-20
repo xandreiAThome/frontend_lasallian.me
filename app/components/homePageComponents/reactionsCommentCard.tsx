@@ -1,5 +1,6 @@
 import { Heart } from "lucide-react";
 import { useState } from "react";
+import { useFetcher } from "react-router";
 import {
   HoverCard,
   HoverCardContent,
@@ -8,10 +9,12 @@ import {
 
 interface ReactionsCardProps {
   reactions: number;
+  commentId: string;
 }
 
 export default function ReactionsCommentCard({
   reactions,
+  commentId,
 }: ReactionsCardProps) {
   const formatter = Intl.NumberFormat("en", { notation: "compact" });
   const [open, setOpen] = useState(false);
@@ -23,14 +26,40 @@ export default function ReactionsCommentCard({
     { name: "angry", emoji: "😡" },
   ];
   const [reaction, setReaction] = useState("");
+  const fetcher = useFetcher();
 
   function handleReaction(emoji: string) {
+    const formData = new FormData();
     setReaction(emoji);
+
+    formData.append("commentId", commentId);
+    formData.append("reaction", emoji);
+    fetcher.submit(formData, {
+      method: "post",
+      action: "/editReactionComment",
+    });
+
     setOpen(false);
   }
 
   function handleDefaultReaction() {
-    reaction ? setReaction("") : setReaction("❤️");
+    const formData = new FormData();
+    if (reaction) {
+      setReaction("");
+      formData.append("commentId", commentId);
+      fetcher.submit(formData, {
+        method: "post",
+        action: "/deleteReactionComment",
+      });
+    } else {
+      setReaction("❤️");
+      formData.append("commentId", commentId);
+      formData.append("reaction", "❤️");
+      fetcher.submit(formData, {
+        method: "post",
+        action: "/sendReactionComment",
+      });
+    }
   }
   return (
     <>

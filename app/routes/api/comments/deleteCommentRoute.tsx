@@ -36,7 +36,7 @@ export async function action({ request }: Route.ActionArgs) {
 
     console.log("API response:", response.data);
 
-    return redirect(location.pathname);
+    // return redirect(location.pathname);
   } catch (error) {
     if (axios.isAxiosError(error)) {
       console.log(" error:", error.response?.data || error.message);
@@ -44,7 +44,7 @@ export async function action({ request }: Route.ActionArgs) {
       console.log("Unexpected error:", error);
     }
   }
-  return redirect("/homepage");
+  // return redirect("/homepage");
 }
 
 export async function loader() {

@@ -200,7 +200,10 @@ export default function CommentsCard({
 
         <div className="flex gap-4 mt-2">
           <div className="flex items-center">
-            <ReactionsCommentCard reactions={reactions.length} />
+            <ReactionsCommentCard
+              reactions={reactions.length}
+              commentId={_id}
+            />
           </div>
 
           <div className="flex items-center">
