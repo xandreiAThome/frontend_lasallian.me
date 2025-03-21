@@ -28,6 +28,10 @@ export async function loader({ request }: Route.LoaderArgs) {
 
     // console.log(response.data);
 
+    const badges = userObj?.vanity.badges.map((badge) => badge._id);
+
+    console.log(userObj, badges)
+
     return {
       postData: response.data,
       loggedInUserId: userObj?._id,

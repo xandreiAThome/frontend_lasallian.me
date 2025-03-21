@@ -128,20 +128,24 @@ export default function PostCard(props: postDataInterface) {
             >
               {author.info.name.first} {author.info.name.last}
             </Button>{" "}
-            <p
-              style={{ backgroundColor: badge?.main_color || '#220088',
-                        color: badge?.main_text_color || 'white',
-              }}
-              className="px-2 text-white text-xs font-semibold">
-              {badge?.main_title || 'LSCS'}
-            </p>
-            <p 
-              style={{ backgroundColor: badge?.sub_color || '#313131',
-                        color: badge?.sub_text_color || 'white',
-              }}
-              className="px-2 text-white text-xs font-semibold">
-              {badge?.sub_title || 'VP'}
-            </p>
+            {badge ? (
+              <>
+              <p
+                style={{ backgroundColor: badge?.main_color,
+                          color: badge?.main_text_color,
+                }}
+                className="px-2 text-xs font-semibold">
+                {badge?.main_title}
+              </p>
+              <p 
+                style={{ backgroundColor: badge?.sub_color,
+                          color: badge?.sub_text_color,
+                }}
+                className="px-2 text-xs font-semibold">
+                {badge?.sub_title}
+              </p>
+              </>
+            ) : null}
             <EditPostDialog {...props} />
           </div>
           <div className="flex items-start">

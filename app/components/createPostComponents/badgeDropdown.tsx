@@ -18,18 +18,39 @@ import {
 type BadgeDropDownProps = {
     badgeIds: badgeInterface[];
     callback: (selectedBadgeId: string) => void;  // To let the parent know which badge is selected
+    defaultSelected?: string;
 }
 
 export default function BadgeDropDown({
     badgeIds,
     callback,
+    defaultSelected,
 }: BadgeDropDownProps) {
-    const [selectedBadge, setSelectedBadge] = useState<string>()
+    const [selectedBadge, setSelectedBadge] = useState<string>(defaultSelected ? defaultSelected : "")
+
+    // Find the selected badge, if any, to apply the same styles to the "No Badge" option
+    const selectedBadgeData = badgeIds.find(badge => badge._id === selectedBadge);
+    const selectedBadgeDisplay = selectedBadgeData ? (
+      <>
+      <p
+        style={{ backgroundColor: selectedBadgeData.main_color, color: selectedBadgeData.main_text_color }}
+        className="text-xs font-semibold px-2"
+      >
+        {selectedBadgeData.main_title}
+      </p>
+      <p
+        style={{ backgroundColor: selectedBadgeData.sub_color, color: selectedBadgeData.sub_text_color }}
+        className="text-xs font-semibold px-2"
+      >
+        {selectedBadgeData.sub_title}
+      </p>
+      </>
+     ) : (<p className="text-xs font-semibold px-2 text-center text-gray-500">No Badge</p>);
 
     const badgeDIVS = badgeIds.map(
-        ({ main_title, sub_title, main_color, sub_color, main_text_color, sub_text_color }: badgeInterface) => {
+        ({ _id, main_title, sub_title, main_color, sub_color, main_text_color, sub_text_color }: badgeInterface) => {
             return (
-              <DropdownMenuRadioItem value={`${main_title}+${sub_title}`}>
+              <DropdownMenuRadioItem value={`${_id}`}>
                 <p
                   style={{ backgroundColor: main_color, color: main_text_color }}
                   className="text-xs font-semibold px-2"
@@ -54,20 +75,7 @@ export default function BadgeDropDown({
 
     return (
         <>
-        <p
-          className={`px-2 text-white text-xs font-semibold ${
-            selectedBadge ? 'bg-[#220088]' : 'bg-[#313131]'
-          }`}
-        >
-          {selectedBadge ? selectedBadge : 'Select'}
-        </p>
-        <p
-          className={`px-2 text-white text-xs font-semibold mr-2 ${
-            selectedBadge ? 'bg-[#220088]' : 'bg-[#313131]'
-          }`}
-        >
-          {selectedBadge ? 'Badge' : 'Badge'}
-        </p>
+        {selectedBadgeDisplay}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <button type="button">
@@ -77,7 +85,7 @@ export default function BadgeDropDown({
           <DropdownMenuContent className="w-56">
             <DropdownMenuLabel>Your Badges</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuRadioItem value="" onSelect={() => handleBadgeChange("")}>
+            <DropdownMenuRadioItem value="" key="" onSelect={() => handleBadgeChange("")}>
             <p className="text-xs font-semibold px-2 text-center text-gray-500">No Badge</p>
           </DropdownMenuRadioItem>
             <DropdownMenuRadioGroup

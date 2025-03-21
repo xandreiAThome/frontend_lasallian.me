@@ -48,9 +48,6 @@ export default function CreatePostButton({
   const location = useLocation();
   const [images, setImages] = useState<ImageListType>([]);
 
-  console.log("FROM CREATEPOSTDIALOG")
-  console.log(loaderData.user.vanity.badges);
-
   // TODO: Ensure this is correct
   const userBadges = loaderData.user.vanity.badges;
 
@@ -62,6 +59,7 @@ export default function CreatePostButton({
   const fetcher = useFetcher();
 
   const updateSelectedBadgeId = (newBadgeId: string) => {
+    console.log(`newBadgeId: ${newBadgeId}`);
     setSelectedBadgeId(newBadgeId);
   }
 

@@ -20,7 +20,6 @@ export async function action({ request }: Route.ActionArgs) {
     const location: string = (formData.get("location") as string) || "";
     const image = formData.get("image");
     const badgeId = formData.get("badge");
-    console.log("Form data:", formData);
     let imgLink: string | undefined;
 
     const imageFormData = new FormData();
