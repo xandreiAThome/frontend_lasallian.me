@@ -229,27 +229,16 @@ export default function AccountSetup() {
         </div>
       </div>
 
-      <main className="basis-[640px] flex justify-center py-6">
+      <main className="basis-[640px] flex items-center justify-center py-6">
         <Form
           onSubmit={handleSubmit}
-          className="h-full w-full bg-custom-postcard-white flex flex-col"
+          className="w-full h-fit bg-custom-postcard-white flex flex-col items-center justify-center rounded-2xl shadow-md"
         >
-          <UploadCoverDialog
-            images={coverImg}
-            setImages={setCoverImg}
-            defaultImage={null}
-          />
           <div className="pb-6">
-            <div className="relative flex p-6">
-              <UploadProfileDialog
-                setImages={setImg}
-                images={img}
-                defaultImage={null}
-              />
-
-              <div className="pl-36 flex flex-col flex-1">
+            <div className="relative flex p-12">
+              <div className="flex flex-col flex-1">
                 <div className="flex justify-between">
-                  <p className="text-custom-text-black">
+                  <p className="text-custom-text-black font-semibold">
                     Basic Account Information
                   </p>
 
