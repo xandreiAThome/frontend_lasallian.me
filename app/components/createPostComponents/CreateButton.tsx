@@ -9,8 +9,6 @@ import {
   DialogTrigger,
   DialogClose,
 } from "~/components/ui/dialog";
-import { Input } from "~/components/ui/input";
-import { Label } from "~/components/ui/label";
 import { Terminal } from "lucide-react";
 import CreatePostDialog from "./CreatePostDialog";
 import { useState } from "react";

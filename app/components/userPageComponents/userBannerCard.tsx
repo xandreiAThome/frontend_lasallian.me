@@ -10,7 +10,6 @@ import {
   ExternalLink,
 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
-import { Input } from "~/components/ui/input";
 import { Button } from "~/components/ui/button";
 import type { authorInterface } from "~/lib/interfaces";
 import EditUserInfoDialog from "./editUserInfoDialog";

@@ -1,4 +1,4 @@
-import { Images, X } from "lucide-react";
+import { X } from "lucide-react";
 import React from "react";
 import ImageUploading, { type ImageListType } from "react-images-uploading";
 

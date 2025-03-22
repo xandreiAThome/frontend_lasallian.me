@@ -1,10 +1,4 @@
-import { NavLink, redirect } from "react-router";
-import Logo from "~/components/assets/logo.svg";
-import { BookPlus } from "lucide-react";
-import { Input } from "~/components/ui/input";
-import PostCard from "~/components/homePageComponents/postCard";
 import postData from "~/components/dummyData/postData";
-import UserBannerCard from "~/components/userPageComponents/userBannerCard";
 import OrgBannerCard from "~/components/userPageComponents/orgBannerCard";
 import OrgPostCard from "~/components/homePageComponents/orgPostCard";
 

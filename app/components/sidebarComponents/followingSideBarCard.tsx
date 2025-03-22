@@ -1,6 +1,3 @@
-import { Divide, Ellipsis } from "lucide-react";
-import orgData from "~/components/dummyData/orgData";
-import OrgCard from "./orgCard";
 import suggestedFollower from "~/components/dummyData/suggestedFollower";
 import SuggestedFollowingCard from "./suggestedFollowingCard";
 

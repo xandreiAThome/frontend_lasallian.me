@@ -1,11 +1,4 @@
-import {
-  Dot,
-  Ellipsis,
-  Heart,
-  MessageSquareShare,
-  MessageSquareText,
-  Terminal,
-} from "lucide-react";
+import { Ellipsis, MessageSquareText } from "lucide-react";
 import ReactTimeAgo from "react-time-ago";
 import {
   Form,

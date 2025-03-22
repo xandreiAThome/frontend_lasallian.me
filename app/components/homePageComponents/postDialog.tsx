@@ -19,16 +19,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
-import {
-  ChevronDown,
-  Dot,
-  Ellipsis,
-  Heart,
-  MessageSquareShare,
-  MessageSquareText,
-  Send,
-  Terminal,
-} from "lucide-react";
+import { Dot, MessageSquareShare, MessageSquareText, Send } from "lucide-react";
 import ReactTimeAgo from "react-time-ago";
 import { Input } from "~/components/ui/input";
 import CommentsCard from "./commentsCard";

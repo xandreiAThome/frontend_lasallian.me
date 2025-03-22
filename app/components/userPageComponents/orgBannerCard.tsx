@@ -4,7 +4,6 @@ import {
   ExternalLink,
   Facebook,
   House,
-  Images,
   Instagram,
   Linkedin,
   UserRound,

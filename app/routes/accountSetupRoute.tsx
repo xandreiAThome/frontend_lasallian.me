@@ -1,6 +1,6 @@
-import { Ellipsis, Facebook, Images, Instagram, Linkedin } from "lucide-react";
+import { Ellipsis, Facebook, Instagram, Linkedin } from "lucide-react";
 import { Form, redirect, useFetcher } from "react-router";
-import { Button, buttonVariants } from "~/components/ui/button";
+import { Button } from "~/components/ui/button";
 import { Checkbox } from "~/components/ui/checkbox";
 import { Input } from "~/components/ui/input";
 import Logo from "~/components/assets/logo.svg";
@@ -16,12 +16,6 @@ import {
 import type { Route } from "./+types/accountSetupRoute";
 import api from "~/lib/api";
 import axios from "axios";
-import { useState } from "react";
-import type { ImageListType } from "react-images-uploading";
-import UploadProfile from "~/components/imageComponents/uploadProfileComponent";
-import UploadImage from "~/components/createPostComponents/uploadImage";
-import UploadProfileDialog from "~/components/imageComponents/uploadProfileDialog";
-import UploadCoverDialog from "~/components/imageComponents/uploadCoverDialog";
 
 export async function action({ request }: Route.ActionArgs) {
   const url = new URL(request.url);
@@ -179,25 +173,11 @@ export async function loader({ request }: Route.ActionArgs) {
 //       Make page responsive
 
 export default function AccountSetup() {
-  const [img, setImg] = useState<ImageListType>([]);
-  const [coverImg, setCoverImg] = useState<ImageListType>([]);
   const fetcher = useFetcher();
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget as HTMLFormElement);
-
-    const image = img[0]?.file;
-    const coverImage = coverImg[0]?.file;
-
-    if (image) {
-      formData.append("profilepic", image);
-    }
-
-    if (coverImage) {
-      formData.append("coverpic", coverImage);
-    }
-    // console.log(formData);
 
     // Submit the formatted data
     fetcher.submit(formData, {

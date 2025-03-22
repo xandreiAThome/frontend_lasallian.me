@@ -1,13 +1,4 @@
-import {
-  CalendarDays,
-  ChevronDown,
-  Dot,
-  Images,
-  Send,
-  Terminal,
-} from "lucide-react";
-import { Ellipsis } from "lucide-react";
-import { Heart, MessageSquareText, MessageSquareShare } from "lucide-react";
+import { MessageSquareText, MessageSquareShare, Send, Dot } from "lucide-react";
 import TimeAgo from "javascript-time-ago";
 import en from "javascript-time-ago/locale/en";
 import ReactTimeAgo from "react-time-ago";
@@ -20,7 +11,7 @@ import {
   useNavigate,
 } from "react-router";
 import { Button } from "~/components/ui/button";
-import { useEffect, useState, type JSX } from "react";
+import { useEffect, useState } from "react";
 import ReactionsPostCard from "./reactionsPostCard";
 import { Input } from "../ui/input";
 import type { postDataInterface, commentInterface } from "~/lib/interfaces";

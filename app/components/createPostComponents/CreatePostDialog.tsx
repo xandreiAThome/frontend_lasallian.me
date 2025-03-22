@@ -17,24 +17,12 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
-import {
-  Terminal,
-  Images,
-  CalendarDays,
-  ChevronDown,
-  Upload,
-} from "lucide-react";
-import { use, useEffect, useState, type ReactElement } from "react";
+import { Images, CalendarDays, ChevronDown } from "lucide-react";
+import { useEffect, useState, type ReactElement } from "react";
 import postData from "~/components/dummyData/postData";
 import UploadImage from "./uploadImage";
 import { Textarea } from "../ui/textarea";
-import {
-  Form,
-  useFetcher,
-  useLoaderData,
-  useLocation,
-  useRevalidator,
-} from "react-router";
+import { Form, useFetcher, useLoaderData, useLocation } from "react-router";
 import { DialogClose } from "@radix-ui/react-dialog";
 import type { authorInterface } from "~/lib/interfaces";
 import profileImg from "~/components/assets/profile.jpg";

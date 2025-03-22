@@ -1,4 +1,4 @@
-import { Ellipsis, Images, Linkedin, Instagram, Facebook } from "lucide-react";
+import { Ellipsis, Linkedin, Instagram, Facebook } from "lucide-react";
 import {
   Dialog,
   DialogContent,
