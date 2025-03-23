@@ -17,7 +17,7 @@ import {
 
 type BadgeDropDownProps = {
     badgeIds: badgeInterface[];
-    callback: (selectedBadgeId: string) => void;  // To let the parent know which badge is selected
+    callback: (selectedBadgeId: string, badgeDescription: string) => void;  // To let the parent know which badge is selected
     defaultSelected?: string;
 }
 
@@ -70,7 +70,12 @@ export default function BadgeDropDown({
 
     const handleBadgeChange = (selectedBadgeId: string) => {
       setSelectedBadge(selectedBadgeId);
-      callback(selectedBadgeId);
+      const selectedBadge = badgeIds.find((badge: badgeInterface) => badge._id === selectedBadgeId);
+      if (selectedBadge) {
+        callback(selectedBadgeId, selectedBadge.description);
+      } else {
+        callback(selectedBadgeId, "No Badge");  // Handle "No Badge" selection by passing an empty description
+      }
     }
 
     return (

@@ -27,7 +27,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger
 } from "~/components/ui/dropdown-menu";
-import type { postDataInterface } from "~/lib/interfaces";
+import type { badgeInterface, postDataInterface } from "~/lib/interfaces";
 import { Button } from "../ui/button";
 
 export default function EditPostDialog(props: postDataInterface) {
@@ -46,17 +46,25 @@ export default function EditPostDialog(props: postDataInterface) {
     comments,
     _id,
   } = props;
+  // Badge Data
+  const userBadges = loaderData.user.vanity.badges;
   const [openDialog, setOpenDialog] = useState<string | null>(null);
   const [selectedBadgeId, setSelectedBadgeId] = useState<string>(badge ? badge._id : "");
+  const [postingAs, setPostingAs] = useState<string>(badge ? (() => {
+    if(userBadges.find((userBadge: badgeInterface) => userBadge._id === badge._id)) {
+      return badge.description }
+    else {
+      return ("No Badge")
+    }
+    })() : "No Badge"); //IIFE daw pala to, the more you know :)
 
   badge ? console.log(`Selected Badge on edit: ${badge._id}`) : console.log(`No badge on this post`);
   
-  // Badge Data
-  const userBadges = loaderData.user.vanity.badges;
 
-  const updateSelectedBadgeId = (newBadgeId: string) => {
+  const updateSelectedBadgeId = (newBadgeId: string, badgeDescription: string) => {
     console.log(`newBadgeId: ${newBadgeId}`);
     setSelectedBadgeId(newBadgeId);
+    setPostingAs(badgeDescription);
   }
 
   const handleDelete = (event: React.FormEvent<HTMLFormElement>) => {
@@ -141,7 +149,7 @@ export default function EditPostDialog(props: postDataInterface) {
                 <h4 className="text-base font-normal">
                   Posting with{" "}
                   <span className="font-bold">
-                    La Salle Computer Society - Vice President
+                    {postingAs}
                   </span>
                 </h4>
               </DialogTitle>

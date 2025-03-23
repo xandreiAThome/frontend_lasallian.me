@@ -53,14 +53,16 @@ export default function CreatePostButton({
 
   // TODO: Badge
   const [selectedBadgeId, setSelectedBadgeId] = useState<string>("");
+  const [postingAs, setPostingAs] = useState<string>("");
   const [textContent, setTextContent] = useState("");
   const [showImageUpload, setShowImageUpload] = useState(false);
   const [profileImg, setProfileImg] = useState<string | null>(null);
   const fetcher = useFetcher();
 
-  const updateSelectedBadgeId = (newBadgeId: string) => {
+  const updateSelectedBadgeId = (newBadgeId: string, badgeDescription: string) => {
     console.log(`newBadgeId: ${newBadgeId}`);
     setSelectedBadgeId(newBadgeId);
+    setPostingAs(badgeDescription)
   }
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -129,7 +131,7 @@ export default function CreatePostButton({
             <h4 className="text-base font-normal">
               Posting with{" "}
               <span className="font-bold">
-                La Salle Computer Society - Vice President
+                {postingAs? postingAs : "no badge"}
               </span>
             </h4>
           </DialogTitle>
