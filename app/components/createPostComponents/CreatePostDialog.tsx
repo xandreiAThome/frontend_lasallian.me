@@ -117,6 +117,7 @@ export default function CreatePostButton({
     getImg();
   }, [author?.vanity?.display_photo]);
 
+  // TODO: Integrate description
   return (
     <Dialog>
       {" "}

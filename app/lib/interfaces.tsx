@@ -23,6 +23,7 @@ interface badgeInterface {
   sub_title: string;
   sub_color: string;
   badge_expiry: string;
+  description: string;
 }
 
 interface commentInterface {
