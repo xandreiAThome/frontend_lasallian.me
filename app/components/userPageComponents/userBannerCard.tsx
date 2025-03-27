@@ -109,12 +109,12 @@ export default function UserBannerCard(props: authorInterface) {
       </div>
 
       <div className="flex flex-col px-6 gap-2 pb-4">
-        <div className="flex gap-2">
+        <div className="flex gap-3">
           <p className="text-sm">
-            <span className="font-bold">3.6k</span> Followers
+            <span className="font-bold">0</span> Followers
           </p>
           <p className="text-sm">
-            <span className="font-bold">386</span> Followers
+            <span className="font-bold">0</span> Following
           </p>
         </div>
 
@@ -145,7 +145,7 @@ export default function UserBannerCard(props: authorInterface) {
             <Facebook size="16" />
             <span className="text-lasalle-green font-semibold">
               <a href={info.links.facebook || ""}>
-                {info.name.first} {info.name.first}
+                {info.name.first} {info.name.last}
               </a>
             </span>
           </span>
