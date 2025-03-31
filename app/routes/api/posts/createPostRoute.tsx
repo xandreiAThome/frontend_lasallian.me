@@ -19,7 +19,7 @@ export async function action({ request }: Route.ActionArgs) {
     console.log(postData);
     const location: string = (formData.get("location") as string) || "";
     const image = formData.get("image");
-    console.log("Form data:", formData);
+    const badgeId = formData.get("badge");
     let imgLink: string | undefined;
 
     const imageFormData = new FormData();
@@ -43,7 +43,9 @@ export async function action({ request }: Route.ActionArgs) {
     // Send to your API endpoint
     const response = await api.post(
       `${process.env.API_KEY}/post`,
-      { content: { text: postData }, media: imgLink ? [imgLink] : [] },
+      { content: { text: postData },
+        media: imgLink ? [imgLink] : [],
+        badge: badgeId },
       {
         headers: {
           Authorization: `Bearer ${userToken}`,

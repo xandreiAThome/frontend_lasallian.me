@@ -1,8 +1,7 @@
-import { MessageSquareText, MessageSquareShare, Send, Dot } from "lucide-react";
 import TimeAgo from "javascript-time-ago";
 import en from "javascript-time-ago/locale/en";
-import ReactTimeAgo from "react-time-ago";
-import PostDialog from "./postDialog";
+import { Dot, MessageSquareShare, MessageSquareText, Send } from "lucide-react";
+import { useEffect, useState } from "react";
 import {
   Form,
   useFetcher,
@@ -10,21 +9,15 @@ import {
   useLocation,
   useNavigate,
 } from "react-router";
-import { Button } from "~/components/ui/button";
-import { useEffect, useState } from "react";
-import ReactionsPostCard from "./reactionsPostCard";
-import { Input } from "../ui/input";
-import type { postDataInterface, commentInterface } from "~/lib/interfaces";
+import ReactTimeAgo from "react-time-ago";
 import profileImgDefault from "~/components/assets/profile.jpg";
-import EditPostDialog from "./editPostDialog";
+import { Button } from "~/components/ui/button";
+import type { commentInterface, postDataInterface } from "~/lib/interfaces";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
-
-interface positionsData {
-  org: string;
-  position: string;
-  orgColor: string;
-  positionColor: string;
-}
+import { Input } from "../ui/input";
+import EditPostDialog from "./editPostDialog";
+import PostDialog from "./postDialog";
+import ReactionsPostCard from "./reactionsPostCard";
 
 TimeAgo.addDefaultLocale(en);
 
@@ -37,6 +30,7 @@ export default function PostCard(props: postDataInterface) {
     visibility,
     meta,
     author,
+    badge,
     comments,
     reactions,
     _id,
@@ -49,7 +43,6 @@ export default function PostCard(props: postDataInterface) {
   const commentsList: commentInterface[] = []; // Default value as it's not in the new interface
   const formatter = Intl.NumberFormat("en", { notation: "compact" });
   const navigate = useNavigate();
-  const [currPos, setCurrPos] = useState("LSCS+VP");
   const [typeComment, setTypeComment] = useState(false);
   const fetcher = useFetcher();
   const location = useLocation();
@@ -99,6 +92,7 @@ export default function PostCard(props: postDataInterface) {
     });
   }
 
+  // TODO: Remove ? on badge when db refactoring is complete
   return (
     <div className="bg-custom-postcard-white flex flex-col px-6 rounded-xl py-4 shadow-lg">
       <div className="flex items-center">
@@ -126,12 +120,28 @@ export default function PostCard(props: postDataInterface) {
             >
               {author.info.name.first} {author.info.name.last}
             </Button>{" "}
-            <p className="px-2 bg-[#220088] text-white text-xs font-semibold">
-              LSCS {/** TEMPORARY */}
-            </p>
-            <p className="px-2 bg-[#313131] text-white text-xs font-semibold">
-              VP {/** TEMPORARY */}
-            </p>
+            {badge ? (
+              <>
+                <p
+                  style={{
+                    backgroundColor: badge?.main_color,
+                    color: badge?.main_text_color,
+                  }}
+                  className="px-2 text-xs font-semibold"
+                >
+                  {badge?.main_title}
+                </p>
+                <p
+                  style={{
+                    backgroundColor: badge?.sub_color,
+                    color: badge?.sub_text_color,
+                  }}
+                  className="px-2 text-xs font-semibold"
+                >
+                  {badge?.sub_title}
+                </p>
+              </>
+            ) : null}
             <EditPostDialog {...props} />
           </div>
           <div className="flex items-start">

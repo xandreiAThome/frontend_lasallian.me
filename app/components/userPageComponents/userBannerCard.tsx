@@ -1,27 +1,28 @@
 import {
-  Ellipsis,
-  Images,
   BadgeInfo,
-  House,
-  Linkedin,
-  Instagram,
   Facebook,
+  House,
+  Instagram,
+  Linkedin,
   UserRound,
-  ExternalLink,
 } from "lucide-react";
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
-import { Button } from "~/components/ui/button";
-import type { authorInterface } from "~/lib/interfaces";
-import EditUserInfoDialog from "./editUserInfoDialog";
-import profileImgDefault from "~/components/assets/profile.jpg";
-import { useLoaderData } from "react-router";
 import { useEffect, useState } from "react";
+import { useLoaderData } from "react-router";
+import profileImgDefault from "~/components/assets/profile.jpg";
+import { Button } from "~/components/ui/button";
+import BadgeIcon from "~/components/userPageComponents/badgeIcon";
+import type { authorInterface } from "~/lib/interfaces";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import EditUserInfoDialog from "./editUserInfoDialog";
 
 export default function UserBannerCard(props: authorInterface) {
   const { vanity, info, meta, _id } = props;
   const [profileImg, setProfileImg] = useState<string | null>(null);
   const [coverImg, setCoverImg] = useState<string | null>(null);
   const loaderData = useLoaderData();
+
+  console.log("USERBANNERCARD");
+  console.log(loaderData.user.vanity.badges);
 
   useEffect(() => {
     async function getImg() {
@@ -100,40 +101,7 @@ export default function UserBannerCard(props: authorInterface) {
             <div className="flex flex-col gap-2">
               <p className="text-lg text-gray-400">{info.username}</p>
               <div className="flex gap-2 flex-wrap">
-                <p className="">
-                  <span className="px-2 bg-[#220088] text-white text-sm font-semibold">
-                    LSCS
-                  </span>
-                  <span className="px-2 bg-[#313131] text-white text-sm font-semibold">
-                    VP
-                  </span>
-                </p>
-
-                <p>
-                  <span className="px-2 bg-[#220088] text-white text-sm font-semibold">
-                    LSCS
-                  </span>
-                  <span className="px-2 bg-[#313131] text-white text-sm font-semibold">
-                    RND
-                  </span>
-                </p>
-                <p>
-                  {" "}
-                  <span className="px-2 bg-[#FFCD05] text-white text-sm font-semibold">
-                    GDSC
-                  </span>
-                  <span className="px-2 bg-[#313131] text-white text-sm font-semibold">
-                    MKT
-                  </span>
-                </p>
-                <p>
-                  <span className="px-2 bg-lasalle-green text-white text-sm font-semibold">
-                    TLS
-                  </span>
-                  <span className="px-2 bg-[#313131] text-white text-sm font-semibold">
-                    WEB
-                  </span>
-                </p>
+                <BadgeIcon badgeInfo={loaderData.user.vanity.badges} />
               </div>
             </div>
           </div>
