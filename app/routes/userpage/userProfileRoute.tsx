@@ -1,10 +1,10 @@
-import axios from "axios";
-import { getUserObject, getUserToken } from "~/.server/sessions";
 import PostCard from "~/components/homePageComponents/postCard";
 import UserBannerCard from "~/components/userPageComponents/userBannerCard";
-import api from "~/lib/api";
 import type { authorInterface, postDataInterface } from "~/lib/interfaces";
 import type { Route } from "./+types/userProfileRoute";
+import { getUserObject, getUserToken } from "~/.server/sessions";
+import api from "~/lib/api";
+import axios from "axios";
 
 export async function loader({ request, params }: Route.LoaderArgs) {
   // Check if the user is already logged in
@@ -103,7 +103,6 @@ export default function UserProfilePage({ loaderData }: Route.ComponentProps) {
               visibility,
               meta,
               author,
-              badge,
               comments,
               reactions,
               _id,
@@ -120,7 +119,6 @@ export default function UserProfilePage({ loaderData }: Route.ComponentProps) {
                 visibility={visibility}
                 meta={meta}
                 author={author}
-                badge={badge}
                 comments={comments}
                 reactions={reactions}
                 _id={_id}

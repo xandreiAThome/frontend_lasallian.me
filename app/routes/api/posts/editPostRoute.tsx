@@ -1,8 +1,8 @@
-import axios from "axios";
 import { redirect } from "react-router";
-import { getUserToken } from "~/.server/sessions";
-import api from "~/lib/api";
 import type { Route } from "./+types/editPostRoute";
+import api from "~/lib/api";
+import axios from "axios";
+import { getUserToken } from "~/.server/sessions";
 
 export async function action({ request }: Route.ActionArgs) {
   const userToken = await getUserToken(request);
@@ -21,7 +21,6 @@ export async function action({ request }: Route.ActionArgs) {
   const editPostData = {
     content: postData.content,
     title: "title",
-    badge: postData.badge,
   };
 
   // console.log("Form data:", editPostData);

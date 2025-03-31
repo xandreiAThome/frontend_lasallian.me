@@ -1,15 +1,19 @@
-import { Terminal } from "lucide-react";
-import { useState } from "react";
 import { Button } from "~/components/ui/button";
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger
+  DialogTrigger,
+  DialogClose,
 } from "~/components/ui/dialog";
+import { Input } from "~/components/ui/input";
+import { Label } from "~/components/ui/label";
+import { Terminal } from "lucide-react";
 import CreatePostDialog from "./CreatePostDialog";
+import { useState } from "react";
 
 export default function CreateButton() {
   const [open, setOpen] = useState(false);
@@ -33,7 +37,8 @@ export default function CreateButton() {
                 <div>
                   <p className="text-justify text-xl font-bold">Post</p>
                   <p className="text-justify">
-                    Share something publicly to <span className="font-bold">your</span> feed; doesn't need
+                    Share something publicly to
+                    <span className="font-bold">your</span> feed; doesn't need
                     to be professional. This will not be shown to job
                     recruiters.
                   </p>
