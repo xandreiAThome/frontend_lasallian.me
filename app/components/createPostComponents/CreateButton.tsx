@@ -9,7 +9,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "~/components/ui/dialog";
-import { Terminal } from "lucide-react";
 import CreatePostDialog from "./CreatePostDialog";
 
 export default function CreateButton() {

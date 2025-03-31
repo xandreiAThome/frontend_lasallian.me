@@ -16,6 +16,7 @@ import {
 import type { Route } from "./+types/accountSetupRoute";
 import api from "~/lib/api";
 import axios from "axios";
+import { useState } from "react";
 
 export async function action({ request }: Route.ActionArgs) {
   const url = new URL(request.url);
@@ -174,6 +175,24 @@ export async function loader({ request }: Route.ActionArgs) {
 
 export default function AccountSetup() {
   const fetcher = useFetcher();
+  const [username, setUsername] = useState("");
+
+  const handleUsernameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
+
+    // Remove the "@" if the input is empty
+    if (value === "@") {
+      setUsername("");
+      return;
+    }
+
+    // Ensure the username always starts with "@"
+    if (!value.startsWith("@")) {
+      setUsername("@" + value.replace("@", ""));
+    } else {
+      setUsername(value);
+    }
+  };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -235,6 +254,8 @@ export default function AccountSetup() {
                     placeholder="@username"
                     className="bg-slate-100"
                     name="username"
+                    value={username}
+                    onChange={handleUsernameChange}
                     required
                   />
                   <Input
