@@ -49,7 +49,7 @@ export default function CreatePostButton({
   const [images, setImages] = useState<ImageListType>([]);
 
   // TODO: Ensure this is correct
-  const userBadges = loaderData.user.vanity.badges;
+  const userBadges = loaderData?.user?.vanity?.badges || [];
 
   // TODO: Badge
   const [selectedBadgeId, setSelectedBadgeId] = useState<string>("");
