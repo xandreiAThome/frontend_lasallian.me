@@ -45,12 +45,6 @@ import type { commentInterface, postDataInterface } from "~/lib/interfaces";
 import profileImgDefault from "~/components/assets/profile.jpg";
 import EditPostDialog from "./editPostDialog";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
-interface positionsData {
-  org: string;
-  position: string;
-  orgColor: string;
-  positionColor: string;
-}
 
 export default function PostDialog(props: postDataInterface) {
   const {
@@ -61,6 +55,7 @@ export default function PostDialog(props: postDataInterface) {
     visibility,
     meta,
     author,
+    badge,
     comments,
     reactions,
     _id,
@@ -74,54 +69,6 @@ export default function PostDialog(props: postDataInterface) {
   };
   const loaderData = useLoaderData();
 
-  // TEMP
-  const positionsTEMP = [
-    {
-      org: "LSCS",
-      position: "VP",
-      orgColor: "#220088",
-      positionColor: "#313131",
-    },
-    {
-      org: "LSCS",
-      position: "RND",
-      orgColor: "#220088",
-      positionColor: "#313131",
-    },
-    {
-      org: "TLS",
-      position: "WEB",
-      orgColor: "#007D3F",
-      positionColor: "#313131",
-    },
-    {
-      org: "GDSC",
-      position: "MKT",
-      orgColor: "#FFCD05",
-      positionColor: "#313131",
-    },
-  ];
-  const posDIVS = positionsTEMP.map(
-    ({ org, position, orgColor, positionColor }: positionsData) => {
-      return (
-        <DropdownMenuRadioItem value={`${org}+${position}`}>
-          <p
-            style={{ backgroundColor: orgColor }}
-            className=" text-white text-xs font-semibold px-2"
-          >
-            {org}
-          </p>
-          <p
-            style={{ backgroundColor: positionColor }}
-            className=" text-white text-xs font-semibold px-2"
-          >
-            {position}
-          </p>
-        </DropdownMenuRadioItem>
-      );
-    }
-  );
-
   // Compatibility variables for existing code
   const views = 0; // Default value as it's not in the new interface
   const commentsNum = comments && Array.isArray(comments) ? comments.length : 0; // Default value as it's not in the new interface
@@ -129,7 +76,6 @@ export default function PostDialog(props: postDataInterface) {
   const commentsList: commentInterface[] = []; // Default value as it's not in the new interface
   const formatter = Intl.NumberFormat("en", { notation: "compact" });
   const navigate = useNavigate();
-  const [currPos, setCurrPos] = useState("LSCS+VP");
   const [img, setImg] = useState<string | null>(null);
   const [submitComment, setSubmitComment] = useState("");
   const fetcher = useFetcher();
@@ -243,12 +189,24 @@ export default function PostDialog(props: postDataInterface) {
                 >
                   {author.info.name.first} {author.info.name.last}
                 </Button>{" "}
-                <p className="px-2 bg-[#220088] text-white text-xs font-semibold">
-                  LSCS {/** TEMPORARY */}
-                </p>
-                <p className="px-2 bg-[#313131] text-white text-xs font-semibold">
-                  VP {/** TEMPORARY */}
-                </p>
+                {badge ? (
+                  <>
+                  <p
+                    style={{ backgroundColor: badge?.main_color,
+                              color: badge?.main_text_color,
+                    }}
+                    className="px-2 text-xs font-semibold">
+                    {badge?.main_title}
+                  </p>
+                  <p 
+                    style={{ backgroundColor: badge?.sub_color,
+                              color: badge?.sub_text_color,
+                    }}
+                    className="px-2 text-xs font-semibold">
+                    {badge?.sub_title}
+                  </p>
+                  </>
+                ) : null}
                 <EditPostDialog {...props} />
               </div>
               <div className="flex items-start">

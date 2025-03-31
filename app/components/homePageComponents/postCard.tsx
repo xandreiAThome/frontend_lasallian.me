@@ -26,7 +26,6 @@ import ReactionsPostCard from "./reactionsPostCard";
 
 TimeAgo.addDefaultLocale(en);
 
-// TODO ADD BADGE
 export default function PostCard(props: postDataInterface) {
   const {
     title,
@@ -49,7 +48,6 @@ export default function PostCard(props: postDataInterface) {
   const commentsList: commentInterface[] = []; // Default value as it's not in the new interface
   const formatter = Intl.NumberFormat("en", { notation: "compact" });
   const navigate = useNavigate();
-  const [currPos, setCurrPos] = useState("LSCS+VP");
   const [typeComment, setTypeComment] = useState(false);
   const fetcher = useFetcher();
   const location = useLocation();
