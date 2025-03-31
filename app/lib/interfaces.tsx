@@ -38,7 +38,7 @@ interface commentInterface {
 interface reactionPostInterface {
   _id: string;
   type: string;
-  user: authorInterface;
+  user: string;
   target: postDataInterface;
 }
 
@@ -76,5 +76,11 @@ interface authorInterface {
   _id: string;
 }
 
-export type { authorInterface, badgeInterface, commentInterface, postDataInterface };
-
+export type {
+  authorInterface,
+  postDataInterface,
+  reactionCommentInterface,
+  reactionPostInterface,
+  commentInterface,
+  badgeInterface,
+};

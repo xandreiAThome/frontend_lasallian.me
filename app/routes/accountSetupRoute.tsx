@@ -1,6 +1,6 @@
-import { Ellipsis, Facebook, Images, Instagram, Linkedin } from "lucide-react";
+import { Ellipsis, Facebook, Instagram, Linkedin } from "lucide-react";
 import { Form, redirect, useFetcher } from "react-router";
-import { Button, buttonVariants } from "~/components/ui/button";
+import { Button } from "~/components/ui/button";
 import { Checkbox } from "~/components/ui/checkbox";
 import { Input } from "~/components/ui/input";
 import Logo from "~/components/assets/logo.svg";
@@ -17,11 +17,6 @@ import type { Route } from "./+types/accountSetupRoute";
 import api from "~/lib/api";
 import axios from "axios";
 import { useState } from "react";
-import type { ImageListType } from "react-images-uploading";
-import UploadProfile from "~/components/imageComponents/uploadProfileComponent";
-import UploadImage from "~/components/createPostComponents/uploadImage";
-import UploadProfileDialog from "~/components/imageComponents/uploadProfileDialog";
-import UploadCoverDialog from "~/components/imageComponents/uploadCoverDialog";
 
 export async function action({ request }: Route.ActionArgs) {
   const url = new URL(request.url);
@@ -179,25 +174,29 @@ export async function loader({ request }: Route.ActionArgs) {
 //       Make page responsive
 
 export default function AccountSetup() {
-  const [img, setImg] = useState<ImageListType>([]);
-  const [coverImg, setCoverImg] = useState<ImageListType>([]);
   const fetcher = useFetcher();
+  const [username, setUsername] = useState("");
+
+  const handleUsernameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
+
+    // Remove the "@" if the input is empty
+    if (value === "@") {
+      setUsername("");
+      return;
+    }
+
+    // Ensure the username always starts with "@"
+    if (!value.startsWith("@")) {
+      setUsername("@" + value.replace("@", ""));
+    } else {
+      setUsername(value);
+    }
+  };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget as HTMLFormElement);
-
-    const image = img[0]?.file;
-    const coverImage = coverImg[0]?.file;
-
-    if (image) {
-      formData.append("profilepic", image);
-    }
-
-    if (coverImage) {
-      formData.append("coverpic", coverImage);
-    }
-    // console.log(formData);
 
     // Submit the formatted data
     fetcher.submit(formData, {
@@ -229,27 +228,16 @@ export default function AccountSetup() {
         </div>
       </div>
 
-      <main className="basis-[640px] flex justify-center py-6">
+      <main className="basis-[640px] flex items-center justify-center py-6">
         <Form
           onSubmit={handleSubmit}
-          className="h-full w-full bg-custom-postcard-white flex flex-col"
+          className="w-full h-fit bg-custom-postcard-white flex flex-col items-center justify-center rounded-2xl shadow-md"
         >
-          <UploadCoverDialog
-            images={coverImg}
-            setImages={setCoverImg}
-            defaultImage={null}
-          />
           <div className="pb-6">
-            <div className="relative flex p-6">
-              <UploadProfileDialog
-                setImages={setImg}
-                images={img}
-                defaultImage={null}
-              />
-
-              <div className="pl-36 flex flex-col flex-1">
+            <div className="relative flex p-12">
+              <div className="flex flex-col flex-1">
                 <div className="flex justify-between">
-                  <p className="text-custom-text-black">
+                  <p className="text-custom-text-black font-semibold">
                     Basic Account Information
                   </p>
 
@@ -266,6 +254,8 @@ export default function AccountSetup() {
                     placeholder="@username"
                     className="bg-slate-100"
                     name="username"
+                    value={username}
+                    onChange={handleUsernameChange}
                     required
                   />
                   <Input

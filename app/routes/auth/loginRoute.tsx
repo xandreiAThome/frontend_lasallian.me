@@ -11,7 +11,7 @@ import type { Route } from "./+types/loginRoute";
 import axios from "axios";
 import api from "~/lib/api";
 import { createUserSession, getUserToken } from "~/.server/sessions";
-import { Loader, Loader2 } from "lucide-react";
+import { Loader2 } from "lucide-react";
 
 export async function loader({ request }: Route.LoaderArgs) {
   // Check if the user is already logged in

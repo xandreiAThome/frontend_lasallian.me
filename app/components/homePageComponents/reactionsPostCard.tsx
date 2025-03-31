@@ -6,17 +6,20 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from "~/components/ui/hover-card";
+import type { reactionPostInterface } from "~/lib/interfaces";
 
 interface ReactionsCardProps {
   reactions: number;
   position?: "top" | "right" | "bottom" | "left";
   postId: string;
+  currUserReact: reactionPostInterface | undefined;
 }
 
 export default function ReactionsPostCard({
   reactions,
   position,
   postId,
+  currUserReact,
 }: ReactionsCardProps) {
   const formatter = Intl.NumberFormat("en", { notation: "compact" });
   const [open, setOpen] = useState(false);
@@ -27,7 +30,10 @@ export default function ReactionsPostCard({
     { name: "sad", emoji: "😢" },
     { name: "angry", emoji: "😡" },
   ];
-  const [reaction, setReaction] = useState("");
+
+  const [reaction, setReaction] = useState(
+    currUserReact ? currUserReact.type : ""
+  );
   const fetcher = useFetcher();
 
   function handleReaction(emoji: string) {
@@ -36,7 +42,7 @@ export default function ReactionsPostCard({
 
     formData.append("postId", postId);
     formData.append("reaction", emoji);
-    fetcher.submit(formData, { method: "post", action: "/editReactionPost" });
+    fetcher.submit(formData, { method: "post", action: "/sendReactionPost" });
 
     setOpen(false);
   }
@@ -57,6 +63,7 @@ export default function ReactionsPostCard({
       fetcher.submit(formData, { method: "post", action: "/sendReactionPost" });
     }
   }
+
   return (
     <>
       <HoverCard open={open} onOpenChange={setOpen}>

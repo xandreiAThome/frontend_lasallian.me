@@ -1,11 +1,4 @@
-import {
-  Dot,
-  Ellipsis,
-  Heart,
-  MessageSquareShare,
-  MessageSquareText,
-  Terminal,
-} from "lucide-react";
+import { Ellipsis, MessageSquareText } from "lucide-react";
 import ReactTimeAgo from "react-time-ago";
 import {
   Form,
@@ -42,7 +35,7 @@ export default function CommentsCard({
 
   const [isEdit, setIsEdit] = useState(false);
   const repliesNum = 0;
-  const reactionsNum = 0;
+
   const fetcher = useFetcher();
   const location = useLocation();
   const loaderData = useLoaderData();
@@ -145,7 +138,7 @@ export default function CommentsCard({
         }}
       >
         <Avatar className="w-9 h-9 mr-2">
-          <AvatarImage alt="@shadcn" src={profileImg ?? undefined} />
+          <AvatarImage alt="profile" src={profileImg ?? undefined} />
           <AvatarFallback className="flex flex-col bg-gray-300">
             <img src={profileImgDefault} alt="" />
           </AvatarFallback>
@@ -155,7 +148,7 @@ export default function CommentsCard({
         <div className="flex items-center">
           <Button
             onClick={() => {
-              navigate("/userprofile");
+              navigate(`/userprofile/${author._id}`);
             }}
             variant="link"
             className="text-lg text-black font-bold mr-2 p-0"
@@ -203,6 +196,9 @@ export default function CommentsCard({
             <ReactionsCommentCard
               reactions={reactions.length}
               commentId={_id}
+              currUserReacted={reactions.find(
+                (reaction) => reaction.user === loaderData.user._id
+              )}
             />
           </div>
 

@@ -1,11 +1,6 @@
 import TimeAgo from "javascript-time-ago";
 import en from "javascript-time-ago/locale/en";
-import {
-  Dot,
-  MessageSquareShare,
-  MessageSquareText,
-  Send
-} from "lucide-react";
+import { Dot, MessageSquareShare, MessageSquareText, Send } from "lucide-react";
 import { useEffect, useState } from "react";
 import {
   Form,
@@ -54,7 +49,6 @@ export default function PostCard(props: postDataInterface) {
   const [submitComment, setSubmitComment] = useState("");
   const loaderData = useLoaderData();
   const [profileImg, setProfileImg] = useState<string | null>(null);
-
   useEffect(() => {
     async function getImg() {
       if (author.vanity.display_photo) {
@@ -128,20 +122,24 @@ export default function PostCard(props: postDataInterface) {
             </Button>{" "}
             {badge ? (
               <>
-              <p
-                style={{ backgroundColor: badge?.main_color,
-                          color: badge?.main_text_color,
-                }}
-                className="px-2 text-xs font-semibold">
-                {badge?.main_title}
-              </p>
-              <p 
-                style={{ backgroundColor: badge?.sub_color,
-                          color: badge?.sub_text_color,
-                }}
-                className="px-2 text-xs font-semibold">
-                {badge?.sub_title}
-              </p>
+                <p
+                  style={{
+                    backgroundColor: badge?.main_color,
+                    color: badge?.main_text_color,
+                  }}
+                  className="px-2 text-xs font-semibold"
+                >
+                  {badge?.main_title}
+                </p>
+                <p
+                  style={{
+                    backgroundColor: badge?.sub_color,
+                    color: badge?.sub_text_color,
+                  }}
+                  className="px-2 text-xs font-semibold"
+                >
+                  {badge?.sub_title}
+                </p>
               </>
             ) : null}
             <EditPostDialog {...props} />
@@ -169,7 +167,13 @@ export default function PostCard(props: postDataInterface) {
 
       <div className="flex items-center mt-4 justify-between gap-4">
         <div className="flex items-center">
-          <ReactionsPostCard reactions={reactions.length} postId={_id} />
+          <ReactionsPostCard
+            reactions={reactions.length}
+            postId={_id}
+            currUserReact={reactions.find(
+              (reaction) => reaction.user === loaderData.user._id
+            )}
+          />
         </div>
 
         <button

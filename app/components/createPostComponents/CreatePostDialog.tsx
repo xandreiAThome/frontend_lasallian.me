@@ -1,16 +1,8 @@
 import { DialogClose } from "@radix-ui/react-dialog";
-import {
-  CalendarDays,
-  Images
-} from "lucide-react";
+import { CalendarDays, Images } from "lucide-react";
 import { useEffect, useState, type ReactElement } from "react";
 import type { ImageListType } from "react-images-uploading";
-import {
-  Form,
-  useFetcher,
-  useLoaderData,
-  useLocation
-} from "react-router";
+import { Form, useFetcher, useLoaderData, useLocation } from "react-router";
 import profileImgDefault from "~/components/assets/profile.jpg";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 import { Button } from "~/components/ui/button";
@@ -20,7 +12,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger
+  DialogTrigger,
 } from "~/components/ui/dialog";
 import { Textarea } from "../ui/textarea";
 import BadgeDropDown from "./badgeDropdown";
@@ -59,11 +51,14 @@ export default function CreatePostButton({
   const [profileImg, setProfileImg] = useState<string | null>(null);
   const fetcher = useFetcher();
 
-  const updateSelectedBadgeId = (newBadgeId: string, badgeDescription: string) => {
+  const updateSelectedBadgeId = (
+    newBadgeId: string,
+    badgeDescription: string
+  ) => {
     console.log(`newBadgeId: ${newBadgeId}`);
     setSelectedBadgeId(newBadgeId);
-    setPostingAs(badgeDescription)
-  }
+    setPostingAs(badgeDescription);
+  };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -73,8 +68,7 @@ export default function CreatePostButton({
     console.log(image);
 
     // TODO: Append badge data
-    formData.append("badge", selectedBadgeId)
-
+    formData.append("badge", selectedBadgeId);
 
     // Append data to FormData
     // formData.append("content", formData.get("content") as string);
@@ -131,7 +125,7 @@ export default function CreatePostButton({
             <h4 className="text-base font-normal">
               Posting with{" "}
               <span className="font-bold">
-                {postingAs? postingAs : "no badge"}
+                {postingAs ? postingAs : "no badge"}
               </span>
             </h4>
           </DialogTitle>
@@ -151,7 +145,10 @@ export default function CreatePostButton({
                     {loaderData.user.info?.name.first}{" "}
                     {loaderData.user.info?.name.last}
                   </p>{" "}
-                  <BadgeDropDown badgeIds={userBadges} callback={updateSelectedBadgeId}/>
+                  <BadgeDropDown
+                    badgeIds={userBadges}
+                    callback={updateSelectedBadgeId}
+                  />
                 </div>
                 <p className="text-gray-400 text-xs">
                   {loaderData.user.info?.username}

@@ -25,7 +25,6 @@ export default [
   // reaction api
   // post
   route("sendReactionPost", "routes/api/reactions/post/sendReactionPost.tsx"),
-  route("editReactionPost", "routes/api/reactions/post/editReactionPost.tsx"),
   route(
     "deleteReactionPost",
     "routes/api/reactions/post/deleteReactionPost.tsx"
@@ -34,10 +33,6 @@ export default [
   route(
     "sendReactionComment",
     "routes/api/reactions/comment/sendReactionComment.tsx"
-  ),
-  route(
-    "editReactionComment",
-    "routes/api/reactions/comment/editReactionComment.tsx"
   ),
   route(
     "deleteReactionComment",

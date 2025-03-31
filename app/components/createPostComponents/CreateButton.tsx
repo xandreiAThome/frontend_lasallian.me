@@ -7,7 +7,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger
+  DialogTrigger,
 } from "~/components/ui/dialog";
 import CreatePostDialog from "./CreatePostDialog";
 
@@ -33,7 +33,8 @@ export default function CreateButton() {
                 <div>
                   <p className="text-justify text-xl font-bold">Post</p>
                   <p className="text-justify">
-                    Share something publicly to <span className="font-bold">your</span> feed; doesn't need
+                    Share something publicly to{" "}
+                    <span className="font-bold">your</span> feed; doesn't need
                     to be professional. This will not be shown to job
                     recruiters.
                   </p>

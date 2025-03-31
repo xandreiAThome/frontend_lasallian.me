@@ -4,7 +4,7 @@ import {
   House,
   Instagram,
   Linkedin,
-  UserRound
+  UserRound,
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useLoaderData } from "react-router";
@@ -21,8 +21,8 @@ export default function UserBannerCard(props: authorInterface) {
   const [coverImg, setCoverImg] = useState<string | null>(null);
   const loaderData = useLoaderData();
 
-  console.log("USERBANNERCARD")
-  console.log(loaderData.user.vanity.badges)
+  console.log("USERBANNERCARD");
+  console.log(loaderData.user.vanity.badges);
 
   useEffect(() => {
     async function getImg() {
@@ -101,7 +101,7 @@ export default function UserBannerCard(props: authorInterface) {
             <div className="flex flex-col gap-2">
               <p className="text-lg text-gray-400">{info.username}</p>
               <div className="flex gap-2 flex-wrap">
-                <BadgeIcon badgeInfo={loaderData.user.vanity.badges}/>
+                <BadgeIcon badgeInfo={loaderData.user.vanity.badges} />
               </div>
             </div>
           </div>

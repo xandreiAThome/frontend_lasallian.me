@@ -1,4 +1,4 @@
-import { Ellipsis, Images, Linkedin, Instagram, Facebook } from "lucide-react";
+import { Ellipsis, Linkedin, Instagram, Facebook } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -25,7 +25,7 @@ import {
 import { Input } from "~/components/ui/input";
 import { Button } from "~/components/ui/button";
 import type { authorInterface } from "~/lib/interfaces";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Form, useFetcher, useLoaderData, useLocation } from "react-router";
 import UploadCoverDialog from "../imageComponents/uploadCoverDialog";
 import type { ImageListType } from "react-images-uploading";
@@ -45,6 +45,26 @@ export default function EditUserInfoDialog(props: editUserInfoInterface) {
   const loaderData = useLoaderData();
   const [profileImg, setProfileImg] = useState<ImageListType>([]);
   const [coverImg, setCoverImg] = useState<ImageListType>([]);
+  const [username, setUsername] = useState("");
+  console.log(info.username);
+  useEffect(() => setUsername(info.username), [info.username]);
+
+  const handleUsernameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
+
+    // Remove the "@" if the input is empty
+    if (value === "@") {
+      setUsername("");
+      return;
+    }
+
+    // Ensure the username always starts with "@"
+    if (!value.startsWith("@")) {
+      setUsername("@" + value.replace("@", ""));
+    } else {
+      setUsername(value);
+    }
+  };
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -174,7 +194,10 @@ export default function EditUserInfoDialog(props: editUserInfoInterface) {
                       className="bg-slate-100"
                       name="username"
                       autoComplete="off"
+                      value={username}
                       defaultValue={info.username}
+                      onChange={handleUsernameChange}
+                      required
                     />
                     <Input
                       placeholder="Bio"
@@ -199,6 +222,7 @@ export default function EditUserInfoDialog(props: editUserInfoInterface) {
                     name="first"
                     autoComplete="off"
                     defaultValue={info.name.first}
+                    required
                   ></Input>
                   <Input
                     className="bg-slate-100 "
@@ -206,12 +230,13 @@ export default function EditUserInfoDialog(props: editUserInfoInterface) {
                     name="last"
                     autoComplete="off"
                     defaultValue={info.name.last}
+                    required
                   ></Input>
                 </div>
               </div>
 
               <div className="flex gap-2 px-12 items-center">
-                <Select defaultValue={info.batchid} name="batchid">
+                <Select defaultValue={info.batchid} name="batchid" required>
                   <SelectTrigger className="w-20">
                     <SelectValue placeholder="Select a fruit" />
                   </SelectTrigger>
@@ -232,6 +257,7 @@ export default function EditUserInfoDialog(props: editUserInfoInterface) {
                   placeholder="Degree Program"
                   name="program"
                   defaultValue={info.program}
+                  required
                 ></Input>
               </div>
 

@@ -1,7 +1,6 @@
 import { ArrowRightLeft, Images, X } from "lucide-react";
 import React from "react";
 import ImageUploading, { type ImageListType } from "react-images-uploading";
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 
 interface uploadImageInterface {
   images: ImageListType;

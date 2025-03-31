@@ -1,5 +1,5 @@
 import { Input } from "~/components/ui/input";
-import { data, Form, redirect, useNavigate } from "react-router";
+import { data, redirect, useNavigate } from "react-router";
 import { Button } from "~/components/ui/button";
 import { useFetcher } from "react-router";
 import type { Route } from "./+types/RegisterRoute";
