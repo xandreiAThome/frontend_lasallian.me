@@ -56,7 +56,6 @@ export default function PostCard(props: postDataInterface) {
   const [submitComment, setSubmitComment] = useState("");
   const loaderData = useLoaderData();
   const [profileImg, setProfileImg] = useState<string | null>(null);
-
   useEffect(() => {
     async function getImg() {
       if (author.vanity.display_photo) {
@@ -158,7 +157,13 @@ export default function PostCard(props: postDataInterface) {
 
       <div className="flex items-center mt-4 justify-between gap-4">
         <div className="flex items-center">
-          <ReactionsPostCard reactions={reactions.length} postId={_id} />
+          <ReactionsPostCard
+            reactions={reactions.length}
+            postId={_id}
+            currUserReact={reactions.find(
+              (reaction) => reaction.user === loaderData.user._id
+            )}
+          />
         </div>
 
         <button

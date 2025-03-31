@@ -6,15 +6,18 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from "~/components/ui/hover-card";
+import type { reactionCommentInterface } from "~/lib/interfaces";
 
 interface ReactionsCardProps {
   reactions: number;
   commentId: string;
+  currUserReacted: reactionCommentInterface | undefined;
 }
 
 export default function ReactionsCommentCard({
   reactions,
   commentId,
+  currUserReacted,
 }: ReactionsCardProps) {
   const formatter = Intl.NumberFormat("en", { notation: "compact" });
   const [open, setOpen] = useState(false);
@@ -25,7 +28,10 @@ export default function ReactionsCommentCard({
     { name: "sad", emoji: "😢" },
     { name: "angry", emoji: "😡" },
   ];
-  const [reaction, setReaction] = useState("");
+  const [reaction, setReaction] = useState(
+    currUserReacted ? currUserReacted.type : ""
+  );
+
   const fetcher = useFetcher();
 
   function handleReaction(emoji: string) {
@@ -36,7 +42,7 @@ export default function ReactionsCommentCard({
     formData.append("reaction", emoji);
     fetcher.submit(formData, {
       method: "post",
-      action: "/editReactionComment",
+      action: "/sendReactionComment",
     });
 
     setOpen(false);

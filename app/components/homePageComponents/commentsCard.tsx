@@ -35,7 +35,7 @@ export default function CommentsCard({
 
   const [isEdit, setIsEdit] = useState(false);
   const repliesNum = 0;
-  const reactionsNum = 0;
+
   const fetcher = useFetcher();
   const location = useLocation();
   const loaderData = useLoaderData();
@@ -196,6 +196,9 @@ export default function CommentsCard({
             <ReactionsCommentCard
               reactions={reactions.length}
               commentId={_id}
+              currUserReacted={reactions.find(
+                (reaction) => reaction.user === loaderData.user._id
+              )}
             />
           </div>
 

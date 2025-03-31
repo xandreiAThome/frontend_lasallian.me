@@ -25,9 +25,7 @@ export async function loader({ request }: Route.LoaderArgs) {
         Authorization: `Bearer ${userToken}`,
       },
     });
-
-    // console.log(response.data);
-
+    // console.log(response.data[0].comments[0].reactions);
     return {
       postData: response.data,
       loggedInUserId: userObj?._id,

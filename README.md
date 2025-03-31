@@ -13,5 +13,5 @@
 ## MVP Tasklist
 
 - [x] Uploading of Pfp (note: cant upload pfp on setup page)
-- [ ] Reactions Crud
+- [x] Reactions Crud
 - [ ] Nested Comments

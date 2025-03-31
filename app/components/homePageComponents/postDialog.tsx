@@ -278,6 +278,9 @@ export default function PostDialog(props: postDataInterface) {
                 reactions={reactions.length}
                 position="right"
                 postId={_id}
+                currUserReact={reactions.find(
+                  (reaction) => reaction.user === loaderData.user._id
+                )}
               />
             </div>
 

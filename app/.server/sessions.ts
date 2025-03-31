@@ -21,7 +21,7 @@ const USER_SESSION_KEY = "userToken";
 export const sessionStorage = createCookieSessionStorage({
   cookie: {
     name: "__session",
-    secrets: ["s3cret"],
+    secrets: [process.env.SECRET_KEY || "s3cret"],
     sameSite: "lax",
     path: "/",
     httpOnly: true,
