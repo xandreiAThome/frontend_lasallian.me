@@ -1,22 +1,9 @@
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuRadioGroup,
-  DropdownMenuRadioItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "~/components/ui/dropdown-menu";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "~/components/ui/dialog";
+import { DialogClose } from "@radix-ui/react-dialog";
+import { Ellipsis } from "lucide-react";
+import { useState } from "react";
+import { useFetcher, useLoaderData } from "react-router";
+import profileImg from "~/components/assets/profile.jpg";
+import BadgeDropDown from "~/components/createPostComponents/badgeDropdown";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -25,23 +12,23 @@ import {
   AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
+  AlertDialogTitle
 } from "~/components/ui/alert-dialog";
-import { ChevronDown, Ellipsis } from "lucide-react";
-import type { postDataInterface } from "~/lib/interfaces";
-import { useState } from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle
+} from "~/components/ui/dialog";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger
+} from "~/components/ui/dropdown-menu";
+import type { badgeInterface, postDataInterface } from "~/lib/interfaces";
 import { Button } from "../ui/button";
-import { useFetcher, useLoaderData } from "react-router";
-import { DialogClose } from "@radix-ui/react-dialog";
-import profileImg from "~/components/assets/profile.jpg";
-
-interface positionsData {
-  org: string;
-  position: string;
-  orgColor: string;
-  positionColor: string;
-}
 
 export default function EditPostDialog(props: postDataInterface) {
   const loaderData = useLoaderData();
@@ -55,61 +42,31 @@ export default function EditPostDialog(props: postDataInterface) {
     visibility,
     meta,
     author,
+    badge,
     comments,
     _id,
   } = props;
-  const [currPos, setCurrPos] = useState("LSCS+VP");
+  // Badge Data
+  const userBadges = loaderData.user.vanity.badges;
   const [openDialog, setOpenDialog] = useState<string | null>(null);
-
-  const positionsTEMP = [
-    {
-      org: "LSCS",
-      position: "VP",
-      orgColor: "#220088",
-      positionColor: "#313131",
-    },
-    {
-      org: "LSCS",
-      position: "RND",
-      orgColor: "#220088",
-      positionColor: "#313131",
-    },
-    {
-      org: "TLS",
-      position: "WEB",
-      orgColor: "#007D3F",
-      positionColor: "#313131",
-    },
-    {
-      org: "GDSC",
-      position: "MKT",
-      orgColor: "#FFCD05",
-      positionColor: "#313131",
-    },
-  ];
-  const posDIVS = positionsTEMP.map(
-    ({ org, position, orgColor, positionColor }: positionsData) => {
-      return (
-        <DropdownMenuRadioItem
-          value={`${org}+${position}`}
-          key={`${org}+${position}`}
-        >
-          <p
-            style={{ backgroundColor: orgColor }}
-            className=" text-white text-xs font-semibold px-2"
-          >
-            {org}
-          </p>
-          <p
-            style={{ backgroundColor: positionColor }}
-            className=" text-white text-xs font-semibold px-2"
-          >
-            {position}
-          </p>
-        </DropdownMenuRadioItem>
-      );
+  const [selectedBadgeId, setSelectedBadgeId] = useState<string>(badge ? badge._id : "");
+  const [postingAs, setPostingAs] = useState<string>(badge ? (() => {
+    if(userBadges.find((userBadge: badgeInterface) => userBadge._id === badge._id)) {
+      return badge.description }
+    else {
+      return ("No Badge")
     }
-  );
+    })() : "No Badge"); //IIFE daw pala to, the more you know :)
+
+  badge ? console.log(`Selected Badge on edit: ${badge._id}`) : console.log(`No badge on this post`);
+  
+
+  const updateSelectedBadgeId = (newBadgeId: string, badgeDescription: string) => {
+    console.log(`newBadgeId: ${newBadgeId}`);
+    setSelectedBadgeId(newBadgeId);
+    setPostingAs(badgeDescription);
+  }
+
   const handleDelete = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     console.log("delete");
@@ -138,6 +95,7 @@ export default function EditPostDialog(props: postDataInterface) {
       content: { text: formData.get("content") },
       id: _id,
       location: location,
+      badge: selectedBadgeId,
     };
 
     console.log("NUWIAFHAHAHAHA");
@@ -191,7 +149,7 @@ export default function EditPostDialog(props: postDataInterface) {
                 <h4 className="text-base font-normal">
                   Posting with{" "}
                   <span className="font-bold">
-                    La Salle Computer Society - Vice President
+                    {postingAs}
                   </span>
                 </h4>
               </DialogTitle>
@@ -210,29 +168,7 @@ export default function EditPostDialog(props: postDataInterface) {
                     <p className="text-lg font-bold mr-12">
                       {author.info.name.first} {author.info.name.last}
                     </p>
-                    <p className="px-2 bg-[#220088] text-white text-xs font-semibold">
-                      LSCS {/** TEMPORARY */}
-                    </p>
-                    <p className="px-2 bg-[#313131] text-white text-xs font-semibold mr-2">
-                      VP {/** TEMPORARY */}
-                    </p>
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <button>
-                          <ChevronDown className="font-extrabold" />
-                        </button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent className="w-56">
-                        <DropdownMenuLabel>Panel Position</DropdownMenuLabel>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuRadioGroup
-                          value={currPos}
-                          onValueChange={setCurrPos}
-                        >
-                          {posDIVS}
-                        </DropdownMenuRadioGroup>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
+                    <BadgeDropDown badgeIds={userBadges} callback={updateSelectedBadgeId} defaultSelected={badge ? badge._id : ""}/>
                   </div>
                   <p className="text-gray-400 text-xs">
                     {author.info.username}
