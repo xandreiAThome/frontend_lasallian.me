@@ -1,12 +1,12 @@
-import { Form, NavLink, Outlet, redirect, useNavigation } from "react-router";
-import Logo from "~/components/assets/logo.svg";
-import OrgSideBarCard from "~/components/sidebarComponents/orgSideBarCard";
-import FollowingSideBar from "~/components/sidebarComponents/followingSideBarCard";
-import CreateButton from "~/components/createPostComponents/CreateButton";
-import { Input } from "~/components/ui/input";
 import { Search } from "lucide-react";
-import type { Route } from "./+types/navigationBarLayout";
+import { Form, NavLink, Outlet, redirect, useNavigation } from "react-router";
 import { getUserId, getUserObject, getUserToken } from "~/.server/sessions";
+import Logo from "~/components/assets/logo.svg";
+import CreateButton from "~/components/createPostComponents/CreateButton";
+import FollowingSideBar from "~/components/sidebarComponents/followingSideBarCard";
+import OrgSideBarCard from "~/components/sidebarComponents/orgSideBarCard";
+import { Input } from "~/components/ui/input";
+import type { Route } from "./+types/navigationBarLayout";
 
 export async function loader({ request }: Route.LoaderArgs) {
   // Check if the user is already logged in
@@ -155,6 +155,7 @@ export default function NavBar({ loaderData }: Route.ComponentProps) {
               }}
               className="bg-custom-postcard-white pl-12 max-w-full rounded-3xl h-11"
               placeholder="Search..."
+              required
               name="query"
             ></Input>
             <button type="submit">

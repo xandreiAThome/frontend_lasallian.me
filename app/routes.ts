@@ -54,5 +54,6 @@ export default [
     route("todo", "routes/todo.tsx"),
     route("orgprofile", "routes/userpage/orgProfileRoute.tsx"),
     route("search", "routes/api/searchRoute.tsx"),
+    route("hashtag/:hashtag", "routes/api/hashtagRoute.tsx"),
   ]),
 ] satisfies RouteConfig;
