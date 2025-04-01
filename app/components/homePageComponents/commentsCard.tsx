@@ -1,26 +1,26 @@
 import { Ellipsis, MessageSquareText } from "lucide-react";
-import ReactTimeAgo from "react-time-ago";
+import { useEffect, useState } from "react";
 import {
   Form,
+  Link,
   useFetcher,
   useLoaderData,
   useLocation,
   useNavigate,
 } from "react-router";
+import ReactTimeAgo from "react-time-ago";
+import profileImgDefault from "~/components/assets/profile.jpg";
 import { Button } from "~/components/ui/button";
-import { useEffect, useState } from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
   DropdownMenuSeparator,
-  DropdownMenuTrigger,
+  DropdownMenuTrigger
 } from "~/components/ui/dropdown-menu";
 import type { commentInterface } from "~/lib/interfaces";
-import profileImgDefault from "~/components/assets/profile.jpg";
-import ReactionsCommentCard from "./reactionsCommentCard";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import ReactionsCommentCard from "./reactionsCommentCard";
 
 const parseHashtags = (text: string) => {
   const hashtagRegex = /#(\w+)/g;
@@ -28,13 +28,18 @@ const parseHashtags = (text: string) => {
   // Replace hashtags with dynamic links
   return text.split(hashtagRegex).map((part, index) => {
     if (index % 2 === 1) {
-      // If it's a hashtag (i.e., odd index in the array)
-      return <a href={`/hashtag/${part}`} className="text-blue-500 hover:text-blue-700 underline">{`#${part}`}</a>;
+      // Adding link to hashtag url
+      return (<Link
+        to={`/hashtag/${part}`}
+        className="text-blue-500 hover:text-blue-700 underline">
+          {`#${part}`}
+        </Link>
+      );
     }
-    // Normal text (even index in the array)
     return part;
   });
 };
+
 
 export default function CommentsCard({
   author,

@@ -6,6 +6,7 @@ import {
   useLoaderData,
   useLocation,
   useNavigate,
+  Link,
 } from "react-router";
 import ReactTimeAgo from "react-time-ago";
 import profileImgDefault from "~/components/assets/profile.jpg";
@@ -30,10 +31,14 @@ const parseHashtags = (text: string) => {
   // Replace hashtags with dynamic links
   return text.split(hashtagRegex).map((part, index) => {
     if (index % 2 === 1) {
-      // If it's a hashtag (i.e., odd index in the array)
-      return <a href={`/hashtag/${part}`} className="text-blue-500 hover:text-blue-700 underline">{`#${part}`}</a>;
+      // Adding link to hashtag url
+      return (<Link
+        to={`/hashtag/${part}`}
+        className="text-blue-500 hover:text-blue-700 underline">
+          {`#${part}`}
+        </Link>
+      );
     }
-    // Normal text (even index in the array)
     return part;
   });
 };
