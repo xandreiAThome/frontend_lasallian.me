@@ -22,6 +22,20 @@ import profileImgDefault from "~/components/assets/profile.jpg";
 import ReactionsCommentCard from "./reactionsCommentCard";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 
+const parseHashtags = (text: string) => {
+  const hashtagRegex = /#(\w+)/g;
+  
+  // Replace hashtags with dynamic links
+  return text.split(hashtagRegex).map((part, index) => {
+    if (index % 2 === 1) {
+      // If it's a hashtag (i.e., odd index in the array)
+      return <a href={`/hashtag/${part}`} className="text-blue-500 hover:text-blue-700 underline">{`#${part}`}</a>;
+    }
+    // Normal text (even index in the array)
+    return part;
+  });
+};
+
 export default function CommentsCard({
   author,
   content,
@@ -187,7 +201,7 @@ export default function CommentsCard({
           EditComment
         ) : (
           <div className="flex items-start">
-            <p>{content}</p>
+            <p>{parseHashtags(content)}</p>
           </div>
         )}
 
