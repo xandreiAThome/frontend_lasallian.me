@@ -285,7 +285,7 @@ function ManageMembersDialog(props: memberProps) {
               <TableHead>Name</TableHead>
               <TableHead>Username</TableHead>
               <TableHead>Position</TableHead>
-              <TableHead>Committee</TableHead>
+              <TableHead></TableHead>
               <TableHead className="text-right"></TableHead>
             </TableRow>
           </TableHeader>
