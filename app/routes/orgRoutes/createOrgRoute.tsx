@@ -3,7 +3,7 @@ import { Form, redirect, useFetcher } from "react-router";
 import { Button } from "~/components/ui/button";
 import { Checkbox } from "~/components/ui/checkbox";
 import { Input } from "~/components/ui/input";
-import Logo from "~/components/assets/logo.svg";
+import { getUserObject, getUserToken } from "~/.server/sessions";
 import {
   Select,
   SelectContent,
@@ -23,9 +23,8 @@ import UploadProfileDialog from "~/components/imageComponents/uploadProfileDialo
 import { Textarea } from "~/components/ui/textarea";
 
 export async function action({ request }: Route.ActionArgs) {
-  const url = new URL(request.url);
-  const token = url.searchParams.get("token");
-  console.log("Token from URL:", token);
+  const userToken = await getUserToken(request);
+  const userObj = await getUserObject(request);
   const formData = await request.formData();
 
   let profileImgLink = "";
@@ -41,7 +40,7 @@ export async function action({ request }: Route.ActionArgs) {
       profileImgFormData,
       {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${userToken}`,
           "Content-Type": "multipart/form-data",
         },
       }
@@ -59,7 +58,7 @@ export async function action({ request }: Route.ActionArgs) {
       coverImgFormData,
       {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${userToken}`,
           "Content-Type": "multipart/form-data",
         },
       }
@@ -83,7 +82,7 @@ export async function action({ request }: Route.ActionArgs) {
     // Send to your API endpoint
     const response = await api.post(`${process.env.API_KEY}/org`, reqBody, {
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${userToken}`,
         "Content-Type": "application/json",
       },
     });
@@ -95,14 +94,6 @@ export async function action({ request }: Route.ActionArgs) {
     } else {
       console.log("Unexpected error:", error);
     }
-  }
-}
-
-export async function loader({ request }: Route.ActionArgs) {
-  const url = new URL(request.url);
-  const token = url.searchParams.get("token");
-  if (!token) {
-    redirect("/");
   }
 }
 
@@ -197,13 +188,19 @@ export default function CreateOrg() {
               <label htmlFor="office">Office</label>
               <Select name="office">
                 <SelectTrigger className="w-96">
-                  <SelectValue placeholder="Select an Office" />
+                  <SelectValue placeholder="Select an office" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>
                     <SelectLabel>Office</SelectLabel>
-                    <SelectItem value="120">
+                    <SelectItem value="Council of Student Organization">
                       Council of Student Organization
+                    </SelectItem>
+                    <SelectItem value="Student Media Office">
+                      Student Media Office
+                    </SelectItem>
+                    <SelectItem value="Department of Activity Approval and Monitoring ">
+                      Department of Activity Approval and Monitoring
                     </SelectItem>
                   </SelectGroup>
                 </SelectContent>
@@ -214,7 +211,7 @@ export default function CreateOrg() {
               <label htmlFor="college">College</label>
               <Select name="college">
                 <SelectTrigger className="w-20">
-                  <SelectValue placeholder="Select a College" />
+                  <SelectValue placeholder="Select" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>

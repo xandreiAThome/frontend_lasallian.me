@@ -84,7 +84,7 @@ export default function NavBar({ loaderData }: Route.ComponentProps) {
                     "hover:bg-slate-200 hover:rounded-2xl px-4 py-1 transition-all",
                   ].join(" ")
                 }
-                to="/orgprofile"
+                to="/orgs"
               >
                 Organizations
               </NavLink>

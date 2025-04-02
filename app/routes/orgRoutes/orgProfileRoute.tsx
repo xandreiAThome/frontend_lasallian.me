@@ -27,42 +27,6 @@ export default function OrgProfilePage() {
   return (
     <div className="basis-[640px] flex flex-col gap-4 animate-fade-in">
       <OrgBannerCard />
-
-      {postData.org.map(
-        ({
-          author,
-          time,
-          views,
-          content,
-          profile,
-          reactions,
-          comments,
-          reposts,
-          img,
-          org,
-          position,
-          commentsList,
-        }: postsData) => {
-          if (author === "La Salle Computer Society")
-            return (
-              <OrgPostCard
-                author={author}
-                time={time}
-                views={views}
-                profile={profile}
-                content={content}
-                reactions={reactions}
-                comments={comments}
-                reposts={reposts}
-                img={img}
-                org={org}
-                position={position}
-                commentsList={commentsList}
-                key={content}
-              />
-            );
-        }
-      )}
     </div>
   );
 }

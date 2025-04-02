@@ -46,7 +46,6 @@ export default function EditUserInfoDialog(props: editUserInfoInterface) {
   const [profileImg, setProfileImg] = useState<ImageListType>([]);
   const [coverImg, setCoverImg] = useState<ImageListType>([]);
   const [username, setUsername] = useState("");
-  console.log(info.username);
   useEffect(() => setUsername(info.username), [info.username]);
 
   const handleUsernameChange = (event: React.ChangeEvent<HTMLInputElement>) => {

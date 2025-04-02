@@ -12,20 +12,20 @@ import {
   AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogHeader,
-  AlertDialogTitle
+  AlertDialogTitle,
 } from "~/components/ui/alert-dialog";
 import {
   Dialog,
   DialogContent,
   DialogFooter,
   DialogHeader,
-  DialogTitle
+  DialogTitle,
 } from "~/components/ui/dialog";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuTrigger
+  DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
 import type { badgeInterface, postDataInterface } from "~/lib/interfaces";
 import { Button } from "../ui/button";
@@ -49,23 +49,35 @@ export default function EditPostDialog(props: postDataInterface) {
   // Badge Data
   const userBadges = loaderData.user.vanity.badges;
   const [openDialog, setOpenDialog] = useState<string | null>(null);
-  const [selectedBadgeId, setSelectedBadgeId] = useState<string>(badge ? badge._id : "");
-  const [postingAs, setPostingAs] = useState<string>(badge ? (() => {
-    if(userBadges.find((userBadge: badgeInterface) => userBadge._id === badge._id)) {
-      return badge.description }
-    else {
-      return ("No Badge")
-    }
-    })() : "No Badge"); //IIFE daw pala to, the more you know :)
+  const [selectedBadgeId, setSelectedBadgeId] = useState<string>(
+    badge ? badge._id : ""
+  );
+  const [postingAs, setPostingAs] = useState<string>(
+    badge
+      ? (() => {
+          if (
+            userBadges.find(
+              (userBadge: badgeInterface) => userBadge._id === badge._id
+            )
+          ) {
+            return badge.description;
+          } else {
+            return "No Badge";
+          }
+        })()
+      : "No Badge"
+  ); //IIFE daw pala to, the more you know :)
 
-  badge ? console.log(`Selected Badge on edit: ${badge._id}`) : console.log(`No badge on this post`);
-  
+  // badge ? console.log(`Selected Badge on edit: ${badge._id}`) : console.log(`No badge on this post`);
 
-  const updateSelectedBadgeId = (newBadgeId: string, badgeDescription: string) => {
+  const updateSelectedBadgeId = (
+    newBadgeId: string,
+    badgeDescription: string
+  ) => {
     console.log(`newBadgeId: ${newBadgeId}`);
     setSelectedBadgeId(newBadgeId);
     setPostingAs(badgeDescription);
-  }
+  };
 
   const handleDelete = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -147,10 +159,7 @@ export default function EditPostDialog(props: postDataInterface) {
               <DialogTitle>
                 <h1 className="text-2xl">Edit</h1>
                 <h4 className="text-base font-normal">
-                  Posting with{" "}
-                  <span className="font-bold">
-                    {postingAs}
-                  </span>
+                  Posting with <span className="font-bold">{postingAs}</span>
                 </h4>
               </DialogTitle>
             </DialogHeader>
@@ -168,7 +177,11 @@ export default function EditPostDialog(props: postDataInterface) {
                     <p className="text-lg font-bold mr-12">
                       {author.info.name.first} {author.info.name.last}
                     </p>
-                    <BadgeDropDown badgeIds={userBadges} callback={updateSelectedBadgeId} defaultSelected={badge ? badge._id : ""}/>
+                    <BadgeDropDown
+                      badgeIds={userBadges}
+                      callback={updateSelectedBadgeId}
+                      defaultSelected={badge ? badge._id : ""}
+                    />
                   </div>
                   <p className="text-gray-400 text-xs">
                     {author.info.username}

@@ -21,9 +21,6 @@ export default function UserBannerCard(props: authorInterface) {
   const [coverImg, setCoverImg] = useState<string | null>(null);
   const loaderData = useLoaderData();
 
-  console.log("USERBANNERCARD");
-  console.log(loaderData.user.vanity.badges);
-
   useEffect(() => {
     async function getImg() {
       if (vanity.display_photo) {
