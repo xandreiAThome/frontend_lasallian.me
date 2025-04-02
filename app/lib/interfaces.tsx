@@ -76,6 +76,45 @@ interface authorInterface {
   _id: string;
 }
 
+interface orgDataInterface {
+  vanity: {
+    display_photo?: string;
+    cover_photo?: string;
+    badges: badgeInterface[];
+  };
+  info: {
+    name: string;
+    acronym: string;
+    founding: string;
+    office: string;
+    college: string;
+    links: {
+      linkedin?: string;
+      facebook?: string;
+      instagram?: string;
+      other?: string[];
+    };
+    bio?: string;
+  };
+  meta: {
+    created_at: Date;
+    updated_at: Date;
+  };
+  _id: string;
+  members: orgMemberInterface[];
+}
+
+interface orgMemberInterface {
+  author: authorInterface;
+  joindate: Date;
+  position: string;
+  media: string[];
+  meta: {
+    created_at: Date;
+    updated_at: Date;
+  };
+}
+
 export type {
   authorInterface,
   postDataInterface,
@@ -83,4 +122,6 @@ export type {
   reactionPostInterface,
   commentInterface,
   badgeInterface,
+  orgDataInterface,
+  orgMemberInterface,
 };

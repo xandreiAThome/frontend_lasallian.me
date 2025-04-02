@@ -41,20 +41,24 @@ export default [
 
   // other api
   route("editUserProfile", "routes/api/editUserProfileRoute.tsx"),
-  
+  route("addOrgMember", "routes/api/org/addOrgMemberRoute.tsx"),
+
   layout("routes/auth/authLayout.tsx", [
     index("routes/auth/loginRoute.tsx"),
     route("register", "routes/auth/RegisterRoute.tsx"),
     route("verify", "routes/auth/verifyRoute.tsx"),
     route("forgotpassword", "routes/auth/forgotPasswordRoute.tsx"),
-    route("resetpassword/:resetPasswordId", "routes/auth/resetPasswordRoute.tsx"),
+    route(
+      "resetpassword/:resetPasswordId",
+      "routes/auth/resetPasswordRoute.tsx"
+    ),
   ]),
 
   layout("routes/navigationBarLayout.tsx", [
     route("homepage", "routes/homePageRoute.tsx"),
     route("userprofile/:userId", "routes/userProfileRoute.tsx"),
     route("todo", "routes/todo.tsx"),
-    route("orgprofile", "routes/orgRoutes/orgProfileRoute.tsx"),
+    route("orgprofile/:orgId", "routes/orgRoutes/orgProfileRoute.tsx"),
     route("search", "routes/api/searchRoute.tsx"),
     route("createOrg", "routes/orgRoutes/createOrgRoute.tsx"),
     route("orgs", "routes/orgRoutes/orgsRoute.tsx"),
