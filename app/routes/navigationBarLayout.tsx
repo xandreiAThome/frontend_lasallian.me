@@ -1,5 +1,12 @@
 import { Search } from "lucide-react";
-import { Form, NavLink, Outlet, redirect, useNavigation } from "react-router";
+import {
+  Form,
+  NavLink,
+  Outlet,
+  redirect,
+  useLocation,
+  useNavigation,
+} from "react-router";
 import { getUserId, getUserObject, getUserToken } from "~/.server/sessions";
 import Logo from "~/components/assets/logo.svg";
 import CreateButton from "~/components/createPostComponents/CreateButton";
@@ -22,6 +29,7 @@ export async function loader({ request }: Route.LoaderArgs) {
 
 export default function NavBar({ loaderData }: Route.ComponentProps) {
   const navigation = useNavigation();
+  const location = useLocation();
 
   return (
     <div className="flex h-full bg-custom-bg-white justify-evenly gap-2 overflow-y-auto">
@@ -143,33 +151,37 @@ export default function NavBar({ loaderData }: Route.ComponentProps) {
       </main>
 
       <div className="basis-96 bg-custom-bg-white hidden md:flex md:flex-col py-8 gap-6 sticky top-0 self-start">
-        <Form method="get" action="/search">
-          <div className="flex relative">
-            <Input
-              type="text"
-              onKeyDown={(e) => {
-                if (e.key === "Enter") {
-                  e.preventDefault();
-                  e.currentTarget.form?.requestSubmit();
-                }
-              }}
-              className="bg-custom-postcard-white pl-12 max-w-full rounded-3xl h-11"
-              placeholder="Search..."
-              required
-              name="query"
-            ></Input>
-            <button type="submit">
-              <Search className="absolute top-0 bottom-0 m-auto left-4 text-gray-500" />
-            </button>
-          </div>
-        </Form>
+        {location.pathname !== "/createorg" && (
+          <>
+            <Form method="get" action="/search">
+              <div className="flex relative">
+                <Input
+                  type="text"
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      e.preventDefault();
+                      e.currentTarget.form?.requestSubmit();
+                    }
+                  }}
+                  className="bg-custom-postcard-white pl-12 max-w-full rounded-3xl h-11"
+                  placeholder="Search..."
+                  required
+                  name="query"
+                ></Input>
+                <button type="submit">
+                  <Search className="absolute top-0 bottom-0 m-auto left-4 text-gray-500" />
+                </button>
+              </div>
+            </Form>
 
-        <OrgSideBarCard />
-        <FollowingSideBar />
-        <p className="text-gray-400 text-center">
-          lasallian.<span className="font-bold">me</span> • All Rights Reserved
-          2025{" "}
-        </p>
+            <OrgSideBarCard />
+            <FollowingSideBar />
+            <p className="text-gray-400 text-center">
+              lasallian.<span className="font-bold">me</span> • All Rights
+              Reserved 2025{" "}
+            </p>
+          </>
+        )}
       </div>
     </div>
   );
