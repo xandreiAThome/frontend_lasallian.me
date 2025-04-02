@@ -1,41 +1,47 @@
-import { Button } from "~/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-  DialogClose,
-} from "~/components/ui/dialog";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuRadioGroup,
-  DropdownMenuRadioItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "~/components/ui/dropdown-menu";
 import { Dot, MessageSquareShare, MessageSquareText, Send } from "lucide-react";
-import ReactTimeAgo from "react-time-ago";
-import { Input } from "~/components/ui/input";
-import CommentsCard from "./commentsCard";
+import { useEffect, useState } from "react";
 import {
   Form,
   useFetcher,
   useLoaderData,
   useLocation,
   useNavigate,
+  Link,
 } from "react-router";
-import { useEffect, useState } from "react";
-import ReactionsCard from "./reactionsPostCard";
-import type { commentInterface, postDataInterface } from "~/lib/interfaces";
+import ReactTimeAgo from "react-time-ago";
 import profileImgDefault from "~/components/assets/profile.jpg";
-import EditPostDialog from "./editPostDialog";
+import { Button } from "~/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTrigger
+} from "~/components/ui/dialog";
+import { Input } from "~/components/ui/input";
+import type { commentInterface, postDataInterface } from "~/lib/interfaces";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import CommentsCard from "./commentsCard";
+import EditPostDialog from "./editPostDialog";
+import ReactionsCard from "./reactionsPostCard";
+
+const parseHashtags = (text: string) => {
+  const hashtagRegex = /#(\w+)/g;
+  
+  // Replace hashtags with dynamic links
+  return text.split(hashtagRegex).map((part, index) => {
+    if (index % 2 === 1) {
+      // Adding link to hashtag url
+      return (<Link
+        to={`/hashtag/${part}`}
+        className="text-blue-500 hover:text-blue-700 underline">
+          {`#${part}`}
+        </Link>
+      );
+    }
+    return part;
+  });
+};
 
 export default function PostDialog(props: postDataInterface) {
   const {
@@ -146,7 +152,7 @@ export default function PostDialog(props: postDataInterface) {
     <Dialog>
       <DialogTrigger asChild>
         <button className="flex text-base text-justify my-4 flex-col">
-          <p className="mb-2">{content.text}</p>
+          <p className="mb-2">{parseHashtags(content.text)}</p>
           <div className="-mx-6 flex justify-center">
             {media.length > 0 && (
               <img src={img ?? ""} alt="image content" className=""></img>
@@ -217,7 +223,7 @@ export default function PostDialog(props: postDataInterface) {
           </div>
         </DialogHeader>
         <div className="flex text-base text-justify flex-col">
-          <p className="mb-2 whitespace-pre-wrap">{content.text}</p>
+          <p className="mb-2 whitespace-pre-wrap">{parseHashtags(content.text)}</p>
           <div className="-mx-6 flex justify-center">
             {media.length > 0 && (
               <img

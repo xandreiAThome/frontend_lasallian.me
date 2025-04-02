@@ -1,10 +1,14 @@
-import { redirect, useSearchParams } from "react-router";
-import type { Route } from "./+types/searchRoute";
-import { getUserObject, getUserToken } from "~/.server/sessions";
 import axios from "axios";
+import { redirect } from "react-router";
+import { getUserObject, getUserToken } from "~/.server/sessions";
+import PostCard from "~/components/homePageComponents/postCard";
 import api from "~/lib/api";
 import type { postDataInterface } from "~/lib/interfaces";
-import PostCard from "~/components/homePageComponents/postCard";
+import type { Route } from "./+types/searchRoute";
+
+// Helper function for checking if the query is a hashtag
+const isHashtag = (query: string) => /^#[\w-]+$/.test(query);
+// regex for matching multiple hashtags ^#[^#\s]+(?: #[^#\s]+)*$
 
 export async function loader({ request }: Route.ActionArgs) {
   const userToken = await getUserToken(request);
@@ -15,9 +19,17 @@ export async function loader({ request }: Route.ActionArgs) {
 
   const url = new URL(request.url);
   const query = url.searchParams.get("query") || "";
-  console.log("data: ", query);
+  // console.log("data: ", query);
 
+  const hashtagQuery = decodeURIComponent(url.searchParams.get("query") || "");
+  if (isHashtag(hashtagQuery)) {
+    console.log("ITS A HASHTAG")
+    const hashtag = hashtagQuery.slice(1);
+    throw redirect(`/hashtag/${hashtag}`);
+  }
+  
   try {
+
     // Send to your API endpoint
     const response = await api.get(`${process.env.API_KEY}/post/search`, {
       headers: {
@@ -27,7 +39,7 @@ export async function loader({ request }: Route.ActionArgs) {
       params: { query: query },
     });
 
-    console.log("API responselol:", response.data.posts[0]);
+    // console.log("API responselol:", response.data.posts[0]);
 
     return {
       postData: response.data.posts as postDataInterface[] | null,
@@ -50,7 +62,7 @@ export async function loader({ request }: Route.ActionArgs) {
 }
 
 export default function Search({ loaderData }: Route.ComponentProps) {
-  console.log(loaderData.postData);
+  // console.log(loaderData.postData);
   return (
     <div className="basis-[640px] pt-6 flex flex-col gap-4 animate-fade-in">
       {loaderData?.postData &&
