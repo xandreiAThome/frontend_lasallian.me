@@ -102,20 +102,29 @@ export async function action({ request }: Route.ActionArgs) {
 
 export default function CreateOrg() {
   const fetcher = useFetcher();
-  const [username, setUsername] = useState("");
   const [coverImg, setCoverImg] = useState<ImageListType>([]);
   const [profileImg, setProfileImg] = useState<ImageListType>([]);
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const formData = new FormData(event.currentTarget as HTMLFormElement);
+
+    const profilePic = profileImg[0]?.file;
+    const coverPic = coverImg[0]?.file;
+    if (profilePic) {
+      formData.append("profilepic", profilePic);
+    }
+
+    if (coverPic) {
+      formData.append("coverpic", coverPic);
+    }
 
     // Submit the formatted data
     fetcher.submit(formData, {
       method: "post",
       encType: "multipart/form-data",
     });
-  };
+  }
 
   return (
     <main className="basis-[640px] flex items-center justify-center py-6">

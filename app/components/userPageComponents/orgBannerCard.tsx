@@ -29,6 +29,16 @@ import {
   TableRow,
 } from "~/components/ui/table";
 import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "~/components/ui/alert-dialog";
+import {
   Select,
   SelectContent,
   SelectGroup,
@@ -45,27 +55,90 @@ import {
 } from "~/components/ui/dropdown-menu";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
+import type { orgDataInterface, orgMemberInterface } from "~/lib/interfaces";
+import { useEffect, useState } from "react";
+import { useLoaderData } from "react-router";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import profileImgDefault from "~/components/assets/profile.jpg";
 
-export default function OrgBannerCard() {
+export default function OrgBannerCard({
+  info,
+  vanity,
+  members,
+}: orgDataInterface) {
+  const [profileImg, setProfileImg] = useState<string | null>(null);
+  const [coverImg, setCoverImg] = useState<string | null>(null);
+  const loaderData = useLoaderData();
+  const currUserOrgData = members.find(
+    (orgMember: orgMemberInterface) =>
+      orgMember.author._id === loaderData.user._id
+  );
+
+  useEffect(() => {
+    async function getImg() {
+      if (vanity.display_photo) {
+        try {
+          const response = await fetch(`${vanity.display_photo}`, {
+            headers: {
+              Authorization: `Bearer ${loaderData.userToken}`,
+            },
+            method: "get",
+          });
+
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          const blob = await response.blob();
+          setProfileImg(URL.createObjectURL(blob));
+        } catch (error) {
+          console.log("error:", error);
+        }
+      }
+
+      if (vanity.cover_photo) {
+        try {
+          const response = await fetch(`${vanity.cover_photo}`, {
+            headers: {
+              Authorization: `Bearer ${loaderData.userToken}`,
+            },
+            method: "get",
+          });
+
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          const blob = await response.blob();
+          setCoverImg(URL.createObjectURL(blob));
+        } catch (error) {
+          console.log("error:", error);
+        }
+      }
+    }
+    getImg();
+  }, [vanity.cover_photo, vanity.display_photo]);
+
   return (
     <div className="bg-custom-postcard-white rounded-b-xl flex flex-col">
-      <div
-        className={`w-full h-56 bg-gray-300 flex items-center justify-center bg-center bg-cover bg-[url("https://scontent.fmnl37-1.fna.fbcdn.net/v/t39.30808-6/462689548_937370231755893_3437674587473298092_n.png?stp=dst-png_s960x960&_nc_cat=109&ccb=1-7&_nc_sid=cc71e4&_nc_eui2=AeFLL2prEC1nJZXDstDXEOn8jpvq_CYPt2uOm-r8Jg-3a5HUT2lqMMpaSbhsqA6Af9Dz4BMfU7ofnXW0i2wOO_i8&_nc_ohc=OrznZH9cwhUQ7kNvgE1aN0L&_nc_zt=23&_nc_ht=scontent.fmnl37-1.fna&_nc_gid=ADJcTr_86BOn_ihmfN5OS7L&oh=00_AYBgmK7SJxj-gEyC920-Ifl5xzZOujgdS1fjGI7X1sW4eA&oe=67A49DF8")]`}
-      ></div>
+      <div className="w-full h-48 bg-gray-300 flex items-center justify-center">
+        {coverImg && (
+          <img src={coverImg} alt="" className="w-full h-48 object-cover" />
+        )}
+      </div>
 
       <div className="">
         <div className="relative flex px-6 py-4">
           <div className="w-32 h-32 lg:w-36 lg:h-36 rounded-full bg-gray-300 m-4 border-custom-bg-white border-4 absolute left-0 -top-20 flex justify-center items-center">
-            <img
-              src="https://scontent.fmnl3-1.fna.fbcdn.net/v/t39.30808-6/462565143_937343991758517_3934195989556103177_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=6ee11a&_nc_eui2=AeGGbE7Od2YXhbz9jf3eIuqarIUjDCvDYLmshSMMK8Nguc3iKvUacKK6cpIGTPMga9YV-e6q8B5gSJX6wv4WJQIj&_nc_ohc=OjgONZiRuRYQ7kNvgGgZDct&_nc_zt=23&_nc_ht=scontent.fmnl3-1.fna&_nc_gid=A2cv8zhImmDfn3rpo5xa-oA&oh=00_AYCUAK0P2aHKGID5eWeiIXF3vxrYf-dYJiTQdZ8eNh1-HQ&oe=67A4A2A4"
-              alt=""
-              className="rounded-full"
-            />
+            <Avatar className="w-32 h-32 lg:w-36 lg:h-36 rounded-full bg-gray-300 m-4 border-custom-bg-white border-4 ">
+              <AvatarImage alt="@shadcn" src={profileImg ?? ""} />
+              <AvatarFallback className="flex flex-col bg-gray-300">
+                <img src={profileImgDefault} alt="" />
+              </AvatarFallback>
+            </Avatar>
           </div>
 
           <div className="pl-36 flex flex-col flex-grow">
             <div className="flex justify-between">
-              <p className=" text-xl font-bold">La Salle Computer Society</p>
+              <p className=" text-xl font-bold">{info.name}</p>
 
               <button type="button" className="ml-auto">
                 <Ellipsis
@@ -78,23 +151,23 @@ export default function OrgBannerCard() {
             <div className="flex flex-col gap-2">
               <p className="">
                 <span className="px-2 bg-[#220088] text-white text-sm font-semibold">
-                  CSO
+                  {info.college}
                 </span>
                 <span className="px-2 bg-[#313131] text-white text-sm font-semibold">
-                  #2
+                  #1
                 </span>
               </p>
             </div>
 
             <div className="flex gap-4 flex-wrap">
               <p className="text-sm">
-                <span className="font-bold">204</span> Officers
+                <span className="font-bold">0</span> Officers
               </p>
               <p className="text-sm">
-                <span className="font-bold">784</span> Members
+                <span className="font-bold">{members.length}</span> Members
               </p>
               <p className="text-sm">
-                <span className="font-bold">5.4k</span> Followers
+                <span className="font-bold">0</span> Followers
               </p>
             </div>
           </div>
@@ -102,57 +175,58 @@ export default function OrgBannerCard() {
       </div>
 
       <div className="flex flex-col px-6 gap-2 pb-4">
-        <p className="text-sm italic">
-          Living Yesterday's Vision, Setting Today's Trends, Inspiring
-          Tomorrow's Leaders.
-        </p>
+        <p className="text-sm italic">{info.bio}</p>
 
         <div className="text-sm flex gap-2 flex-wrap">
           <span className="flex items-center gap-1">
             <BadgeInfo size="16" />
-            1985
+            9999
           </span>
           <span className="flex items-center gap-1">
             <House size="16" />
-            CCS
+            {info.college}
           </span>
           <span className="flex items-center gap-1">
             <Linkedin size="16" />
-            <span className="text-lasalle-green font-semibold">dlsulscs</span>
+            <span className="text-lasalle-green font-semibold">
+              placeholder
+            </span>
           </span>
           <span className="flex items-center gap-1">
             <Instagram size="16" />
-            <span className="text-lasalle-green font-semibold">dlsu_lscs</span>
+            <span className="text-lasalle-green font-semibold">
+              placeholder
+            </span>
           </span>
           <span className="flex items-center gap-1">
             <Facebook size="16" />
             <span className="text-lasalle-green font-semibold">
-              La Salle Computer Society
+              {info.name}
             </span>
           </span>
         </div>
         <span className="flex items-center gap-1 font-bold">
           <UserRound size={16} />
-          Council of Student Organizations
+          {info.office}
         </span>
         <span className="flex gap-1 items-center">
           <ExternalLink size={16} />
-          <span className="text-lasalle-green font-semibold">
-            www.dlsu-lscs.org
-          </span>
+          <span className="text-lasalle-green font-semibold">placeholder</span>
         </span>
 
         {/* Admin Panel */}
-        <div className="w-full border-solid border-[1px] rounded-lg p-2 flex items-center gap-4">
-          <h1 className="font-bold">Admin Actions</h1>
-          <Button className="bg-lasalle-green rounded-xl p-2 text-white">
-            Create Post
-          </Button>
-          <ManageMembersDialog />
-          <Button className="bg-custom-bg-white text-lasalle-green border-[1px] rounded-xl p-2">
-            Edit Details
-          </Button>
-        </div>
+        {currUserOrgData?.position === "PRES" && (
+          <div className="w-full border-solid border-[1px] rounded-lg p-2 flex items-center gap-4">
+            <h1 className="font-bold">Admin Actions</h1>
+            <Button className="bg-lasalle-green rounded-xl p-2 text-white">
+              Create Post
+            </Button>
+            <ManageMembersDialog members={members} />
+            <Button className="bg-custom-bg-white text-lasalle-green border-[1px] rounded-xl p-2">
+              Edit Details
+            </Button>
+          </div>
+        )}
 
         <div className="flex gap-2 mt-2">
           <Button className="bg-lasalle-green rounded-3xl text-lg font-bold">
@@ -170,7 +244,10 @@ export default function OrgBannerCard() {
   );
 }
 
-function ManageMembersDialog() {
+interface memberProps {
+  members: orgMemberInterface[];
+}
+function ManageMembersDialog(props: memberProps) {
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -187,7 +264,7 @@ function ManageMembersDialog() {
         </DialogHeader>
         <div className="flex gap-2">
           <Input placeholder="Filter email..." name="filter"></Input>
-          <Select name="college">
+          {/* <Select name="college">
             <SelectTrigger className="w-36">
               <SelectValue placeholder="Select" />
             </SelectTrigger>
@@ -198,7 +275,7 @@ function ManageMembersDialog() {
                 <SelectItem value="CLA">Position</SelectItem>
               </SelectGroup>
             </SelectContent>
-          </Select>
+          </Select> */}
         </div>
 
         <Table className="">
@@ -213,14 +290,20 @@ function ManageMembersDialog() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            <TableRow>
-              <TableCell className="font-medium">INV001</TableCell>
-              <TableCell>Paid</TableCell>
-              <TableCell>Credit Card</TableCell>
-              <TableCell className="text-right">
-                <MemberSettingDropDown />
-              </TableCell>
-            </TableRow>
+            {props.members.map(({ author, position }: orgMemberInterface) => {
+              return (
+                <TableRow>
+                  <TableCell className="font-medium">
+                    {author.info.name.first} {author.info.name.last}
+                  </TableCell>
+                  <TableCell></TableCell>
+                  <TableCell>{position}</TableCell>
+                  <TableCell className="text-right">
+                    <MemberSettingDropDown />
+                  </TableCell>
+                </TableRow>
+              );
+            })}
           </TableBody>
         </Table>
 
@@ -231,20 +314,126 @@ function ManageMembersDialog() {
 }
 
 function MemberSettingDropDown() {
+  const [openDialog, setOpenDialog] = useState<string | null>(null);
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger className="ml-auto text-gray-500" asChild>
-        <button>
-          <Ellipsis />
-        </button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent>
-        <DropdownMenuItem className="w-full text-red-500">
-          Remove Member
-        </DropdownMenuItem>
-        <DropdownMenuItem>Change Position</DropdownMenuItem>
-        <DropdownMenuItem>Change Committee</DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+    <>
+      <DropdownMenu>
+        <DropdownMenuTrigger className="ml-auto text-gray-500" asChild>
+          <button>
+            <Ellipsis />
+          </button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent>
+          <>
+            <DropdownMenuItem
+              className="w-full"
+              onClick={() => setOpenDialog("changePosition")}
+            >
+              Change Position
+            </DropdownMenuItem>
+
+            <DropdownMenuItem
+              className="w-full"
+              onClick={() => setOpenDialog("changeCommittee")}
+            >
+              Change Committee
+            </DropdownMenuItem>
+
+            <DropdownMenuItem
+              className="w-full text-red-500"
+              onClick={() => setOpenDialog("remove")}
+            >
+              Remove Member
+            </DropdownMenuItem>
+          </>
+        </DropdownMenuContent>
+      </DropdownMenu>
+
+      <Dialog
+        open={openDialog === "changePosition"}
+        onOpenChange={(open) => {
+          if (!open) setOpenDialog(null);
+        }}
+      >
+        <DialogContent className="sm:max-w-[640px]">
+          <form>
+            <DialogHeader>
+              <DialogTitle>
+                <h1 className="text-2xl">Edit</h1>
+                <h4 className="text-base font-normal"></h4>
+              </DialogTitle>
+            </DialogHeader>
+            <div className="flex gap-4 py-4 flex-col"></div>
+            <DialogFooter className="sm:justify-between items-center">
+              <DialogClose asChild>
+                <Button
+                  className="bg-lasalle-green rounded-3xl text-lg px-6"
+                  type="submit"
+                  name="save"
+                >
+                  Save
+                </Button>
+              </DialogClose>
+            </DialogFooter>
+          </form>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog
+        open={openDialog === "changeCommittee"}
+        onOpenChange={(open) => {
+          if (!open) setOpenDialog(null);
+        }}
+      >
+        <DialogContent className="sm:max-w-[640px]">
+          <form>
+            <DialogHeader>
+              <DialogTitle>
+                <h1 className="text-2xl">Edit</h1>
+                <h4 className="text-base font-normal"></h4>
+              </DialogTitle>
+            </DialogHeader>
+            <div className="flex gap-4 py-4 flex-col"></div>
+            <DialogFooter className="sm:justify-between items-center">
+              <DialogClose asChild>
+                <Button
+                  className="bg-lasalle-green rounded-3xl text-lg px-6"
+                  type="submit"
+                  name="save"
+                >
+                  Save
+                </Button>
+              </DialogClose>
+            </DialogFooter>
+          </form>
+        </DialogContent>
+      </Dialog>
+
+      <AlertDialog
+        open={openDialog === "delete"}
+        onOpenChange={(open) => {
+          if (!open) setOpenDialog(null);
+        }}
+      >
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This will delete the post and cannot be undone.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction>
+              <form>
+                <button type="submit" name="delete">
+                  Delete
+                </button>
+              </form>
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    </>
   );
 }
