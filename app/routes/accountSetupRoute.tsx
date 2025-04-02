@@ -24,46 +24,6 @@ export async function action({ request }: Route.ActionArgs) {
   console.log("Token from URL:", token);
   const formData = await request.formData();
 
-  // let profileImgLink = "";
-  // let coverImgLink = "";
-  // const profilePic = formData.get("profilepic");
-  // const coverPic = formData.get("coverpic");
-  // const profileImgFormData = new FormData();
-  // if (profilePic) {
-  //   profileImgFormData.append("image", profilePic);
-
-  //   const imgResp = await api.post(
-  //     `${process.env.OSS_KEY}upload`,
-  //     profileImgFormData,
-  //     {
-  //       headers: {
-  //         Authorization: `Bearer ${token}`,
-  //         "Content-Type": "multipart/form-data",
-  //       },
-  //     }
-  //   );
-  //   console.log("OSS resp: ", imgResp);
-  //   profileImgLink = imgResp.data.image;
-  // }
-
-  // const coverImgFormData = new FormData();
-  // if (coverPic) {
-  //   coverImgFormData.append("image", coverPic);
-
-  //   const imgResp = await api.post(
-  //     `${process.env.OSS_KEY}upload`,
-  //     coverImgFormData,
-  //     {
-  //       headers: {
-  //         Authorization: `Bearer ${token}`,
-  //         "Content-Type": "multipart/form-data",
-  //       },
-  //     }
-  //   );
-  //   console.log("OSS resp: ", imgResp);
-  //   coverImgLink = imgResp.data.image;
-  // }
-
   const reqBody = {
     info: {
       name: {
@@ -91,66 +51,6 @@ export async function action({ request }: Route.ActionArgs) {
       }
     );
     console.log("API response:", response.data);
-
-    // let profileImgLink = "";
-    // let coverImgLink = "";
-    // const profilePic = formData.get("profilepic");
-    // const coverPic = formData.get("coverpic");
-    // const profileImgFormData = new FormData();
-    // if (profilePic) {
-    //   profileImgFormData.append("image", profilePic);
-
-    //   const imgResp = await api.post(
-    //     `${process.env.OSS_KEY}upload`,
-    //     profileImgFormData,
-    //     {
-    //       headers: {
-    //         Authorization: `Bearer ${token}`,
-    //         "Content-Type": "multipart/form-data",
-    //       },
-    //     }
-    //   );
-    //   console.log("OSS resp: ", imgResp);
-    //   profileImgLink = imgResp.data.image;
-    // }
-
-    // const coverImgFormData = new FormData();
-    // if (coverPic) {
-    //   coverImgFormData.append("image", coverPic);
-
-    //   const imgResp = await api.post(
-    //     `${process.env.OSS_KEY}upload`,
-    //     coverImgFormData,
-    //     {
-    //       headers: {
-    //         Authorization: `Bearer ${token}`,
-    //         "Content-Type": "multipart/form-data",
-    //       },
-    //     }
-    //   );
-    //   console.log("OSS resp: ", imgResp);
-    //   coverImgLink = imgResp.data.image;
-    // }
-
-    // const vanity: { display_photo?: string; cover_photo?: string } = {};
-    // if (profileImgLink) {
-    //   vanity.display_photo = profileImgLink;
-    // }
-    // if (coverImgLink) {
-    //   vanity.cover_photo = coverImgLink;
-    // }
-
-    // const response2 = await api.put(
-    //   `${process.env.API_KEY}/user`,
-    //   { reqBody, vanity },
-    //   {
-    //     headers: {
-    //       Authorization: `Bearer ${token}`,
-    //       "Content-Type": "application/json",
-    //     },
-    //   }
-    // );
-    // console.log("API response:", response.data);
 
     return redirect("/");
   } catch (error) {

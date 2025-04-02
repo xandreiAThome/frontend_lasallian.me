@@ -8,8 +8,43 @@ import {
   Linkedin,
   UserRound,
 } from "lucide-react";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "~/components/ui/dialog";
 import { Button } from "~/components/ui/button";
-import { Input } from "~/components/ui/input";
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "~/components/ui/table";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "~/components/ui/select";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "~/components/ui/dropdown-menu";
+import { Label } from "../ui/label";
+import { Input } from "../ui/input";
 
 export default function OrgBannerCard() {
   return (
@@ -106,6 +141,19 @@ export default function OrgBannerCard() {
             www.dlsu-lscs.org
           </span>
         </span>
+
+        {/* Admin Panel */}
+        <div className="w-full border-solid border-[1px] rounded-lg p-2 flex items-center gap-4">
+          <h1 className="font-bold">Admin Actions</h1>
+          <Button className="bg-lasalle-green rounded-xl p-2 text-white">
+            Create Post
+          </Button>
+          <ManageMembersDialog />
+          <Button className="bg-custom-bg-white text-lasalle-green border-[1px] rounded-xl p-2">
+            Edit Details
+          </Button>
+        </div>
+
         <div className="flex gap-2 mt-2">
           <Button className="bg-lasalle-green rounded-3xl text-lg font-bold">
             + Follow
@@ -119,5 +167,84 @@ export default function OrgBannerCard() {
         </div>
       </div>
     </div>
+  );
+}
+
+function ManageMembersDialog() {
+  return (
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button className="bg-custom-bg-white border-solid border-[1px] text-lasalle-green rounded-xl p-2">
+          Manage Members
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-[640px]">
+        <DialogHeader>
+          <DialogTitle>
+            La Salle Computer Society{" "}
+            <span className="font-normal">| Members</span>
+          </DialogTitle>
+        </DialogHeader>
+        <div className="flex gap-2">
+          <Input placeholder="Filter email..." name="filter"></Input>
+          <Select name="college">
+            <SelectTrigger className="w-36">
+              <SelectValue placeholder="Select" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectLabel>Filter</SelectLabel>
+                <SelectItem value="CCS">Committee</SelectItem>
+                <SelectItem value="CLA">Position</SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+        </div>
+
+        <Table className="">
+          {/* <TableCaption>A list of your recent invoices.</TableCaption> */}
+          <TableHeader>
+            <TableRow>
+              <TableHead>Name</TableHead>
+              <TableHead>Email</TableHead>
+              <TableHead>Position</TableHead>
+              <TableHead>Committee</TableHead>
+              <TableHead className="text-right"></TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            <TableRow>
+              <TableCell className="font-medium">INV001</TableCell>
+              <TableCell>Paid</TableCell>
+              <TableCell>Credit Card</TableCell>
+              <TableCell className="text-right">
+                <MemberSettingDropDown />
+              </TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>
+
+        <Button className="bg-lasalle-green w-32 rounded-xl">Add Member</Button>
+      </DialogContent>
+    </Dialog>
+  );
+}
+
+function MemberSettingDropDown() {
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger className="ml-auto text-gray-500" asChild>
+        <button>
+          <Ellipsis />
+        </button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent>
+        <DropdownMenuItem className="w-full text-red-500">
+          Remove Member
+        </DropdownMenuItem>
+        <DropdownMenuItem>Change Position</DropdownMenuItem>
+        <DropdownMenuItem>Change Committee</DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 }

@@ -50,10 +50,12 @@ export default [
 
   layout("routes/navigationBarLayout.tsx", [
     route("homepage", "routes/homePageRoute.tsx"),
-    route("userprofile/:userId", "routes/userpage/userProfileRoute.tsx"),
+    route("userprofile/:userId", "routes/userProfileRoute.tsx"),
     route("todo", "routes/todo.tsx"),
-    route("orgprofile", "routes/userpage/orgProfileRoute.tsx"),
+    route("orgprofile", "routes/orgRoutes/orgProfileRoute.tsx"),
     route("search", "routes/api/searchRoute.tsx"),
+    route("createOrg", "routes/orgRoutes/createOrgRoute.tsx"),
+    route("orgs", "routes/orgRoutes/orgsRoute.tsx"),
     route("hashtag/:hashtag", "routes/api/hashtagRoute.tsx"),
   ]),
 ] satisfies RouteConfig;

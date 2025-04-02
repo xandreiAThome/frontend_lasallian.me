@@ -10,6 +10,7 @@ import {
   DialogTrigger,
 } from "~/components/ui/dialog";
 import CreatePostDialog from "./CreatePostDialog";
+import { Link } from "react-router";
 
 export default function CreateButton() {
   const [open, setOpen] = useState(false);
@@ -54,6 +55,7 @@ export default function CreateButton() {
               </p>
             </div>
           </button>
+
           <button className="flex gap-4 p-6 border-2 rounded-2xl hover:bg-slate-100 hover:rounded-2xl transition-all">
             <Terminal className="mr-2" size="36" />
             <div>
@@ -65,6 +67,21 @@ export default function CreateButton() {
               </p>
             </div>
           </button>
+
+          <Link
+            to={"/createorg"}
+            onClick={() => setOpen(false)}
+            className="flex gap-4 p-6 border-2 rounded-2xl hover:bg-slate-100 hover:rounded-2xl transition-all"
+          >
+            <Terminal className="mr-2" size="22" />
+            <div>
+              <p className="text-justify text-xl font-bold">Organization</p>
+              <p className="text-justify">
+                Create an <span className="font-bold">account</span> for your
+                organization on <span className="font-bold">lasallian.me!</span>
+              </p>
+            </div>
+          </Link>
         </div>
         <DialogFooter className="sm:justify-start">
           <p className="justify-end">
