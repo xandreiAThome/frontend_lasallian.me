@@ -41,11 +41,13 @@ export default [
 
   // other api
   route("editUserProfile", "routes/api/editUserProfileRoute.tsx"),
-
+  
   layout("routes/auth/authLayout.tsx", [
     index("routes/auth/loginRoute.tsx"),
     route("register", "routes/auth/RegisterRoute.tsx"),
     route("verify", "routes/auth/verifyRoute.tsx"),
+    route("forgotpassword", "routes/auth/forgotPasswordRoute.tsx"),
+    route("resetpassword/:resetPasswordId", "routes/auth/resetPasswordRoute.tsx"),
   ]),
 
   layout("routes/navigationBarLayout.tsx", [

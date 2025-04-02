@@ -1,4 +1,5 @@
-import { Input } from "~/components/ui/input";
+import axios from "axios";
+import { Loader2 } from "lucide-react";
 import {
   data,
   redirect,
@@ -6,12 +7,11 @@ import {
   useNavigate,
   useNavigation,
 } from "react-router";
-import { Button } from "~/components/ui/button";
-import type { Route } from "./+types/loginRoute";
-import axios from "axios";
-import api from "~/lib/api";
 import { createUserSession, getUserToken } from "~/.server/sessions";
-import { Loader2 } from "lucide-react";
+import { Button } from "~/components/ui/button";
+import { Input } from "~/components/ui/input";
+import api from "~/lib/api";
+import type { Route } from "./+types/loginRoute";
 
 export async function loader({ request }: Route.LoaderArgs) {
   // Check if the user is already logged in
@@ -123,6 +123,9 @@ export default function LoginRoute() {
               variant="link"
               className="font-semibold text-lasalle-green text-base"
               type="button"
+              onClick={() => {
+                navigate("/forgotpassword");
+              }}
             >
               Forgot Password?
             </Button>
