@@ -1,9 +1,10 @@
 import { DialogClose } from "@radix-ui/react-dialog";
 import { Ellipsis } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useFetcher, useLoaderData } from "react-router";
-import profileImg from "~/components/assets/profile.jpg";
+import profileImgDefault from "~/components/assets/profile.jpg";
 import BadgeDropDown from "~/components/createPostComponents/badgeDropdown";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -67,6 +68,31 @@ export default function EditPostDialog(props: postDataInterface) {
         })()
       : "No Badge"
   ); //IIFE daw pala to, the more you know :)
+
+  const [profileImg, setProfileImg] = useState<string | null>(null);
+  useEffect(() => {
+    async function getImg() {
+      if (author.vanity.display_photo) {
+        try {
+          const response = await fetch(`${author.vanity.display_photo}`, {
+            headers: {
+              Authorization: `Bearer ${loaderData.userToken}`,
+            },
+            method: "get",
+          });
+
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          const blob = await response.blob();
+          setProfileImg(URL.createObjectURL(blob));
+        } catch (error) {
+          console.log("error:", error);
+        }
+      }
+    }
+    getImg();
+  }, [author.vanity.display_photo]);
 
   // badge ? console.log(`Selected Badge on edit: ${badge._id}`) : console.log(`No badge on this post`);
 
@@ -165,13 +191,12 @@ export default function EditPostDialog(props: postDataInterface) {
             </DialogHeader>
             <div className="flex gap-4 py-4 flex-col">
               <div className="flex items-center">
-                <img
-                  src={author.vanity.display_photo || profileImg}
-                  alt="profile"
-                  width="36"
-                  height="36"
-                  className="rounded-full mr-4"
-                />
+                <Avatar className="w-10 h-10 mr-2">
+                  <AvatarImage alt="@shadcn" src={profileImg ?? undefined} />
+                  <AvatarFallback className="flex flex-col bg-gray-300">
+                    <img src={profileImgDefault} alt="" />
+                  </AvatarFallback>
+                </Avatar>
                 <div className="flex flex-col items-start">
                   <div className="flex items-center">
                     <p className="text-lg font-bold mr-12">
