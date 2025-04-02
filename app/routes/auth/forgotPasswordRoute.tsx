@@ -3,12 +3,12 @@ import { useEffect, useState } from "react";
 import { data, useFetcher, useNavigate } from "react-router";
 import { Button } from "~/components/ui/button";
 import {
-    Dialog,
-    DialogContent,
-    DialogFooter,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
 } from "~/components/ui/dialog";
 import { Input } from "~/components/ui/input";
 import api from "~/lib/api";
@@ -61,12 +61,11 @@ export default function ForgotPasswordRoute() {
   const successMessage = fetcher.data?.message;
   const [ isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
   
-  // Use useEffect to handle dialog state changes based on fetcher.data
   useEffect(() => {
     if (fetcher.data?.errors === undefined && fetcher.data?.message) {
-      setIsDialogOpen(true); // Open the dialog only when there's no error and a success message exists
+      setIsDialogOpen(true);
     }
-  }, [fetcher.data]); // Only run when fetcher.data changes
+  }, [fetcher.data]);
 
   return (
     <fetcher.Form
@@ -82,8 +81,8 @@ export default function ForgotPasswordRoute() {
           type="email"
           name="email"
           placeholder="Email Address"
-          required
-        ></Input>
+          required>
+        </Input>
         {errors?.email ? (
           <em className="text-red-500 mt-1">{errors.email}</em>
         ) : null}
@@ -91,41 +90,38 @@ export default function ForgotPasswordRoute() {
           variant="link"
           className="m-4 font-semibold text-lasalle-green text-base"
           type="button"
-          onClick={() => navigate("/")}
-        >
+          onClick={() => navigate("/")}>
           Already have an account?
         </Button>
       </div>
       <hr className="-mx-8" />
       <Button
-            className="text-white w-full rounded-3xl mt-6 bg-lasalle-green text-lg h-12 self-center"
-            type="submit"
-            >
-            Send Reset Link
-        </Button>
+        className="text-white w-full rounded-3xl mt-6 bg-lasalle-green text-lg h-12 self-center"
+        type="submit">
+        Send Reset Link
+      </Button>
 
-        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         {" "}
         <DialogTrigger className="flex justify-center w-full"></DialogTrigger>
         <DialogContent className="sm:max-w-[640px] overflow-y-auto max-h-screen justify-center">
-            <DialogHeader>
+          <DialogHeader>
             <DialogTitle>
-                <h1 className="text-2xl">Password Reset Link Sent!</h1>
-                <h4 className="text-base font-normal">
-                {successMessage}
-                </h4>
+              <h1 className="text-2xl">Password Reset Link Sent!</h1>
+              <h4 className="text-base font-normal">
+              {successMessage}
+              </h4>
             </DialogTitle>
-            </DialogHeader>{" "}
-            <DialogFooter>
+          </DialogHeader>{" "}
+          <DialogFooter>
             <Button
-                className="text-white w-full rounded-3xl mt-6 bg-lasalle-green text-lg h-12"
-                onClick={() => setIsDialogOpen(false)}
-                >
-                OK!
+              className="text-white w-full rounded-3xl mt-6 bg-lasalle-green text-lg h-12"
+              onClick={() => setIsDialogOpen(false)}>
+              OK!
             </Button>
-            </DialogFooter>
+          </DialogFooter>
         </DialogContent>
-        </Dialog>
+      </Dialog>
     </fetcher.Form>
   );
 }

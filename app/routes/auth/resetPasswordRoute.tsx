@@ -97,13 +97,7 @@ export default function ResetPassword() {
     const loaderData = useLoaderData();
     const [validStatus, setValidStatus] = useState<boolean>(true);
     const { resetPasswordId } = useParams<{resetPasswordId: string}>();
-    const [isDialogOpen, setIsDialogOpen] = useState(false); // State to control dialog visibility
     const errors = fetcher.data?.errors;
-
-    // Function to open the dialog
-    const openDialog = () => {
-        setIsDialogOpen(true);
-    };
     
     useEffect(() => {
       // Only set validStatus to false if there is an error and it hasn't been set before
@@ -125,42 +119,41 @@ export default function ResetPassword() {
     }
 
     return (
-        <fetcher.Form
-            method="post"
-            className="bg-custom-postcard-white w-full md:w-3/5 p-8 shadow-lg rounded-md"
-        >
-            <div className="flex flex-col items-center">
-            <Input
-                className={`bg-slate-50 mb-4 ${
-                errors?.passRed ? errors.passRed : ""
-                }`}
-                type="password"
-                name="password"
-                placeholder="Password"
-                required
-            ></Input>
-            <Input
-                className={`bg-slate-50 ${
-                errors?.confirmRed ? errors.confirmRed : ""
-                }`}
-                type="password"
-                name="confirm-password"
-                placeholder="Confirm Password"
-                required
-            ></Input>
-            {errors?.password ? (
-                <em className="text-red-500">{errors?.password}</em>
-            ) : null}
-            </div>
-            <hr className="-mx-8" />
-            <Button
-            className="text-white w-full rounded-3xl mt-6 bg-lasalle-green text-lg h-12"
-            type="submit"
-            >
-            Reset Password
-            </Button>
+      <fetcher.Form
+        method="post"
+        className="bg-custom-postcard-white w-full md:w-3/5 p-8 shadow-lg rounded-md"
+      >
+        <div className="flex flex-col items-center">
+        <Input
+          className={`bg-slate-50 mb-4 ${
+          errors?.passRed ? errors.passRed : ""
+          }`}
+          type="password"
+          name="password"
+          placeholder="Password"
+          required>
+        </Input>
+        <Input
+          className={`bg-slate-50 ${
+          errors?.confirmRed ? errors.confirmRed : ""
+          }`}
+          type="password"
+          name="confirm-password"
+          placeholder="Confirm Password"
+          required>
+        </Input>
+          {errors?.password ? (
+              <em className="text-red-500">{errors?.password}</em>
+          ) : null}
+          </div>
+          <hr className="-mx-8" />
+        <Button
+          className="text-white w-full rounded-3xl mt-6 bg-lasalle-green text-lg h-12"
+          type="submit">
+          Reset Password
+        </Button>
 
-            <Input type="hidden" name="resetPasswordId" value={resetPasswordId}/>
-        </fetcher.Form>
+        <Input type="hidden" name="resetPasswordId" value={resetPasswordId}/>
+      </fetcher.Form>
     );
 }
