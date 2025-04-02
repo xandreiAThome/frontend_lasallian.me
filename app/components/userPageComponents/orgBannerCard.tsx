@@ -283,7 +283,7 @@ function ManageMembersDialog(props: memberProps) {
           <TableHeader>
             <TableRow>
               <TableHead>Name</TableHead>
-              <TableHead>Email</TableHead>
+              <TableHead>Username</TableHead>
               <TableHead>Position</TableHead>
               <TableHead>Committee</TableHead>
               <TableHead className="text-right"></TableHead>
@@ -296,7 +296,7 @@ function ManageMembersDialog(props: memberProps) {
                   <TableCell className="font-medium">
                     {author.info.name.first} {author.info.name.last}
                   </TableCell>
-                  <TableCell></TableCell>
+                  <TableCell>{author.info.username}</TableCell>
                   <TableCell>{position}</TableCell>
                   <TableCell className="text-right">
                     <MemberSettingDropDown />
