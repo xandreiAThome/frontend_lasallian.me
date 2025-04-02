@@ -15,6 +15,7 @@ import OrgSideBarCard from "~/components/sidebarComponents/orgSideBarCard";
 import { Input } from "~/components/ui/input";
 import type { Route } from "./+types/navigationBarLayout";
 import MobileNav from "~/components/homePageComponents/mobileNavComponent";
+import { useRef } from "react";
 
 export async function loader({ request }: Route.LoaderArgs) {
   // Check if the user is already logged in
@@ -31,10 +32,14 @@ export async function loader({ request }: Route.LoaderArgs) {
 export default function NavBar({ loaderData }: Route.ComponentProps) {
   const navigation = useNavigation();
   const location = useLocation();
+  const scrollableRef = useRef(null);
 
   return (
-    <div className="flex h-full bg-custom-bg-white justify-evenly gap-2 overflow-y-auto">
-      <MobileNav />
+    <div
+      ref={scrollableRef}
+      className="navroute flex h-full bg-custom-bg-white justify-evenly gap-2 overflow-y-auto"
+    >
+      <MobileNav scrollableRef={scrollableRef} />
       <nav className="max-w-96 hidden md:flex py-8 flex-col items-end sticky top-0">
         <img src={Logo} alt="logo" className="h-12" />
         <div>

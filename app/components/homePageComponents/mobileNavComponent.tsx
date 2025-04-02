@@ -1,5 +1,6 @@
+"use client";
 import { useEffect, useState } from "react";
-import { Form, Link, NavLink, useLoaderData } from "react-router";
+import { Form, Link, NavLink, useLoaderData, useLocation } from "react-router";
 import { Sheet, SheetContent, SheetTrigger } from "~/components/ui/sheet";
 import logo from "~/components/assets/logo.svg";
 import { Button } from "../ui/button";
@@ -7,23 +8,39 @@ import { Menu } from "lucide-react";
 import { cn } from "~/lib/utils";
 import CreateButton from "../createPostComponents/CreateButton";
 
-export default function MobileNav() {
+interface MobileNavProps {
+  scrollableRef: React.RefObject<any>;
+}
+
+export default function MobileNav({ scrollableRef }: MobileNavProps) {
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
+  const location = useLocation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const loaderData = useLoaderData();
 
   useEffect(() => {
     const control = () => {
-      console.log("Scroll event triggered");
+      if (lastScrollY < scrollableRef.current.scrollTop) {
+        setIsVisible(false);
+      } else {
+        setIsVisible(true);
+      }
+
+      if (scrollableRef.current) {
+        setLastScrollY(scrollableRef.current.scrollTop);
+      }
     };
 
-    window.addEventListener("scroll", control);
+    const element = scrollableRef.current;
+    if (element) {
+      element.addEventListener("scroll", control);
+    }
 
     return () => {
-      window.removeEventListener("scroll", control);
+      element.removeEventListener("scroll", control);
     };
-  }, []);
+  }, [location, lastScrollY]);
 
   return (
     <header
@@ -32,7 +49,7 @@ export default function MobileNav() {
         isVisible ? "translate-y-0" : "-translate-y-full"
       )}
     >
-      <div className="container flex h-16 items-center justify-between">
+      <div className="container flex h-12 items-center justify-between">
         <div className="flex items-center">
           <img className="ml-2 h-8" src={logo} alt="" />
         </div>
