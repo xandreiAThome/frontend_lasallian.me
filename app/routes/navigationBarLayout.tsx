@@ -14,6 +14,7 @@ import FollowingSideBar from "~/components/sidebarComponents/followingSideBarCar
 import OrgSideBarCard from "~/components/sidebarComponents/orgSideBarCard";
 import { Input } from "~/components/ui/input";
 import type { Route } from "./+types/navigationBarLayout";
+import MobileNav from "~/components/homePageComponents/mobileNavComponent";
 
 export async function loader({ request }: Route.LoaderArgs) {
   // Check if the user is already logged in
@@ -33,7 +34,8 @@ export default function NavBar({ loaderData }: Route.ComponentProps) {
 
   return (
     <div className="flex h-full bg-custom-bg-white justify-evenly gap-2 overflow-y-auto">
-      <nav className="max-w-96 hidden lg:flex py-8 flex-col items-end sticky top-0">
+      <MobileNav />
+      <nav className="max-w-96 hidden md:flex py-8 flex-col items-end sticky top-0">
         <img src={Logo} alt="logo" className="h-12" />
         <div>
           <ul className="text-2xl flex flex-col items-start gap-4 font-medium mt-32">
@@ -150,7 +152,7 @@ export default function NavBar({ loaderData }: Route.ComponentProps) {
         <Outlet />
       </main>
 
-      <div className="basis-96 bg-custom-bg-white hidden md:flex md:flex-col py-8 gap-6 sticky top-0 self-start">
+      <div className="basis-96 bg-custom-bg-white hidden lg:flex lg:flex-col py-8 gap-6 sticky top-0 self-start">
         {location.pathname !== "/createorg" && (
           <>
             <Form method="get" action="/search">
