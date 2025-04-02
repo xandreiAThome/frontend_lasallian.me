@@ -107,9 +107,9 @@ export default function ForgotPasswordRoute() {
         <DialogContent className="sm:max-w-[640px] overflow-y-auto max-h-screen justify-center">
           <DialogHeader>
             <DialogTitle>
-              <h1 className="text-2xl">Password Reset Link Sent!</h1>
+              <h1 className="text-2xl">{successMessage? "Password reset link sent!" : "Something went wrong!"}</h1>
               <h4 className="text-base font-normal">
-              {successMessage}
+              {successMessage? "If your email is registered, you will be sent password reset instructions in your email": "An error occured"}
               </h4>
             </DialogTitle>
           </DialogHeader>{" "}
