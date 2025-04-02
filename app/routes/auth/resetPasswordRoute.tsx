@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { useState } from 'react';
 import { data, redirect, useFetcher, useNavigate, useParams } from 'react-router';
-import ResetPasswordDialog from '~/components/resetPasswordComponents/ResetPasswordDialog';
 import { Button } from '~/components/ui/button';
 import { Input } from "~/components/ui/input";
 import api from "~/lib/api";
@@ -78,16 +77,8 @@ export default function ResetPassword() {
     const fetcher = useFetcher();
     const navigate = useNavigate();
     const { resetPasswordId } = useParams<{resetPasswordId: string}>();
-    const errors: {
-        email?: string;
-        password?: string;
-        emailRed?: string;
-        passRed?: string;
-        confirmRed?: string;
-        emailUsed?: string;
-      } = {};
-
     const [isDialogOpen, setIsDialogOpen] = useState(false); // State to control dialog visibility
+    const errors = fetcher.data?.errors;
 
     // Function to open the dialog
     const openDialog = () => {
@@ -100,21 +91,6 @@ export default function ResetPassword() {
             className="bg-custom-postcard-white w-full md:w-3/5 p-8 shadow-lg rounded-md"
         >
             <div className="flex flex-col items-center">
-            <Input
-                className={`bg-slate-50 mb-6 ${
-                errors?.emailRed ? errors.emailRed : ""
-                }`}
-                type="email"
-                name="email"
-                placeholder="Email Address"
-                required
-            ></Input>
-            {errors?.email ? (
-                <em className="text-red-500 -mt-6">{errors.email}</em>
-            ) : null}
-            {errors?.emailUsed ? (
-                <em className="text-red-500 -mt-6">{errors.emailUsed}</em>
-            ) : null}
             <Input
                 className={`bg-slate-50 mb-4 ${
                 errors?.passRed ? errors.passRed : ""
@@ -152,15 +128,6 @@ export default function ResetPassword() {
             >
             Create Account
             </Button>
-            {
-                isDialogOpen && (
-                    <ResetPasswordDialog
-                        setOpen={setIsDialogOpen} // You can use this to close the dialog
-                        buttonProp={<Button>Click Me to Open Dialog</Button>} // Example trigger button for the dialog
-                        message="Your password reset link has been sent." // Optional message prop
-                    />
-                )
-            }
         </fetcher.Form>
     );
 }
