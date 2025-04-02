@@ -1,6 +1,6 @@
 import axios from 'axios';
-import { useState } from 'react';
-import { data, redirect, useFetcher, useNavigate, useParams } from 'react-router';
+import { useEffect, useState } from 'react';
+import { data, useFetcher, useLoaderData, useNavigate, useParams } from 'react-router';
 import { Button } from '~/components/ui/button';
 import { Input } from "~/components/ui/input";
 import api from "~/lib/api";
@@ -9,7 +9,7 @@ import type { Route } from '../+types/accountSetupRoute';
 
 export async function action({ request }: Route.ActionArgs) {
     const formData = await request.formData();
-    const email = formData.get("email");
+    const token = formData.get("resetPasswordId");
     const pass = formData.get("password");
     const confirmPass = formData.get("confirm-password");
   
@@ -45,37 +45,57 @@ export async function action({ request }: Route.ActionArgs) {
     if (Object.keys(errors).length > 0) {
       return data({ errors }, { status: 400 });
     }
-  
+
+    // Resetting password
     try {
-      const response = await api.post(`${process.env.API_KEY}/user/register`, {
-        credentials: {
-          email: email,
-          password: pass,
-        },
+      const response = await api.post(`${process.env.API_KEY}/resetpassword`, {
+        token: token,
+        password: pass
       });
   
-      console.log("Registration successful:", response.data.session_token);
-      return redirect(
-        `/setup?token=${encodeURIComponent(response.data.session_token)}`
-      );
+      console.log(response.data);
+      return response.data;
     } catch (error) {
       if (axios.isAxiosError(error)) {
         console.error(
-          "Registration error:",
+          "Password Reset Error",
           error.response?.data || error.message
         );
       } else {
         console.error("Unexpected error:", error);
       }
-      // Handle error appropriately
-      // return { error: "Registration failed. Please try again." };
     }
-  }
-  
+}
+
+export async function loader({ params }: Route.LoaderArgs) {
+  try {
+    const { resetPasswordId } = params;
+
+    const response = await api.get(`${process.env.API_KEY}/resetpassword/${resetPasswordId}`)
+    if (response.status !== 200) {
+      console.log("invalid id reset pass");
+      return response.data;
+    } else {
+      return response.data;
+    }
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.error(
+        error.response?.data
+      );
+      return {error: error.response?.data}
+    } else {
+      console.error("Unexpected error:", error);
+    }
+  } 
+}
+
 
 export default function ResetPassword() {
     const fetcher = useFetcher();
     const navigate = useNavigate();
+    const loaderData = useLoaderData();
+    const [validStatus, setValidStatus] = useState<boolean>(true);
     const { resetPasswordId } = useParams<{resetPasswordId: string}>();
     const [isDialogOpen, setIsDialogOpen] = useState(false); // State to control dialog visibility
     const errors = fetcher.data?.errors;
@@ -84,6 +104,25 @@ export default function ResetPassword() {
     const openDialog = () => {
         setIsDialogOpen(true);
     };
+    
+    useEffect(() => {
+      // Only set validStatus to false if there is an error and it hasn't been set before
+      if (loaderData?.error && validStatus) {
+        setValidStatus(false);  // Update state only once
+      }
+    }, [loaderData, validStatus]);
+  
+    useEffect(() => {
+      // Redirect if validStatus is false
+      if (validStatus === false) {
+        navigate('/');
+      }
+    }, [validStatus, navigate]);
+  
+    if (validStatus === false) {
+      // Optionally render a loading or error state until the redirect happens
+      return <div>Redirecting...</div>;
+    }
 
     return (
         <fetcher.Form
@@ -112,22 +151,16 @@ export default function ResetPassword() {
             {errors?.password ? (
                 <em className="text-red-500">{errors?.password}</em>
             ) : null}
-            <Button
-                variant="link"
-                className="m-4 font-semibold text-lasalle-green text-base"
-                type="button"
-                onClick={openDialog}
-            >
-                Already have an account?
-            </Button>
             </div>
             <hr className="-mx-8" />
             <Button
             className="text-white w-full rounded-3xl mt-6 bg-lasalle-green text-lg h-12"
             type="submit"
             >
-            Create Account
+            Reset Password
             </Button>
+
+            <Input type="hidden" name="resetPasswordId" value={resetPasswordId}/>
         </fetcher.Form>
     );
 }
