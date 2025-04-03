@@ -125,7 +125,7 @@ export default function EditUserInfoDialog(props: editUserInfoInterface) {
             <Ellipsis />
           </button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent>
+        <DropdownMenuContent className="">
           {loaderData.loggedInUserId === loaderData.userProfile._id && (
             <DropdownMenuItem
               className="w-full"
@@ -150,7 +150,7 @@ export default function EditUserInfoDialog(props: editUserInfoInterface) {
           if (!open) setOpenDialog(null);
         }}
       >
-        <DialogContent className="min-w-[640px]">
+        <DialogContent className="sm:max-w-[640px] overflow-y-auto max-h-screen">
           <DialogHeader>
             <DialogTitle>Edit Profile</DialogTitle>
           </DialogHeader>

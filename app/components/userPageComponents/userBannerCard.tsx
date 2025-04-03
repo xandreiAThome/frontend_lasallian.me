@@ -101,8 +101,10 @@ export default function UserBannerCard(props: authorInterface) {
               />
             </div>
 
-            <div className="flex flex-col gap-2">
-              <p className="text-lg text-gray-400">{info.username}</p>
+            <div className="flex flex-col gap-2 w-full">
+              <p className="text-lg text-gray-400 text-wrap break-all">
+                {info.username}
+              </p>
               <div className="flex gap-2 flex-wrap">
                 <BadgeIcon badgeInfo={loaderData.userProfile.vanity.badges} />
               </div>
@@ -121,7 +123,7 @@ export default function UserBannerCard(props: authorInterface) {
           </p>
         </div>
 
-        <p className="text-sm italic">{info.bio}</p>
+        <p className="text-sm italic break-all">{info.bio}</p>
 
         <div className="text-sm flex gap-4 flex-wrap">
           <span className="flex items-center gap-1">
