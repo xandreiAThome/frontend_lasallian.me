@@ -179,7 +179,7 @@ export default function PostCard(props: postDataInterface) {
         </div>
 
         <button
-          className="flex items-center hover:bg-slate-200 hover:rounded-md px-2 hover:cursor-pointer gap-2"
+          className="flex items-center hover:bg-slate-200 hover:rounded-md px-2 hover:cursor-pointer gap-2 select-none"
           onClick={() => setTypeComment(!typeComment)}
         >
           <MessageSquareText className="h-[28px] w-[27.45px]" />
@@ -189,7 +189,7 @@ export default function PostCard(props: postDataInterface) {
           </p>
         </button>
 
-        <div className="flex items-center hover:cursor-pointer hover:bg-slate-200 hover:rounded-md px-2">
+        <div className="flex items-center hover:cursor-pointer hover:bg-slate-200 hover:rounded-md px-2 select-none">
           <button className="mr-2">
             <MessageSquareShare className="h-[28px] w-[27.45px]" />
           </button>

@@ -71,7 +71,7 @@ export default function ReactionsCommentCard({
     <>
       <HoverCard open={open} onOpenChange={setOpen}>
         <HoverCardTrigger
-          className="flex items-center hover:bg-slate-200 px-2 hover:rounded-md cursor-pointer"
+          className="flex items-center hover:bg-slate-200 px-2 hover:rounded-md cursor-pointer select-none"
           onClick={handleDefaultReaction}
         >
           <p className="mr-2 ">

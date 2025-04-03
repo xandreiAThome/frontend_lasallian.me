@@ -156,7 +156,7 @@ export default function PostDialog(props: postDataInterface) {
     <Dialog>
       <DialogTrigger asChild>
         <button className="flex text-base text-justify my-4 flex-col">
-          <p className="mb-2 whitespace-pre-wrap">
+          <p className="mb-2 whitespace-pre-wrapnp">
             {parseHashtags(content.text)}
           </p>
           <div className="-mx-6 flex justify-center">
@@ -260,7 +260,7 @@ export default function PostDialog(props: postDataInterface) {
               />
             </div>
 
-            <div className="flex items-center">
+            <div className="flex items-center select-none">
               <button className="mr-2">
                 <MessageSquareText className="h-[28px] w-[27.45px]" />
               </button>
@@ -272,7 +272,7 @@ export default function PostDialog(props: postDataInterface) {
               </p>
             </div>
 
-            <div className="flex items-center hover:bg-slate-200 hover:rounded-md px-2 cursor-pointer">
+            <div className="flex items-center hover:bg-slate-200 hover:rounded-md px-2 cursor-pointer select-none">
               <button className="mr-2">
                 <MessageSquareShare className="h-[28px] w-[27.45px]" />
               </button>
