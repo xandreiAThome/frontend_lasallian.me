@@ -68,10 +68,12 @@ export default function PostCard(props: postDataInterface) {
         } catch (error) {
           console.log("error:", error);
         }
+      } else {
+        setProfileImg(null);
       }
     }
     getImg();
-  }, [author.vanity.display_photo]);
+  }, [author.vanity.display_photo, location.pathname]);
 
   function handleComment(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();

@@ -4,6 +4,7 @@ import Logo from "~/components/assets/logo.svg";
 import ej from "~/components/assets/ej.jpg";
 import adrian from "~/components/assets/adrian.jpg";
 import xan from "~/components/assets/xan.jpg";
+import zel from "~/components/assets/zel.jpg";
 
 export default function AboutRoute() {
   const navigation = useNavigation();
@@ -38,11 +39,7 @@ export default function AboutRoute() {
         </div>
         <div className="flex gap-24 mb-24">
           <div className="flex items-center flex-col justify-center">
-            <img
-              src="https://media.licdn.com/dms/image/v2/D5603AQGX6mTlbYpJ1Q/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1724656907827?e=1747267200&v=beta&t=VnfeoHxGRvQwIyouMRySHDt4MaUMFW9VLHAztYJrPds"
-              alt=""
-              className="rounded-full h-40 mb-4"
-            />
+            <img src={zel} alt="" className="rounded-full h-40 mb-4" />
             <p className="text-lasalle-dark-green text-xl font-bold">
               Sean Denzel Robenta
             </p>

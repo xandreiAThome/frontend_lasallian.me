@@ -16,7 +16,7 @@ import {
   DialogContent,
   DialogFooter,
   DialogHeader,
-  DialogTrigger
+  DialogTrigger,
 } from "~/components/ui/dialog";
 import { Input } from "~/components/ui/input";
 import type { commentInterface, postDataInterface } from "~/lib/interfaces";
@@ -27,14 +27,16 @@ import ReactionsCard from "./reactionsPostCard";
 
 const parseHashtags = (text: string) => {
   const hashtagRegex = /#(\w+)/g;
-  
+
   // Replace hashtags with dynamic links
   return text.split(hashtagRegex).map((part, index) => {
     if (index % 2 === 1) {
       // Adding link to hashtag url
-      return (<Link
-        to={`/hashtag/${part}`}
-        className="text-blue-500 hover:text-blue-700 underline">
+      return (
+        <Link
+          to={`/hashtag/${part}`}
+          className="text-blue-500 hover:text-blue-700 underline"
+        >
           {`#${part}`}
         </Link>
       );
@@ -98,10 +100,13 @@ export default function PostDialog(props: postDataInterface) {
         } catch (error) {
           console.log("error:", error);
         }
+      } else {
+        setProfileImg(null);
       }
     }
     getImg();
-  }, [author.vanity.display_photo]);
+  }, [author.vanity.display_photo, location.pathname]);
+  console.log(author.vanity.display_photo, "hdaiuwfhwuf");
 
   function handleComment(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -146,7 +151,7 @@ export default function PostDialog(props: postDataInterface) {
       }
     }
     getImg();
-  }, []);
+  }, [location.pathname]);
 
   return (
     <Dialog>
@@ -188,20 +193,24 @@ export default function PostDialog(props: postDataInterface) {
                 </Button>{" "}
                 {badge ? (
                   <>
-                  <p
-                    style={{ backgroundColor: badge?.main_color,
-                              color: badge?.main_text_color,
-                    }}
-                    className="px-2 text-xs font-semibold">
-                    {badge?.main_title}
-                  </p>
-                  <p 
-                    style={{ backgroundColor: badge?.sub_color,
-                              color: badge?.sub_text_color,
-                    }}
-                    className="px-2 text-xs font-semibold">
-                    {badge?.sub_title}
-                  </p>
+                    <p
+                      style={{
+                        backgroundColor: badge?.main_color,
+                        color: badge?.main_text_color,
+                      }}
+                      className="px-2 text-xs font-semibold"
+                    >
+                      {badge?.main_title}
+                    </p>
+                    <p
+                      style={{
+                        backgroundColor: badge?.sub_color,
+                        color: badge?.sub_text_color,
+                      }}
+                      className="px-2 text-xs font-semibold"
+                    >
+                      {badge?.sub_title}
+                    </p>
                   </>
                 ) : null}
                 <EditPostDialog {...props} />
@@ -223,7 +232,9 @@ export default function PostDialog(props: postDataInterface) {
           </div>
         </DialogHeader>
         <div className="flex text-base text-justify flex-col">
-          <p className="mb-2 whitespace-pre-wrap">{parseHashtags(content.text)}</p>
+          <p className="mb-2 whitespace-pre-wrap">
+            {parseHashtags(content.text)}
+          </p>
           <div className="-mx-6 flex justify-center">
             {media.length > 0 && (
               <img

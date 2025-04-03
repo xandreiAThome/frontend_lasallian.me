@@ -50,7 +50,6 @@ export async function loader({ request, params }: Route.LoaderArgs) {
         }
       );
 
-      // console.log("lol", response.data);
       userProfile = response.data;
     } catch (error) {
       if (axios.isAxiosError(error)) {
@@ -71,7 +70,6 @@ export async function loader({ request, params }: Route.LoaderArgs) {
       }
     );
 
-    console.log(response.data);
     return {
       postData: response.data.posts,
       loggedInUserId: user?._id,

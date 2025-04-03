@@ -7,7 +7,7 @@ import {
   UserRound,
 } from "lucide-react";
 import { useEffect, useState } from "react";
-import { useLoaderData } from "react-router";
+import { useLoaderData, useLocation } from "react-router";
 import profileImgDefault from "~/components/assets/profile.jpg";
 import { Button } from "~/components/ui/button";
 import BadgeIcon from "~/components/userPageComponents/badgeIcon";
@@ -20,6 +20,7 @@ export default function UserBannerCard(props: authorInterface) {
   const [profileImg, setProfileImg] = useState<string | null>(null);
   const [coverImg, setCoverImg] = useState<string | null>(null);
   const loaderData = useLoaderData();
+  const location = useLocation();
 
   useEffect(() => {
     async function getImg() {
@@ -40,6 +41,8 @@ export default function UserBannerCard(props: authorInterface) {
         } catch (error) {
           console.log("error:", error);
         }
+      } else {
+        setProfileImg(null);
       }
 
       if (vanity.cover_photo) {
@@ -59,10 +62,13 @@ export default function UserBannerCard(props: authorInterface) {
         } catch (error) {
           console.log("error:", error);
         }
+      } else {
+        setCoverImg(null);
       }
     }
     getImg();
-  }, [vanity.cover_photo, vanity.display_photo]);
+  }, [vanity.cover_photo, vanity.display_photo, location.pathname]);
+
   return (
     <div className="bg-custom-postcard-white rounded-b-xl flex flex-col">
       <div className="w-full h-48 bg-gray-300 flex items-center justify-center">
