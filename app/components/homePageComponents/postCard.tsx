@@ -173,7 +173,7 @@ export default function PostCard(props: postDataInterface) {
             reactions={reactions.length}
             postId={_id}
             currUserReact={reactions.find(
-              (reaction) => reaction.user === loaderData.user._id
+              (reaction) => reaction.user === loaderData.loggedInUserId
             )}
           />
         </div>

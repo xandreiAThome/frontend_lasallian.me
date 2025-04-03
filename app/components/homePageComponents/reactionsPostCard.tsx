@@ -1,6 +1,6 @@
 import { Heart } from "lucide-react";
 import { useEffect, useState } from "react";
-import { useFetcher } from "react-router";
+import { useFetcher, useLocation } from "react-router";
 import {
   HoverCard,
   HoverCardContent,
@@ -23,6 +23,7 @@ export default function ReactionsPostCard({
 }: ReactionsCardProps) {
   const formatter = Intl.NumberFormat("en", { notation: "compact" });
   const [open, setOpen] = useState(false);
+  const location = useLocation();
   const reactionsList = [
     { name: "heart", emoji: "❤️" },
     { name: "clap", emoji: "👏" },
@@ -36,7 +37,7 @@ export default function ReactionsPostCard({
   );
   useEffect(() => {
     setReaction(currUserReact ? currUserReact.type : "");
-  }, [currUserReact?.type]);
+  }, [currUserReact, location.pathname]);
 
   const fetcher = useFetcher();
 

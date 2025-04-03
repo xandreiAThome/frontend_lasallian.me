@@ -16,7 +16,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
-  DropdownMenuTrigger
+  DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
 import type { commentInterface } from "~/lib/interfaces";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
@@ -24,14 +24,16 @@ import ReactionsCommentCard from "./reactionsCommentCard";
 
 const parseHashtags = (text: string) => {
   const hashtagRegex = /#(\w+)/g;
-  
+
   // Replace hashtags with dynamic links
   return text.split(hashtagRegex).map((part, index) => {
     if (index % 2 === 1) {
       // Adding link to hashtag url
-      return (<Link
-        to={`/hashtag/${part}`}
-        className="text-blue-500 hover:text-blue-700 underline">
+      return (
+        <Link
+          to={`/hashtag/${part}`}
+          className="text-blue-500 hover:text-blue-700 underline"
+        >
           {`#${part}`}
         </Link>
       );
@@ -39,7 +41,6 @@ const parseHashtags = (text: string) => {
     return part;
   });
 };
-
 
 export default function CommentsCard({
   author,
@@ -216,7 +217,7 @@ export default function CommentsCard({
               reactions={reactions.length}
               commentId={_id}
               currUserReacted={reactions.find(
-                (reaction) => reaction.user === loaderData.user._id
+                (reaction) => reaction.user === loaderData.loggedInUserId
               )}
             />
           </div>

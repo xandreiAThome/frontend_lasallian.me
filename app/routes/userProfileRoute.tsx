@@ -72,8 +72,9 @@ export async function loader({ request, params }: Route.LoaderArgs) {
 
     return {
       postData: response.data.posts,
-      loggedInUserId: user?._id,
-      user: userProfile,
+      loggedInUserId: userCookieObj?._id,
+      user: userCookieObj,
+      userProfile: userProfile,
       userToken: userToken,
     };
   } catch (error) {
@@ -88,7 +89,7 @@ export async function loader({ request, params }: Route.LoaderArgs) {
 export default function UserProfilePage({ loaderData }: Route.ComponentProps) {
   return (
     <div className="basis-[640px] flex flex-col gap-4 animate-fade-in pb-6">
-      {loaderData.user && <UserBannerCard {...loaderData.user} />}
+      {loaderData.userProfile && <UserBannerCard {...loaderData.userProfile} />}
 
       {loaderData &&
         loaderData.postData.map(

@@ -106,7 +106,6 @@ export default function PostDialog(props: postDataInterface) {
     }
     getImg();
   }, [author.vanity.display_photo, location.pathname]);
-  console.log(author.vanity.display_photo, "hdaiuwfhwuf");
 
   function handleComment(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -254,7 +253,7 @@ export default function PostDialog(props: postDataInterface) {
                 position="right"
                 postId={_id}
                 currUserReact={reactions.find(
-                  (reaction) => reaction.user === loaderData.user._id
+                  (reaction) => reaction.user === loaderData.loggedInUserId
                 )}
               />
             </div>

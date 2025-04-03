@@ -104,7 +104,7 @@ export default function UserBannerCard(props: authorInterface) {
             <div className="flex flex-col gap-2">
               <p className="text-lg text-gray-400">{info.username}</p>
               <div className="flex gap-2 flex-wrap">
-                <BadgeIcon badgeInfo={loaderData.user.vanity.badges} />
+                <BadgeIcon badgeInfo={loaderData.userProfile.vanity.badges} />
               </div>
             </div>
           </div>
