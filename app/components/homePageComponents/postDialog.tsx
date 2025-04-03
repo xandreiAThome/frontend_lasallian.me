@@ -156,7 +156,9 @@ export default function PostDialog(props: postDataInterface) {
     <Dialog>
       <DialogTrigger asChild>
         <button className="flex text-base text-justify my-4 flex-col">
-          <p className="mb-2">{parseHashtags(content.text)}</p>
+          <p className="mb-2 whitespace-pre-wrap">
+            {parseHashtags(content.text)}
+          </p>
           <div className="-mx-6 flex justify-center">
             {media.length > 0 && (
               <img src={img ?? ""} alt="image content" className=""></img>
