@@ -48,7 +48,7 @@ export default function OrgRoute({ loaderData }: Route.ComponentProps) {
           organizations
         </h1>
 
-        <div className="flex flex-wrap gap-8 gap-y-8">
+        <div className="flex flex-wrap gap-8 gap-y-8 justify-center">
           {loaderData?.orgs &&
             loaderData.orgs.map((props: orgDataInterface) => {
               return <OrgCard {...props} />;

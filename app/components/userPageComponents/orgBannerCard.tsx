@@ -216,7 +216,7 @@ export default function OrgBannerCard({
 
         {/* Admin Panel */}
         {currUserOrgData?.position === "PRES" && (
-          <div className="w-full border-solid border-[1px] rounded-lg p-2 flex items-center gap-4">
+          <div className="w-full border-solid border-[1px] rounded-lg p-2 flex flex-wrap items-center gap-4">
             <h1 className="font-bold">Admin Actions</h1>
             <Button className="bg-lasalle-green rounded-xl p-2 text-white">
               Create Post
