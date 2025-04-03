@@ -1,5 +1,5 @@
 import { Heart } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useFetcher } from "react-router";
 import {
   HoverCard,
@@ -34,6 +34,10 @@ export default function ReactionsPostCard({
   const [reaction, setReaction] = useState(
     currUserReact ? currUserReact.type : ""
   );
+  useEffect(() => {
+    setReaction(currUserReact ? currUserReact.type : "");
+  }, [currUserReact?.type]);
+
   const fetcher = useFetcher();
 
   function handleReaction(emoji: string) {
