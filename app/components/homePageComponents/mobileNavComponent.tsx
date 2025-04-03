@@ -4,9 +4,10 @@ import { Form, Link, NavLink, useLoaderData, useLocation } from "react-router";
 import { Sheet, SheetContent, SheetTrigger } from "~/components/ui/sheet";
 import logo from "~/components/assets/logo.svg";
 import { Button } from "../ui/button";
-import { Menu } from "lucide-react";
+import { Menu, Search } from "lucide-react";
 import { cn } from "~/lib/utils";
 import CreateButton from "../createPostComponents/CreateButton";
+import { Input } from "../ui/input";
 
 interface MobileNavProps {
   scrollableRef: React.RefObject<any>;
@@ -65,6 +66,32 @@ export default function MobileNav({ scrollableRef }: MobileNavProps) {
           <SheetContent side="right">
             <div>
               <ul className="text-2xl flex flex-col items-start gap-4 font-medium mt-32">
+                <Form
+                  method="get"
+                  onSubmit={() => {
+                    setIsMobileMenuOpen(false);
+                  }}
+                  action="/search"
+                >
+                  <div className="flex relative">
+                    <Input
+                      type="text"
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                          e.preventDefault();
+                          e.currentTarget.form?.requestSubmit();
+                        }
+                      }}
+                      className="bg-custom-postcard-white pl-12 max-w-full rounded-3xl h-11"
+                      placeholder="Search..."
+                      required
+                      name="query"
+                    ></Input>
+                    <button type="submit">
+                      <Search className="absolute top-0 bottom-0 m-auto left-4 text-gray-500" />
+                    </button>
+                  </div>
+                </Form>
                 <li className="hover:bg-slate-200 hover:rounded-2xl">
                   <NavLink
                     className={({ isActive, isPending, isTransitioning }) =>

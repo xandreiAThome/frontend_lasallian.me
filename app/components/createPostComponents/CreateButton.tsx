@@ -21,7 +21,7 @@ export default function CreateButton() {
           + Create
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[640px]">
+      <DialogContent className="sm:max-w-[640px] overflow-y-auto max-h-screen">
         <DialogHeader>
           <DialogTitle>Create</DialogTitle>
         </DialogHeader>
