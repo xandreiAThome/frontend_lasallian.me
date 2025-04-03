@@ -156,7 +156,7 @@ export default function PostDialog(props: postDataInterface) {
     <Dialog>
       <DialogTrigger asChild>
         <button className="flex text-base text-justify my-4 flex-col">
-          <p className="mb-2 whitespace-pre-wrapnp">
+          <p className="mb-2 whitespace-pre-wrap">
             {parseHashtags(content.text)}
           </p>
           <div className="-mx-6 flex justify-center">
