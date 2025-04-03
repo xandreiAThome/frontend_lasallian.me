@@ -151,7 +151,7 @@ export default function PostDialog(props: postDataInterface) {
       }
     }
     getImg();
-  }, [location.pathname]);
+  }, [location.pathname, media]);
 
   return (
     <Dialog>
