@@ -1,6 +1,6 @@
 # Frontend Repository for the MCO CCAPDEV
 
-## Live At: [lasallian.me](lasallian.me)
+## Live At: [lasallian.me](https://lasallian.me/)
 
 ## Setup
 
